@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse, getCoursePosts } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { BookOpen, ArrowLeft, LogOut } from 'lucide-react';
+import { ArrowLeft, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PostCard from '@/components/PostCard';
 import CreatePost from '@/components/CreatePost';
 import ResourceList from '@/components/ResourceList';
+import logo from '@/assets/logo.png';
 
 export default function Course() {
   const { courseId } = useParams<{ courseId: string }>();
@@ -39,10 +40,7 @@ export default function Course() {
               <ArrowLeft className="w-5 h-5 text-muted-foreground" />
             </Link>
             <Link to="/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-                <BookOpen className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="text-lg font-display font-bold text-foreground hidden sm:inline">ClassNote</span>
+              <img src={logo} alt="ClassNote" className="h-8 w-auto" />
             </Link>
           </div>
           
