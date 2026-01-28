@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { courses } from '@/data/mockData';
-import { BookOpen, LogOut, MessageCircle } from 'lucide-react';
+import { LogOut, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import logo from '@/assets/logo.png';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -14,10 +15,7 @@ export default function Dashboard() {
       <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center">
-              <BookOpen className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-display font-bold text-foreground">ClassNote</span>
+            <img src={logo} alt="ClassNote" className="h-9 w-auto" />
           </Link>
           
           <div className="flex items-center gap-4">

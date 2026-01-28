@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { BookOpen, MessageCircle, Users, Sparkles, ArrowRight } from 'lucide-react';
+import { MessageCircle, Users, Sparkles, ArrowRight, BookOpen } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 export default function Index() {
   return (
@@ -9,10 +10,7 @@ export default function Index() {
       <header className="container mx-auto px-4 py-6">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-glow">
-              <BookOpen className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-display font-bold text-foreground">ClassNote</span>
+            <img src={logo} alt="ClassNote" className="h-10 w-auto" />
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
@@ -106,10 +104,7 @@ export default function Index() {
       <footer className="container mx-auto px-4 py-8 border-t">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-              <BookOpen className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-foreground">ClassNote</span>
+            <img src={logo} alt="ClassNote" className="h-8 w-auto" />
           </div>
           <p className="text-sm text-muted-foreground">
             © 2024 ClassNote. Made for students, by students.
