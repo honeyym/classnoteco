@@ -8,14 +8,12 @@ export default function Index() {
     <div className="min-h-screen gradient-subtle">
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-center relative">
-          <div className="absolute left-0 flex items-center gap-3">
+        <nav className="flex items-center justify-between">
+          <div className="w-20" /> {/* Spacer */}
+          <div className="flex items-center gap-3">
             <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
               <Link to="/login">Log in</Link>
             </Button>
-          </div>
-          <img src={logo} alt="ClassNote" className="h-14 w-auto" />
-          <div className="absolute right-0 flex items-center gap-3">
             <Button asChild className="gradient-primary hover:opacity-90 transition-opacity">
               <Link to="/signup">Sign up</Link>
             </Button>
@@ -24,8 +22,16 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-4 pt-16 pb-24">
+      <main className="container mx-auto px-4 pt-8 pb-24">
         <div className="max-w-3xl mx-auto text-center animate-fade-in">
+          {/* Large centered logo */}
+          <img 
+            src={logo} 
+            alt="ClassNote" 
+            className="h-40 sm:h-52 lg:h-64 w-auto mx-auto mb-6"
+            style={{ mixBlendMode: 'multiply' }}
+          />
+          
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
             <Sparkles className="w-4 h-4" />
             Where learning meets conversation
