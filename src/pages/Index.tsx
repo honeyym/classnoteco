@@ -10,7 +10,7 @@ export default function Index() {
       <header className="container mx-auto px-4 py-6">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="ClassNote" className="h-10 w-auto" />
+            <img src={logo} alt="ClassNote" className="h-14 w-auto" />
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
@@ -104,7 +104,7 @@ export default function Index() {
       <footer className="container mx-auto px-4 py-8 border-t">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="ClassNote" className="h-8 w-auto" />
+            <img src={logo} alt="ClassNote" className="h-10 w-auto" />
           </div>
           <p className="text-sm text-muted-foreground">
             © 2024 ClassNote. Made for students, by students.

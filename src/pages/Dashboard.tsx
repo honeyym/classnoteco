@@ -15,7 +15,7 @@ export default function Dashboard() {
       <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2">
-            <img src={logo} alt="ClassNote" className="h-9 w-auto" />
+            <img src={logo} alt="ClassNote" className="h-12 w-auto" />
           </Link>
           
           <div className="flex items-center gap-4">
