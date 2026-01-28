@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { getCourse, getCoursePosts, Post } from '@/data/mockData';
+import { getCourse, getCoursePosts, getCourseResources, Post, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { ArrowLeft, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ export default function Course() {
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('discussion');
   const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
+  const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
 
   if (!courseId) {
     return <Navigate to="/dashboard" replace />;
@@ -26,7 +27,7 @@ export default function Course() {
     return <Navigate to="/dashboard" replace />;
   }
 
-  const handleNewPost = (content: string, isAnonymous: boolean) => {
+  const handleNewPost = (content: string, isAnonymous: boolean, link?: string) => {
     const newPost: Post = {
       id: `post-${Date.now()}`,
       courseId,
@@ -40,6 +41,40 @@ export default function Course() {
       replyCount: 0,
     };
     setPosts(prev => [newPost, ...prev]);
+
+    // If a link was attached, add it to resources
+    if (link) {
+      const newResource: Resource = {
+        id: `res-${Date.now()}`,
+        courseId,
+        title: extractTitleFromUrl(link),
+        url: link,
+        sharedBy: isAnonymous ? 'Anonymous' : (user?.name || 'User'),
+        sharedAt: new Date(),
+      };
+      setResources(prev => [newResource, ...prev]);
+    }
+  };
+
+  const extractTitleFromUrl = (url: string): string => {
+    try {
+      const urlObj = new URL(url);
+      // Try to create a readable title from the URL
+      const pathParts = urlObj.pathname.split('/').filter(Boolean);
+      if (pathParts.length > 0) {
+        const lastPart = pathParts[pathParts.length - 1];
+        // Convert slug to title case
+        return lastPart
+          .replace(/[-_]/g, ' ')
+          .replace(/\.[^.]+$/, '') // Remove file extension
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ') || urlObj.hostname;
+      }
+      return urlObj.hostname;
+    } catch {
+      return url;
+    }
   };
 
   // Sort posts newest first
@@ -98,7 +133,7 @@ export default function Course() {
               Discussion
             </TabsTrigger>
             <TabsTrigger value="resources" className="font-medium">
-              Resources
+              Resources ({resources.length})
             </TabsTrigger>
           </TabsList>
           
@@ -125,7 +160,7 @@ export default function Course() {
           
           <TabsContent value="resources" className="mt-0">
             <div className="max-w-2xl">
-              <ResourceList courseId={courseId} />
+              <ResourceList resources={resources} />
             </div>
           </TabsContent>
         </Tabs>

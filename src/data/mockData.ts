@@ -269,45 +269,56 @@ export const replies: Reply[] = [
 ];
 
 export const resources: Resource[] = [
+  // CISC 200 Resources
   {
     id: 'res1',
-    courseId: 'econ101',
-    title: 'Elasticity Explained - Khan Academy',
-    url: 'https://khanacademy.org/economics/elasticity',
-    sharedBy: 'Emma Wilson',
+    courseId: 'cisc200',
+    title: 'SQL Joins Tutorial - W3Schools',
+    url: 'https://w3schools.com/sql/sql_join.asp',
+    sharedBy: 'Mike Johnson',
     sharedAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
   },
   {
     id: 'res2',
-    courseId: 'econ101',
-    title: 'Supply and Demand Practice Problems',
-    url: 'https://example.com/econ-practice',
+    courseId: 'cisc200',
+    title: 'Database Normalization Explained',
+    url: 'https://youtube.com/watch?v=example123',
     sharedBy: 'Sarah Chen',
     sharedAt: new Date(Date.now() - 48 * 60 * 60 * 1000),
   },
   {
     id: 'res3',
-    courseId: 'cs201',
-    title: 'Visualizing Data Structures',
-    url: 'https://visualgo.net',
-    sharedBy: 'Alex Rivera',
-    sharedAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
-  },
-  {
-    id: 'res4',
-    courseId: 'cs201',
-    title: 'Big O Cheat Sheet',
-    url: 'https://bigocheatsheet.com',
-    sharedBy: 'Jordan Lee',
+    courseId: 'cisc200',
+    title: 'Excel Formulas Cheat Sheet',
+    url: 'https://example.com/excel-cheatsheet',
+    sharedBy: 'Anonymous',
     sharedAt: new Date(Date.now() - 72 * 60 * 60 * 1000),
   },
   {
+    id: 'res4',
+    courseId: 'cisc200',
+    title: 'Practice Problems for Midterm',
+    url: 'https://example.com/cisc200-practice',
+    sharedBy: 'Alex Rivera',
+    sharedAt: new Date(Date.now() - 96 * 60 * 60 * 1000),
+  },
+  // BUSN 100 Resources
+  {
     id: 'res5',
-    courseId: 'bio150',
-    title: 'Lab Report Template',
-    url: 'https://example.com/bio-template',
-    sharedBy: 'Taylor Kim',
+    courseId: 'busn100',
+    title: 'Social Entrepreneurship Examples',
+    url: 'https://example.com/social-enterprise',
+    sharedBy: 'Jordan Lee',
     sharedAt: new Date(Date.now() - 36 * 60 * 60 * 1000),
+  },
+  // MGMT 200 Resources
+  {
+    id: 'res6',
+    courseId: 'mgmt200',
+    title: 'Case Study Analysis Framework',
+    url: 'https://example.com/case-study-guide',
+    sharedBy: 'Taylor Kim',
+    sharedAt: new Date(Date.now() - 60 * 60 * 60 * 1000),
   },
 ];
 
