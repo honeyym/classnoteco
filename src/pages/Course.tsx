@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse, getCoursePosts, getCourseResources, Post, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, LogOut } from 'lucide-react';
+import { ArrowLeft, LogOut, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PostCard from '@/components/PostCard';
@@ -115,39 +115,48 @@ export default function Course() {
 
       {/* Course Header */}
       <div className="border-b bg-card">
-        <div className="container mx-auto px-4 py-6">
-          <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium text-primary-foreground bg-gradient-to-r ${course.color} mb-3`}>
+        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className={`inline-block px-3 py-1.5 rounded-full text-xs font-semibold text-primary-foreground bg-gradient-to-r ${course.color} mb-3 shadow-sm`}>
             {course.semester}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-bold text-foreground">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground leading-tight">
             {course.code} - {course.name}
           </h1>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-xs grid-cols-2 mb-6">
-            <TabsTrigger value="discussion" className="font-medium">
+          <TabsList className="grid w-full max-w-sm grid-cols-2 mb-6 sm:mb-8 h-12 p-1 bg-muted/60 rounded-xl">
+            <TabsTrigger 
+              value="discussion" 
+              className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all"
+            >
               Discussion
             </TabsTrigger>
-            <TabsTrigger value="resources" className="font-medium">
+            <TabsTrigger 
+              value="resources" 
+              className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all"
+            >
               Resources ({resources.length})
             </TabsTrigger>
           </TabsList>
           
           <TabsContent value="discussion" className="mt-0">
-            <div className="max-w-2xl space-y-6">
+            <div className="max-w-2xl space-y-5 sm:space-y-6">
               {/* Create Post */}
               <CreatePost courseId={courseId} onPost={handleNewPost} />
               
               {/* Posts Feed */}
-              <div className="space-y-4">
+              <div className="space-y-4 sm:space-y-5">
                 {sortedPosts.length === 0 ? (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <p>No posts yet</p>
-                    <p className="text-sm mt-1">Be the first to start a discussion!</p>
+                  <div className="text-center py-16 text-muted-foreground">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
+                      <MessageCircle className="w-8 h-8 opacity-50" />
+                    </div>
+                    <p className="font-medium">No posts yet</p>
+                    <p className="text-sm mt-1 opacity-75">Be the first to start a discussion!</p>
                   </div>
                 ) : (
                   sortedPosts.map((post) => (
