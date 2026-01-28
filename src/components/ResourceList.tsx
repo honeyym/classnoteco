@@ -1,14 +1,12 @@
-import { getCourseResources, formatTimeAgo } from '@/data/mockData';
+import { Resource, formatTimeAgo } from '@/data/mockData';
 import { Card, CardContent } from '@/components/ui/card';
 import { ExternalLink, Link as LinkIcon } from 'lucide-react';
 
 interface ResourceListProps {
-  courseId: string;
+  resources: Resource[];
 }
 
-export default function ResourceList({ courseId }: ResourceListProps) {
-  const resources = getCourseResources(courseId);
-
+export default function ResourceList({ resources }: ResourceListProps) {
   if (resources.length === 0) {
     return (
       <div className="text-center py-12 text-muted-foreground">
@@ -19,9 +17,12 @@ export default function ResourceList({ courseId }: ResourceListProps) {
     );
   }
 
+  // Sort resources by date, newest first
+  const sortedResources = [...resources].sort((a, b) => b.sharedAt.getTime() - a.sharedAt.getTime());
+
   return (
     <div className="space-y-3">
-      {resources.map((resource, index) => (
+      {sortedResources.map((resource, index) => (
         <a
           key={resource.id}
           href={resource.url}
