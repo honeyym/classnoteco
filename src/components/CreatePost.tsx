@@ -71,36 +71,36 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
   };
 
   return (
-    <Card className="shadow-card border-0">
-      <CardContent className="p-4 sm:p-5">
-        <form onSubmit={handleSubmit}>
+    <Card className="bg-card shadow-card border-0 rounded-xl overflow-hidden">
+      <CardContent className="p-5 sm:p-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Textarea
             placeholder="What's on your mind?"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="min-h-[100px] resize-none border-0 bg-muted/50 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-base"
+            className="min-h-[120px] resize-none border border-border/50 bg-muted/30 focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-0 focus-visible:border-primary/50 text-base rounded-xl transition-all placeholder:text-muted-foreground/60"
           />
           
           {/* Optional Link Field */}
-          <div className="mt-3 flex items-center gap-2">
-            <LinkIcon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+          <div className="flex items-center gap-3 px-1">
+            <LinkIcon className="w-4 h-4 text-muted-foreground shrink-0" />
             <Input
               type="url"
               placeholder="Attach a link (optional)"
               value={link}
               onChange={(e) => setLink(e.target.value)}
-              className="border-0 bg-muted/50 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-sm"
+              className="border border-border/50 bg-muted/30 focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-0 focus-visible:border-primary/50 text-sm rounded-lg h-10 transition-all placeholder:text-muted-foreground/60"
             />
           </div>
           
-          <div className="flex items-center justify-between mt-4 gap-4">
-            <label className="flex items-center gap-2 cursor-pointer">
+          <div className="flex items-center justify-between gap-4 pt-2">
+            <label className="flex items-center gap-2.5 cursor-pointer select-none">
               <Checkbox
                 checked={isAnonymous}
                 onCheckedChange={(checked) => setIsAnonymous(checked as boolean)}
-                className="border-muted-foreground/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                className="border-muted-foreground/40 data-[state=checked]:bg-primary data-[state=checked]:border-primary rounded"
               />
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground font-medium">
                 Post anonymously 🎭
               </span>
             </label>
@@ -108,7 +108,8 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
             <Button 
               type="submit" 
               disabled={isSubmitting || !content.trim()}
-              className="gradient-primary hover:opacity-90 transition-opacity"
+              size="lg"
+              className="gradient-primary hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg px-6 font-semibold rounded-xl"
             >
               <Send className="w-4 h-4 mr-2" />
               Post

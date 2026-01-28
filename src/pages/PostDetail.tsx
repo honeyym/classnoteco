@@ -114,46 +114,46 @@ export default function PostDetail() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="max-w-2xl mx-auto">
           {/* Original Post */}
-          <Card className="shadow-card border-0 mb-6 animate-fade-in">
+          <Card className="bg-card shadow-card border-0 mb-6 rounded-xl overflow-hidden">
             <CardContent className="p-5 sm:p-6">
               {/* Author & Time */}
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xl">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xl font-medium shrink-0">
                   {post.isAnonymous ? '🎭' : post.authorName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">
+                  <p className="font-semibold text-foreground">
                     {post.isAnonymous ? 'Anonymous' : post.authorName}
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground mt-0.5">
                     {formatTimeAgo(post.createdAt)} in {course.code}
                   </p>
                 </div>
               </div>
 
               {/* Content */}
-              <p className="text-foreground text-lg leading-relaxed mb-6">
+              <p className="text-foreground text-[17px] leading-relaxed mb-6">
                 {post.content}
               </p>
 
               {/* Reactions */}
-              <div className="flex items-center gap-4 pt-4 border-t">
+              <div className="flex items-center gap-2 pt-4 border-t border-border/50">
                 <button 
                   onClick={handleLike}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-primary active:scale-95"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl hover:bg-primary/10 transition-all duration-200 text-muted-foreground hover:text-primary active:scale-95 font-medium"
                 >
                   <ThumbsUp className="w-5 h-5" />
-                  <span className="font-medium">{postReactions.likes}</span>
+                  <span>{postReactions.likes}</span>
                 </button>
                 <button 
                   onClick={handleHeart}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-destructive active:scale-95"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl hover:bg-destructive/10 transition-all duration-200 text-muted-foreground hover:text-destructive active:scale-95 font-medium"
                 >
                   <Heart className="w-5 h-5" />
-                  <span className="font-medium">{postReactions.hearts}</span>
+                  <span>{postReactions.hearts}</span>
                 </button>
               </div>
             </CardContent>
@@ -167,29 +167,32 @@ export default function PostDetail() {
             
             <div className="space-y-3">
               {replies.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">No replies yet. Be the first to respond!</p>
+                <div className="text-center py-12 text-muted-foreground">
+                  <p className="font-medium">No replies yet</p>
+                  <p className="text-sm mt-1 opacity-75">Be the first to respond!</p>
+                </div>
               ) : (
                 replies.map((reply, index) => (
                   <Card 
                     key={reply.id} 
-                    className="shadow-card border-0 animate-fade-in"
+                    className="bg-card shadow-card border-0 rounded-xl overflow-hidden"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <CardContent className="p-4">
+                    <CardContent className="p-4 sm:p-5">
                       <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center text-base flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/15 to-accent/15 flex items-center justify-center text-base font-medium shrink-0">
                           {reply.isAnonymous ? '🎭' : reply.authorName.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium text-sm text-foreground">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span className="font-semibold text-sm text-foreground">
                               {reply.isAnonymous ? 'Anonymous' : reply.authorName}
                             </span>
                             <span className="text-xs text-muted-foreground">
                               {formatTimeAgo(reply.createdAt)}
                             </span>
                           </div>
-                          <p className="text-foreground text-sm leading-relaxed">
+                          <p className="text-foreground text-[15px] leading-relaxed">
                             {reply.content}
                           </p>
                         </div>
@@ -202,33 +205,32 @@ export default function PostDetail() {
           </div>
 
           {/* Reply Box */}
-          <Card className="shadow-card border-0 sticky bottom-4 animate-fade-in">
-            <CardContent className="p-4">
-              <form onSubmit={handleReply}>
+          <Card className="bg-card shadow-elevated border-0 sticky bottom-4 rounded-xl overflow-hidden">
+            <CardContent className="p-4 sm:p-5">
+              <form onSubmit={handleReply} className="space-y-4">
                 <Textarea
                   placeholder="Write a reply..."
                   value={replyContent}
                   onChange={(e) => setReplyContent(e.target.value)}
-                  className="min-h-[80px] resize-none border-0 bg-muted/50 focus-visible:ring-primary/20 focus-visible:ring-offset-0"
+                  className="min-h-[100px] resize-none border border-border/50 bg-muted/30 focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-0 focus-visible:border-primary/50 rounded-xl transition-all placeholder:text-muted-foreground/60"
                 />
                 
-                <div className="flex items-center justify-between mt-3 gap-4">
-                  <label className="flex items-center gap-2 cursor-pointer">
+                <div className="flex items-center justify-between gap-4">
+                  <label className="flex items-center gap-2.5 cursor-pointer select-none">
                     <Checkbox
                       checked={isAnonymous}
                       onCheckedChange={(checked) => setIsAnonymous(checked as boolean)}
-                      className="border-muted-foreground/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                      className="border-muted-foreground/40 data-[state=checked]:bg-primary data-[state=checked]:border-primary rounded"
                     />
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-muted-foreground font-medium">
                       Reply anonymously 🎭
                     </span>
                   </label>
                   
                   <Button 
                     type="submit" 
-                    size="sm"
                     disabled={isSubmitting || !replyContent.trim()}
-                    className="gradient-primary hover:opacity-90 transition-opacity"
+                    className="gradient-primary hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg px-5 font-semibold rounded-xl"
                   >
                     <Send className="w-4 h-4 mr-2" />
                     Reply
