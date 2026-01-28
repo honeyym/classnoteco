@@ -28,7 +28,7 @@ export default function Index() {
           <img 
             src={logo} 
             alt="ClassNote" 
-            className="h-40 sm:h-52 lg:h-64 w-auto mx-auto mb-6"
+            className="h-52 sm:h-72 lg:h-96 w-auto mx-auto mb-6"
             style={{ mixBlendMode: 'multiply' }}
           />
           
