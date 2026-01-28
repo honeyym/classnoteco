@@ -8,14 +8,14 @@ export default function Index() {
     <div className="min-h-screen gradient-subtle">
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="ClassNote" className="h-14 w-auto" />
-          </div>
-          <div className="flex items-center gap-3">
+        <nav className="flex items-center justify-center relative">
+          <div className="absolute left-0 flex items-center gap-3">
             <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
               <Link to="/login">Log in</Link>
             </Button>
+          </div>
+          <img src={logo} alt="ClassNote" className="h-14 w-auto" />
+          <div className="absolute right-0 flex items-center gap-3">
             <Button asChild className="gradient-primary hover:opacity-90 transition-opacity">
               <Link to="/signup">Sign up</Link>
             </Button>
