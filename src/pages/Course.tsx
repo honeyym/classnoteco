@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { getCourse, getCoursePosts } from '@/data/mockData';
+import { getCourse, getCoursePosts, Post } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { ArrowLeft, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ export default function Course() {
   const { courseId } = useParams<{ courseId: string }>();
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('discussion');
+  const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
 
   if (!courseId) {
     return <Navigate to="/dashboard" replace />;
@@ -25,7 +26,24 @@ export default function Course() {
     return <Navigate to="/dashboard" replace />;
   }
 
-  const posts = getCoursePosts(courseId);
+  const handleNewPost = (content: string, isAnonymous: boolean) => {
+    const newPost: Post = {
+      id: `post-${Date.now()}`,
+      courseId,
+      authorId: user?.id || '1',
+      authorName: user?.name || 'User',
+      isAnonymous,
+      content,
+      createdAt: new Date(),
+      likes: 0,
+      hearts: 0,
+      replyCount: 0,
+    };
+    setPosts(prev => [newPost, ...prev]);
+  };
+
+  // Sort posts newest first
+  const sortedPosts = [...posts].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
   return (
     <div className="min-h-screen bg-background">
@@ -87,17 +105,17 @@ export default function Course() {
           <TabsContent value="discussion" className="mt-0">
             <div className="max-w-2xl space-y-6">
               {/* Create Post */}
-              <CreatePost courseId={courseId} />
+              <CreatePost courseId={courseId} onPost={handleNewPost} />
               
               {/* Posts Feed */}
               <div className="space-y-4">
-                {posts.length === 0 ? (
+                {sortedPosts.length === 0 ? (
                   <div className="text-center py-12 text-muted-foreground">
                     <p>No posts yet</p>
                     <p className="text-sm mt-1">Be the first to start a discussion!</p>
                   </div>
                 ) : (
-                  posts.map((post) => (
+                  sortedPosts.map((post) => (
                     <PostCard key={post.id} post={post} courseId={courseId} />
                   ))
                 )}

@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface CreatePostProps {
   courseId: string;
-  onPost?: () => void;
+  onPost?: (content: string, isAnonymous: boolean) => void;
 }
 
 export default function CreatePost({ courseId, onPost }: CreatePostProps) {
@@ -32,7 +32,9 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
     setIsSubmitting(true);
     
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    onPost?.(content.trim(), isAnonymous);
     
     toast({
       title: "Posted!",
@@ -42,7 +44,6 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
     setContent('');
     setIsAnonymous(false);
     setIsSubmitting(false);
-    onPost?.();
   };
 
   return (
