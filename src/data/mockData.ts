@@ -193,13 +193,14 @@ export const posts: Post[] = [
 ];
 
 export const replies: Reply[] = [
+  // Replies for CISC 200 posts
   {
     id: 'reply1',
     postId: 'post1',
     authorId: '5',
     authorName: 'Alex Rivera',
     isAnonymous: false,
-    content: 'I have detailed notes! I can share them with you. DM me your email.',
+    content: 'I have it! Check your email, I just sent it over.',
     createdAt: new Date(Date.now() - 1.5 * 60 * 60 * 1000),
   },
   {
@@ -208,7 +209,7 @@ export const replies: Reply[] = [
     authorId: '6',
     authorName: 'Jordan Lee',
     isAnonymous: false,
-    content: 'The professor also posted slides on the course portal if you need them.',
+    content: 'The professor also posted it on the course portal under "Resources" if you need it again.',
     createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
   },
   {
@@ -217,26 +218,53 @@ export const replies: Reply[] = [
     authorId: '7',
     authorName: 'Taylor Kim',
     isAnonymous: true,
-    content: 'Hope you\'re feeling better! The main takeaway was the relationship between price and quantity.',
+    content: 'Thanks for sharing! I was looking for this too.',
     createdAt: new Date(Date.now() - 0.5 * 60 * 60 * 1000),
   },
   {
     id: 'reply4',
-    postId: 'post2',
-    authorId: '2',
-    authorName: 'Sarah Chen',
+    postId: 'post1',
+    authorId: '8',
+    authorName: 'Sam Davis',
     isAnonymous: false,
-    content: 'According to the syllabus, it\'s closed book but we can bring one page of notes.',
-    createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
+    content: 'Pro tip: always keep a backup in Google Drive 😅',
+    createdAt: new Date(Date.now() - 0.25 * 60 * 60 * 1000),
   },
   {
     id: 'reply5',
     postId: 'post2',
-    authorId: '4',
-    authorName: 'Emma Wilson',
+    authorId: '2',
+    authorName: 'Sarah Chen',
     isAnonymous: false,
-    content: 'Prof confirmed this in class today. One page, front and back!',
-    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000),
+    content: 'I felt the same way at first! Try watching the Khan Academy video on database normalization - it made everything click for me.',
+    createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
+  },
+  {
+    id: 'reply6',
+    postId: 'post2',
+    authorId: '4',
+    authorName: 'Anonymous',
+    isAnonymous: true,
+    content: 'The TA office hours tomorrow will cover this topic. Highly recommend going!',
+    createdAt: new Date(Date.now() - 3.5 * 60 * 60 * 1000),
+  },
+  {
+    id: 'reply7',
+    postId: 'post3',
+    authorId: '3',
+    authorName: 'Mike Johnson',
+    isAnonymous: false,
+    content: 'This is amazing, thank you so much for sharing!',
+    createdAt: new Date(Date.now() - 20 * 60 * 60 * 1000),
+  },
+  {
+    id: 'reply8',
+    postId: 'post3',
+    authorId: '5',
+    authorName: 'Anonymous',
+    isAnonymous: true,
+    content: 'Bookmarked! This will definitely help for the exam.',
+    createdAt: new Date(Date.now() - 18 * 60 * 60 * 1000),
   },
 ];
 

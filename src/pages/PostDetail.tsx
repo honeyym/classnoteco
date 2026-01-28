@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { getPost, getPostReplies, getCourse, formatTimeAgo } from '@/data/mockData';
+import { getPost, getPostReplies, getCourse, formatTimeAgo, Post, Reply } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { BookOpen, ArrowLeft, LogOut, ThumbsUp, Heart, Send } from 'lucide-react';
+import { ArrowLeft, LogOut, ThumbsUp, Heart, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import logo from '@/assets/logo.png';
 
 export default function PostDetail() {
   const { courseId, postId } = useParams<{ courseId: string; postId: string }>();
@@ -17,6 +18,11 @@ export default function PostDetail() {
   const [replyContent, setReplyContent] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [replies, setReplies] = useState<Reply[]>(() => getPostReplies(postId || ''));
+  const [postReactions, setPostReactions] = useState(() => {
+    const post = getPost(postId || '');
+    return { likes: post?.likes || 0, hearts: post?.hearts || 0 };
+  });
 
   if (!courseId || !postId) {
     return <Navigate to="/dashboard" replace />;
@@ -28,8 +34,6 @@ export default function PostDetail() {
   if (!course || !post) {
     return <Navigate to={`/course/${courseId}`} replace />;
   }
-
-  const replies = getPostReplies(postId);
 
   const handleReply = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +48,19 @@ export default function PostDetail() {
     }
 
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    const newReply: Reply = {
+      id: `reply-${Date.now()}`,
+      postId,
+      authorId: user?.id || '1',
+      authorName: user?.name || 'User',
+      isAnonymous,
+      content: replyContent.trim(),
+      createdAt: new Date(),
+    };
+    
+    setReplies(prev => [...prev, newReply]);
     
     toast({
       title: "Reply posted!",
@@ -54,6 +70,14 @@ export default function PostDetail() {
     setReplyContent('');
     setIsAnonymous(false);
     setIsSubmitting(false);
+  };
+
+  const handleLike = () => {
+    setPostReactions(prev => ({ ...prev, likes: prev.likes + 1 }));
+  };
+
+  const handleHeart = () => {
+    setPostReactions(prev => ({ ...prev, hearts: prev.hearts + 1 }));
   };
 
   return (
@@ -69,10 +93,7 @@ export default function PostDetail() {
               <ArrowLeft className="w-5 h-5 text-muted-foreground" />
             </Link>
             <Link to="/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-                <BookOpen className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="text-lg font-display font-bold text-foreground hidden sm:inline">ClassNote</span>
+              <img src={logo} alt="ClassNote" className="h-10 w-auto" />
             </Link>
           </div>
           
@@ -120,13 +141,19 @@ export default function PostDetail() {
 
               {/* Reactions */}
               <div className="flex items-center gap-4 pt-4 border-t">
-                <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-primary">
+                <button 
+                  onClick={handleLike}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-primary active:scale-95"
+                >
                   <ThumbsUp className="w-5 h-5" />
-                  <span className="font-medium">{post.likes}</span>
+                  <span className="font-medium">{postReactions.likes}</span>
                 </button>
-                <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-destructive">
+                <button 
+                  onClick={handleHeart}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-destructive active:scale-95"
+                >
                   <Heart className="w-5 h-5" />
-                  <span className="font-medium">{post.hearts}</span>
+                  <span className="font-medium">{postReactions.hearts}</span>
                 </button>
               </div>
             </CardContent>
@@ -139,34 +166,38 @@ export default function PostDetail() {
             </h2>
             
             <div className="space-y-3">
-              {replies.map((reply, index) => (
-                <Card 
-                  key={reply.id} 
-                  className="shadow-card border-0 animate-fade-in"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center text-base flex-shrink-0">
-                        {reply.isAnonymous ? '🎭' : reply.authorName.charAt(0).toUpperCase()}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-sm text-foreground">
-                            {reply.isAnonymous ? 'Anonymous' : reply.authorName}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {formatTimeAgo(reply.createdAt)}
-                          </span>
+              {replies.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">No replies yet. Be the first to respond!</p>
+              ) : (
+                replies.map((reply, index) => (
+                  <Card 
+                    key={reply.id} 
+                    className="shadow-card border-0 animate-fade-in"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center text-base flex-shrink-0">
+                          {reply.isAnonymous ? '🎭' : reply.authorName.charAt(0).toUpperCase()}
                         </div>
-                        <p className="text-foreground text-sm leading-relaxed">
-                          {reply.content}
-                        </p>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-sm text-foreground">
+                              {reply.isAnonymous ? 'Anonymous' : reply.authorName}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {formatTimeAgo(reply.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-foreground text-sm leading-relaxed">
+                            {reply.content}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </div>
 

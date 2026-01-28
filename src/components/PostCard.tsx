@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Post, formatTimeAgo } from '@/data/mockData';
 import { MessageCircle, ThumbsUp, Heart } from 'lucide-react';
@@ -9,6 +10,21 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, courseId }: PostCardProps) {
+  const [likes, setLikes] = useState(post.likes);
+  const [hearts, setHearts] = useState(post.hearts);
+
+  const handleLike = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikes(prev => prev + 1);
+  };
+
+  const handleHeart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setHearts(prev => prev + 1);
+  };
+
   return (
     <Link to={`/course/${courseId}/post/${post.id}`}>
       <Card className="group shadow-card hover:shadow-elevated transition-all duration-200 border-0 animate-fade-in">
@@ -35,14 +51,20 @@ export default function PostCard({ post, courseId }: PostCardProps) {
 
           {/* Reactions & Replies */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1.5 hover:text-primary transition-colors">
+            <button 
+              onClick={handleLike}
+              className="flex items-center gap-1.5 hover:text-primary transition-colors active:scale-95"
+            >
               <ThumbsUp className="w-4 h-4" />
-              {post.likes}
-            </span>
-            <span className="flex items-center gap-1.5 hover:text-destructive transition-colors">
+              {likes}
+            </button>
+            <button 
+              onClick={handleHeart}
+              className="flex items-center gap-1.5 hover:text-destructive transition-colors active:scale-95"
+            >
               <Heart className="w-4 h-4" />
-              {post.hearts}
-            </span>
+              {hearts}
+            </button>
             <span className="flex items-center gap-1.5 ml-auto group-hover:text-primary transition-colors">
               <MessageCircle className="w-4 h-4" />
               {post.replyCount} replies
