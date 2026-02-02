@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Post, formatTimeAgo } from '@/data/mockData';
-import { MessageCircle, ThumbsUp, Heart } from 'lucide-react';
+import { MessageCircle, ThumbsUp, ThumbsDown, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface PostCardProps {
@@ -11,18 +11,43 @@ interface PostCardProps {
 
 export default function PostCard({ post, courseId }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
-  const [hearts, setHearts] = useState(post.hearts);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleLike = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setLikes(prev => prev + 1);
+    if (isLiked) {
+      setLikes(prev => prev - 1);
+      setIsLiked(false);
+    } else {
+      setLikes(prev => prev + 1);
+      setIsLiked(true);
+      if (isDisliked) {
+        setIsDisliked(false);
+      }
+    }
   };
 
-  const handleHeart = (e: React.MouseEvent) => {
+  const handleDislike = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setHearts(prev => prev + 1);
+    if (isDisliked) {
+      setIsDisliked(false);
+    } else {
+      setIsDisliked(true);
+      if (isLiked) {
+        setLikes(prev => prev - 1);
+        setIsLiked(false);
+      }
+    }
+  };
+
+  const handleSave = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsSaved(prev => !prev);
   };
 
   return (
@@ -42,6 +67,18 @@ export default function PostCard({ post, courseId }: PostCardProps) {
                 {formatTimeAgo(post.createdAt)}
               </p>
             </div>
+            {/* Save Button */}
+            <button 
+              onClick={handleSave}
+              className={`p-2 rounded-lg transition-all duration-200 active:scale-95 ${
+                isSaved 
+                  ? 'text-yellow-500 bg-yellow-500/10' 
+                  : 'text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10'
+              }`}
+              aria-label={isSaved ? 'Unsave post' : 'Save post'}
+            >
+              <Star className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
+            </button>
           </div>
 
           {/* Content */}
@@ -53,17 +90,25 @@ export default function PostCard({ post, courseId }: PostCardProps) {
           <div className="flex items-center gap-2 pt-4 border-t border-border/50">
             <button 
               onClick={handleLike}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all duration-200 active:scale-95 text-sm font-medium"
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all duration-200 active:scale-95 text-sm font-medium ${
+                isLiked 
+                  ? 'text-primary bg-primary/10' 
+                  : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
+              }`}
             >
-              <ThumbsUp className="w-4 h-4" />
+              <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
               <span>{likes}</span>
             </button>
             <button 
-              onClick={handleHeart}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-all duration-200 active:scale-95 text-sm font-medium"
+              onClick={handleDislike}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all duration-200 active:scale-95 text-sm font-medium ${
+                isDisliked 
+                  ? 'text-muted-foreground bg-muted' 
+                  : 'text-muted-foreground hover:bg-muted'
+              }`}
+              aria-label="Dislike"
             >
-              <Heart className="w-4 h-4" />
-              <span>{hearts}</span>
+              <ThumbsDown className={`w-4 h-4 ${isDisliked ? 'fill-current' : ''}`} />
             </button>
             <span className="flex items-center gap-1.5 ml-auto text-sm text-muted-foreground group-hover:text-primary transition-colors font-medium">
               <MessageCircle className="w-4 h-4" />
