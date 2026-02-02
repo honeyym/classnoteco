@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getPost, getPostReplies, getCourse, formatTimeAgo, Post, Reply } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, LogOut, ThumbsUp, Heart, Send } from 'lucide-react';
+import { ArrowLeft, LogOut, ThumbsUp, ThumbsDown, Star, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,8 +21,11 @@ export default function PostDetail() {
   const [replies, setReplies] = useState<Reply[]>(() => getPostReplies(postId || ''));
   const [postReactions, setPostReactions] = useState(() => {
     const post = getPost(postId || '');
-    return { likes: post?.likes || 0, hearts: post?.hearts || 0 };
+    return { likes: post?.likes || 0 };
   });
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   if (!courseId || !postId) {
     return <Navigate to="/dashboard" replace />;
@@ -73,11 +76,32 @@ export default function PostDetail() {
   };
 
   const handleLike = () => {
-    setPostReactions(prev => ({ ...prev, likes: prev.likes + 1 }));
+    if (isLiked) {
+      setPostReactions(prev => ({ ...prev, likes: prev.likes - 1 }));
+      setIsLiked(false);
+    } else {
+      setPostReactions(prev => ({ ...prev, likes: prev.likes + 1 }));
+      setIsLiked(true);
+      if (isDisliked) {
+        setIsDisliked(false);
+      }
+    }
   };
 
-  const handleHeart = () => {
-    setPostReactions(prev => ({ ...prev, hearts: prev.hearts + 1 }));
+  const handleDislike = () => {
+    if (isDisliked) {
+      setIsDisliked(false);
+    } else {
+      setIsDisliked(true);
+      if (isLiked) {
+        setPostReactions(prev => ({ ...prev, likes: prev.likes - 1 }));
+        setIsLiked(false);
+      }
+    }
+  };
+
+  const handleSave = () => {
+    setIsSaved(prev => !prev);
   };
 
   return (
@@ -143,17 +167,36 @@ export default function PostDetail() {
               <div className="flex items-center gap-2 pt-4 border-t border-border/50">
                 <button 
                   onClick={handleLike}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl hover:bg-primary/10 transition-all duration-200 text-muted-foreground hover:text-primary active:scale-95 font-medium"
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200 active:scale-95 font-medium ${
+                    isLiked 
+                      ? 'text-primary bg-primary/10' 
+                      : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
+                  }`}
                 >
-                  <ThumbsUp className="w-5 h-5" />
+                  <ThumbsUp className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
                   <span>{postReactions.likes}</span>
                 </button>
                 <button 
-                  onClick={handleHeart}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl hover:bg-destructive/10 transition-all duration-200 text-muted-foreground hover:text-destructive active:scale-95 font-medium"
+                  onClick={handleDislike}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200 active:scale-95 font-medium ${
+                    isDisliked 
+                      ? 'text-muted-foreground bg-muted' 
+                      : 'text-muted-foreground hover:bg-muted'
+                  }`}
+                  aria-label="Dislike"
                 >
-                  <Heart className="w-5 h-5" />
-                  <span>{postReactions.hearts}</span>
+                  <ThumbsDown className={`w-5 h-5 ${isDisliked ? 'fill-current' : ''}`} />
+                </button>
+                <button 
+                  onClick={handleSave}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200 active:scale-95 font-medium ml-auto ${
+                    isSaved 
+                      ? 'text-yellow-500 bg-yellow-500/10' 
+                      : 'text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10'
+                  }`}
+                  aria-label={isSaved ? 'Unsave post' : 'Save post'}
+                >
+                  <Star className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
                 </button>
               </div>
             </CardContent>

@@ -16,7 +16,7 @@ export interface Post {
   content: string;
   createdAt: Date;
   likes: number;
-  hearts: number;
+  dislikes: number;
   replyCount: number;
 }
 
@@ -77,7 +77,7 @@ export const posts: Post[] = [
     content: 'Does anyone have notes from Monday\'s lecture? I had to miss class 😅',
     createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
     likes: 12,
-    hearts: 3,
+    dislikes: 1,
     replyCount: 5,
   },
   {
@@ -89,7 +89,7 @@ export const posts: Post[] = [
     content: 'Can someone explain recursion? Still confused after the examples in class',
     createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
     likes: 18,
-    hearts: 5,
+    dislikes: 0,
     replyCount: 8,
   },
   {
@@ -101,7 +101,7 @@ export const posts: Post[] = [
     content: 'Study group Thursday 6pm at library room 204. DM if you want to join!',
     createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
     likes: 15,
-    hearts: 2,
+    dislikes: 0,
     replyCount: 3,
   },
   {
@@ -113,7 +113,7 @@ export const posts: Post[] = [
     content: 'Here\'s the Python cheat sheet I made for the exam',
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
     likes: 24,
-    hearts: 8,
+    dislikes: 0,
     replyCount: 2,
   },
   {
@@ -125,7 +125,7 @@ export const posts: Post[] = [
     content: 'Anyone else struggling with arrays? 😭',
     createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
     likes: 20,
-    hearts: 6,
+    dislikes: 2,
     replyCount: 12,
   },
   // BUSN 100 Posts
@@ -138,7 +138,7 @@ export const posts: Post[] = [
     content: 'Missed Friday\'s class - what chapters are we covering for the quiz?',
     createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
     likes: 9,
-    hearts: 2,
+    dislikes: 0,
     replyCount: 3,
   },
   {
@@ -150,7 +150,7 @@ export const posts: Post[] = [
     content: 'Can anyone explain supply chain management from chapter 4?',
     createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
     likes: 15,
-    hearts: 5,
+    dislikes: 1,
     replyCount: 7,
   },
   {
@@ -162,7 +162,7 @@ export const posts: Post[] = [
     content: 'Here\'s a helpful video on market segmentation',
     createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
     likes: 19,
-    hearts: 7,
+    dislikes: 0,
     replyCount: 4,
   },
   {
@@ -174,7 +174,7 @@ export const posts: Post[] = [
     content: 'Looking for someone to quiz me before the exam - anyone down?',
     createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
     likes: 13,
-    hearts: 4,
+    dislikes: 0,
     replyCount: 6,
   },
   {
@@ -186,7 +186,7 @@ export const posts: Post[] = [
     content: 'Office hours notes - prof clarified the final project requirements',
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
     likes: 28,
-    hearts: 10,
+    dislikes: 1,
     replyCount: 9,
   },
   // MGMT 200 Posts
@@ -199,7 +199,7 @@ export const posts: Post[] = [
     content: 'Group project partners needed for the case study assignment!',
     createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
     likes: 8,
-    hearts: 2,
+    dislikes: 0,
     replyCount: 4,
   },
   {
@@ -211,7 +211,7 @@ export const posts: Post[] = [
     content: 'Can someone explain the difference between leadership styles we covered?',
     createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
     likes: 14,
-    hearts: 4,
+    dislikes: 0,
     replyCount: 6,
   },
   {
@@ -223,7 +223,7 @@ export const posts: Post[] = [
     content: 'Notes from today\'s lecture on organizational behavior',
     createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
     likes: 32,
-    hearts: 12,
+    dislikes: 0,
     replyCount: 8,
   },
   {
@@ -235,7 +235,7 @@ export const posts: Post[] = [
     content: 'Is the midterm open book? Anyone know?',
     createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
     likes: 18,
-    hearts: 3,
+    dislikes: 1,
     replyCount: 5,
   },
   {
@@ -247,7 +247,7 @@ export const posts: Post[] = [
     content: 'Study session Sunday 2pm at Starbucks on campus - all welcome!',
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
     likes: 22,
-    hearts: 6,
+    dislikes: 0,
     replyCount: 7,
   },
 ];
