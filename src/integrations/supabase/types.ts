@@ -22,6 +22,8 @@ export type Database = {
           created_at: string
           id: string
           is_anonymous: boolean
+          likes: number
+          parent_id: string | null
           user_id: string
         }
         Insert: {
@@ -31,6 +33,8 @@ export type Database = {
           created_at?: string
           id?: string
           is_anonymous?: boolean
+          likes?: number
+          parent_id?: string | null
           user_id: string
         }
         Update: {
@@ -40,9 +44,19 @@ export type Database = {
           created_at?: string
           id?: string
           is_anonymous?: boolean
+          likes?: number
+          parent_id?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "chat_messages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
