@@ -5,6 +5,7 @@ import { LogOut, MessageCircle, Sparkles, TrendingUp, BookOpen } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import logo from '@/assets/logo.png';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -25,6 +26,7 @@ export default function Dashboard() {
           </Link>
           
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <div className="hidden sm:flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/10">
               <div className="w-8 h-8 rounded-xl gradient-primary flex items-center justify-center text-sm font-bold text-primary-foreground shadow-sm">
                 {user?.name?.charAt(0).toUpperCase()}
