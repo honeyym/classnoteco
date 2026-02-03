@@ -108,31 +108,36 @@ export default function Course() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen gradient-subtle">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-50 border-b border-border/50 bg-card/90 backdrop-blur-md shadow-xs">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link 
               to="/dashboard" 
-              className="p-2 -ml-2 rounded-lg hover:bg-muted transition-colors"
+              className="p-2 -ml-2 rounded-xl hover:bg-primary/10 transition-all duration-200 group"
             >
-              <ArrowLeft className="w-5 h-5 text-muted-foreground" />
+              <ArrowLeft className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </Link>
             <Link to="/dashboard" className="flex items-center gap-2">
-              <img src={logo} alt="ClassNote" className="h-20 w-auto" style={{ mixBlendMode: 'multiply' }} />
+              <img src={logo} alt="ClassNote" className="h-16 w-auto" style={{ mixBlendMode: 'multiply' }} />
             </Link>
           </div>
           
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground hidden sm:inline">
-              {user?.name}
-            </span>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10">
+              <div className="w-6 h-6 rounded-full gradient-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
+              <span className="text-sm font-medium text-foreground">
+                {user?.name}
+              </span>
+            </div>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={logout}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl"
             >
               <LogOut className="w-4 h-4" />
             </Button>
@@ -141,56 +146,59 @@ export default function Course() {
       </header>
 
       {/* Course Header */}
-      <div className="border-b bg-card">
-        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <div className={`inline-block px-3 py-1.5 rounded-full text-xs font-semibold text-primary-foreground bg-gradient-to-r ${course.color} mb-3 shadow-sm`}>
+      <div className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-primary-foreground bg-gradient-to-r ${course.color} mb-4 shadow-sm`}>
+            <span className="w-2 h-2 rounded-full bg-primary-foreground/30 animate-pulse" />
             {course.semester}
           </div>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground leading-tight">
-            {course.code} - {course.name}
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-foreground leading-tight">
+            <span className="text-gradient">{course.code}</span>
+            <span className="text-muted-foreground mx-3">—</span>
+            {course.name}
           </h1>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           {/* Tab Navigation Card */}
-          <div className="bg-card rounded-2xl shadow-card p-2 mb-6 inline-block">
-            <TabsList className="grid grid-cols-4 h-11 p-1 bg-muted/40 rounded-xl gap-1">
+          <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-2 mb-8 inline-block">
+            <TabsList className="grid grid-cols-4 h-12 p-1 bg-muted/30 rounded-xl gap-1">
               <TabsTrigger 
                 value="discussion" 
-                className="font-semibold rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 px-4"
               >
                 Discussion
               </TabsTrigger>
               <TabsTrigger 
                 value="chat" 
-                className="font-semibold rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all flex items-center gap-1.5 px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 flex items-center gap-1.5 px-4"
               >
                 <MessagesSquare className="w-4 h-4" />
                 Chat
               </TabsTrigger>
               <TabsTrigger 
                 value="saved" 
-                className="font-semibold rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all flex items-center gap-1.5 px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 flex items-center gap-1.5 px-4"
               >
                 <Star className="w-4 h-4" />
                 <span className="hidden sm:inline">Saved</span> ({savedPostIds.size})
               </TabsTrigger>
               <TabsTrigger 
                 value="resources" 
-                className="font-semibold rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 px-4"
               >
                 Resources
               </TabsTrigger>
             </TabsList>
           </div>
           
-          <TabsContent value="discussion" className="mt-0">
+          <TabsContent value="discussion" className="mt-0 animate-fade-in">
             <div className="grid gap-6 max-w-3xl">
               {/* Search Zone */}
-              <div className="bg-card rounded-2xl shadow-card p-4 sm:p-5">
+              <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 card-hover">
                 <div className="flex items-center gap-3 mb-3">
                   <Search className="w-5 h-5 text-primary" />
                   <h3 className="font-display font-semibold text-foreground">Search Posts</h3>
@@ -221,56 +229,63 @@ export default function Course() {
               </div>
 
               {/* Create Post Zone */}
-              <div className="bg-card rounded-2xl shadow-card p-4 sm:p-5">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Send className="w-4 h-4 text-primary" />
+              <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 card-hover">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-sm">
+                    <Send className="w-5 h-5 text-primary-foreground" />
                   </div>
-                  <h3 className="font-display font-semibold text-foreground">Start a Discussion</h3>
+                  <div>
+                    <h3 className="font-display font-semibold text-foreground">Start a Discussion</h3>
+                    <p className="text-xs text-muted-foreground">Share with your classmates</p>
+                  </div>
                 </div>
                 <CreatePost courseId={courseId} onPost={handleNewPost} />
               </div>
               
               {/* Posts Feed Zone */}
-              <div className="bg-card rounded-2xl shadow-card p-4 sm:p-5">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <MessageCircle className="w-4 h-4 text-accent" />
+              <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-sm">
+                    <MessageCircle className="w-5 h-5 text-accent-foreground" />
                   </div>
-                  <h3 className="font-display font-semibold text-foreground">Discussion Feed</h3>
-                  <span className="text-sm text-muted-foreground ml-auto">
+                  <div className="flex-1">
+                    <h3 className="font-display font-semibold text-foreground">Discussion Feed</h3>
+                    <p className="text-xs text-muted-foreground">Recent conversations</p>
+                  </div>
+                  <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
                     {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''}
                   </span>
                 </div>
                 
                 <div className="space-y-4">
                   {filteredPosts.length === 0 ? (
-                    <div className="text-center py-12 text-muted-foreground">
-                      <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
+                    <div className="text-center py-14 text-muted-foreground">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
                         {searchQuery ? (
-                          <Search className="w-6 h-6 opacity-50" />
+                          <Search className="w-7 h-7 opacity-50" />
                         ) : (
-                          <MessageCircle className="w-6 h-6 opacity-50" />
+                          <MessageCircle className="w-7 h-7 opacity-50" />
                         )}
                       </div>
-                      <p className="font-medium">
+                      <p className="font-semibold text-foreground">
                         {searchQuery ? 'No matching posts' : 'No posts yet'}
                       </p>
-                      <p className="text-sm mt-1 opacity-75">
+                      <p className="text-sm mt-1">
                         {searchQuery 
                           ? `Try a different search term`
                           : 'Be the first to start a discussion!'}
                       </p>
                     </div>
                   ) : (
-                    filteredPosts.map((post) => (
-                      <PostCard 
-                        key={post.id} 
-                        post={post} 
-                        courseId={courseId} 
-                        isSaved={savedPostIds.has(post.id)}
-                        onToggleSave={handleToggleSave}
-                      />
+                    filteredPosts.map((post, index) => (
+                      <div key={post.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                        <PostCard 
+                          post={post} 
+                          courseId={courseId} 
+                          isSaved={savedPostIds.has(post.id)}
+                          onToggleSave={handleToggleSave}
+                        />
+                      </div>
                     ))
                   )}
                 </div>
@@ -278,11 +293,11 @@ export default function Course() {
             </div>
           </TabsContent>
 
-          <TabsContent value="chat" className="mt-0">
-            <div className="bg-card rounded-2xl shadow-card p-4 sm:p-5 max-w-3xl">
+          <TabsContent value="chat" className="mt-0 animate-fade-in">
+            <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <MessagesSquare className="w-4 h-4 text-primary" />
+                <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-sm">
+                  <MessagesSquare className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div>
                   <h3 className="font-display font-semibold text-foreground">Course Chat</h3>
@@ -293,49 +308,53 @@ export default function Course() {
             </div>
           </TabsContent>
 
-          <TabsContent value="saved" className="mt-0">
-            <div className="bg-card rounded-2xl shadow-card p-4 sm:p-5 max-w-3xl">
+          <TabsContent value="saved" className="mt-0 animate-fade-in">
+            <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Star className="w-4 h-4 text-primary" />
+                <div className="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center shadow-sm">
+                  <Star className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="font-display font-semibold text-foreground">Saved Posts</h3>
-                  <p className="text-xs text-muted-foreground">{savedPostIds.size} saved for later</p>
+                  <p className="text-xs text-muted-foreground">Your bookmarked discussions</p>
                 </div>
+                <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+                  {savedPostIds.size} saved
+                </span>
               </div>
               
               <div className="space-y-4">
                 {savedPostIds.size === 0 ? (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
-                      <Star className="w-6 h-6 opacity-50" />
+                  <div className="text-center py-14 text-muted-foreground">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
+                      <Star className="w-7 h-7 opacity-50" />
                     </div>
-                    <p className="font-medium">No saved posts</p>
-                    <p className="text-sm mt-1 opacity-75">Star posts to save them here!</p>
+                    <p className="font-semibold text-foreground">No saved posts</p>
+                    <p className="text-sm mt-1">Star posts to save them here!</p>
                   </div>
                 ) : (
                   sortedPosts
                     .filter(post => savedPostIds.has(post.id))
-                    .map((post) => (
-                      <PostCard 
-                        key={post.id} 
-                        post={post} 
-                        courseId={courseId}
-                        isSaved={true}
-                        onToggleSave={handleToggleSave}
-                      />
+                    .map((post, index) => (
+                      <div key={post.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                        <PostCard 
+                          post={post} 
+                          courseId={courseId}
+                          isSaved={true}
+                          onToggleSave={handleToggleSave}
+                        />
+                      </div>
                     ))
                 )}
               </div>
             </div>
           </TabsContent>
           
-          <TabsContent value="resources" className="mt-0">
-            <div className="bg-card rounded-2xl shadow-card p-4 sm:p-5 max-w-3xl">
+          <TabsContent value="resources" className="mt-0 animate-fade-in">
+            <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                  <BookOpen className="w-4 h-4 text-accent" />
+                <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-sm">
+                  <BookOpen className="w-5 h-5 text-accent-foreground" />
                 </div>
                 <div>
                   <h3 className="font-display font-semibold text-foreground">Shared Resources</h3>
