@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Send, MessageCircle, User } from 'lucide-react';
+import { Send, MessageCircle, User, Search, X } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface ChatMessage {
@@ -29,6 +29,7 @@ export default function ChatTab({ courseId }: ChatTabProps) {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -147,8 +148,18 @@ export default function ChatTab({ courseId }: ChatTabProps) {
     return format(date, 'MMM d, yyyy');
   };
 
-  // Group messages by date
-  const groupedMessages = messages.reduce((groups, message) => {
+  // Filter messages by search query
+  const filteredMessages = messages.filter((message) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      message.content.toLowerCase().includes(query) ||
+      (!message.is_anonymous && message.author_name.toLowerCase().includes(query))
+    );
+  });
+
+  // Group filtered messages by date
+  const groupedMessages = filteredMessages.reduce((groups, message) => {
     const date = formatDate(message.created_at);
     if (!groups[date]) {
       groups[date] = [];
@@ -166,19 +177,53 @@ export default function ChatTab({ courseId }: ChatTabProps) {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-320px)] max-w-2xl">
+    <div className="flex flex-col h-[calc(100vh-380px)]">
+      {/* Search Bar */}
+      <div className="relative mb-4">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Input
+          type="text"
+          placeholder="Search messages..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10 pr-10 h-10 rounded-xl bg-muted/30 border-border/50"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+
+      {searchQuery && (
+        <p className="text-sm text-muted-foreground mb-3">
+          {filteredMessages.length} result{filteredMessages.length !== 1 ? 's' : ''} for "{searchQuery}"
+        </p>
+      )}
+
       {/* Messages Container */}
       <div
         ref={containerRef}
         className="flex-1 overflow-y-auto space-y-4 pr-2 pb-4"
       >
-        {messages.length === 0 ? (
-          <div className="text-center py-16 text-muted-foreground">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
-              <MessageCircle className="w-8 h-8 opacity-50" />
+        {filteredMessages.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
+              {searchQuery ? (
+                <Search className="w-6 h-6 opacity-50" />
+              ) : (
+                <MessageCircle className="w-6 h-6 opacity-50" />
+              )}
             </div>
-            <p className="font-medium">No messages yet</p>
-            <p className="text-sm mt-1 opacity-75">Start the conversation!</p>
+            <p className="font-medium">
+              {searchQuery ? 'No matching messages' : 'No messages yet'}
+            </p>
+            <p className="text-sm mt-1 opacity-75">
+              {searchQuery ? 'Try a different search term' : 'Start the conversation!'}
+            </p>
           </div>
         ) : (
           Object.entries(groupedMessages).map(([date, dateMessages]) => (
