@@ -31,23 +31,26 @@ export default function Index() {
       {/* Hero Section */}
       <main className="relative container mx-auto px-4 pt-8 pb-24">
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
-          {/* Large centered logo */}
-          <div className="relative inline-block mb-8">
-            <img 
-              src={logo} 
-              alt="ClassNote" 
-              className="h-48 sm:h-64 lg:h-80 w-auto mx-auto animate-float"
-              style={{ mixBlendMode: 'multiply' }}
-            />
-          </div>
-          
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-8 shadow-sm border border-primary/20">
             <Sparkles className="w-4 h-4" />
             Where learning meets conversation
           </div>
           
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-extrabold text-foreground mb-6 leading-[1.1] tracking-tight">
-            Discuss, learn, and succeed{' '}
+            Discuss, learn, and succeed
+          </h1>
+          
+          {/* Large centered logo */}
+          <div className="relative inline-block my-6">
+            <img 
+              src={logo} 
+              alt="ClassNote" 
+              className="h-32 sm:h-40 lg:h-48 w-auto mx-auto animate-float"
+              style={{ mixBlendMode: 'multiply' }}
+            />
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-extrabold text-foreground mb-6 leading-[1.1] tracking-tight">
             <span className="text-gradient-animated">
               together
             </span>
