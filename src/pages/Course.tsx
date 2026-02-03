@@ -160,73 +160,83 @@ export default function Course() {
         </div>
       </div>
 
+      {/* Global Search Bar */}
+      <div className="container mx-auto px-4 sm:px-6 pt-6">
+        <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-4 max-w-3xl">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search posts, chats, resources..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 pr-12 h-12 rounded-xl bg-muted/30 border-border/50 text-base"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+          {searchQuery && (
+            <p className="text-sm text-muted-foreground mt-3 px-1">
+              Showing results for "<span className="text-foreground font-medium">{searchQuery}</span>"
+            </p>
+          )}
+        </div>
+      </div>
+
       {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          {/* Tab Navigation Card */}
-          <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-2 mb-8 inline-block">
-            <TabsList className="grid grid-cols-4 h-12 p-1 bg-muted/30 rounded-xl gap-1">
+          {/* Tab Navigation - Separated */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
               <TabsTrigger 
                 value="discussion" 
-                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
               >
+                <MessageCircle className="w-4 h-4 mr-2" />
                 Discussion
               </TabsTrigger>
+            </TabsList>
+            
+            <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
               <TabsTrigger 
                 value="chat" 
-                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 flex items-center gap-1.5 px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
               >
-                <MessagesSquare className="w-4 h-4" />
+                <MessagesSquare className="w-4 h-4 mr-2" />
                 Chat
               </TabsTrigger>
+            </TabsList>
+            
+            <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
               <TabsTrigger 
                 value="saved" 
-                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 flex items-center gap-1.5 px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
               >
-                <Star className="w-4 h-4" />
-                <span className="hidden sm:inline">Saved</span> ({savedPostIds.size})
+                <Star className="w-4 h-4 mr-2" />
+                Saved ({savedPostIds.size})
               </TabsTrigger>
+            </TabsList>
+            
+            <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
               <TabsTrigger 
                 value="resources" 
-                className="font-semibold rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary transition-all duration-200 px-4"
+                className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
               >
+                <BookOpen className="w-4 h-4 mr-2" />
                 Resources
               </TabsTrigger>
             </TabsList>
           </div>
           
-          <TabsContent value="discussion" className="mt-0 animate-fade-in">
+          <TabsContent value="discussion" className="mt-0 tab-content-enter">
             <div className="grid gap-6 max-w-3xl">
-              {/* Search Zone */}
-              <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 card-hover">
-                <div className="flex items-center gap-3 mb-3">
-                  <Search className="w-5 h-5 text-primary" />
-                  <h3 className="font-display font-semibold text-foreground">Search Posts</h3>
-                </div>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder="Find past discussions..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-10 h-11 rounded-xl bg-muted/30 border-border/50"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-                {searchQuery && (
-                  <p className="text-sm text-muted-foreground mt-3">
-                    {filteredPosts.length} result{filteredPosts.length !== 1 ? 's' : ''} for "{searchQuery}"
-                  </p>
-                )}
-              </div>
 
               {/* Create Post Zone */}
               <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 card-hover">
@@ -293,22 +303,22 @@ export default function Course() {
             </div>
           </TabsContent>
 
-          <TabsContent value="chat" className="mt-0 animate-fade-in">
+          <TabsContent value="chat" className="mt-0 tab-content-enter">
             <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-sm">
-                  <MessagesSquare className="w-5 h-5 text-primary-foreground" />
+                <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-sm">
+                  <MessagesSquare className="w-5 h-5 text-accent-foreground" />
                 </div>
                 <div>
                   <h3 className="font-display font-semibold text-foreground">Course Chat</h3>
                   <p className="text-xs text-muted-foreground">Quick messages with your classmates</p>
                 </div>
               </div>
-              <ChatTab courseId={courseId} />
+              <ChatTab courseId={courseId} searchQuery={searchQuery} />
             </div>
           </TabsContent>
 
-          <TabsContent value="saved" className="mt-0 animate-fade-in">
+          <TabsContent value="saved" className="mt-0 tab-content-enter">
             <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center shadow-sm">
@@ -350,7 +360,7 @@ export default function Course() {
             </div>
           </TabsContent>
           
-          <TabsContent value="resources" className="mt-0 animate-fade-in">
+          <TabsContent value="resources" className="mt-0 tab-content-enter">
             <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-sm">
