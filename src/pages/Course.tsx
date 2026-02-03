@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse, getCoursePosts, getCourseResources, Post, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, LogOut, MessageCircle, Star } from 'lucide-react';
+import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PostCard from '@/components/PostCard';
 import CreatePost from '@/components/CreatePost';
 import ResourceList from '@/components/ResourceList';
+import ChatTab from '@/components/ChatTab';
 import logo from '@/assets/logo.png';
 
 export default function Course() {
@@ -142,7 +143,7 @@ export default function Course() {
       {/* Main Content */}
       <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-3 mb-6 sm:mb-8 h-12 p-1 bg-muted/60 rounded-xl">
+          <TabsList className="grid w-full max-w-lg grid-cols-4 mb-6 sm:mb-8 h-12 p-1 bg-muted/60 rounded-xl">
             <TabsTrigger 
               value="discussion" 
               className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all"
@@ -150,11 +151,18 @@ export default function Course() {
               Discussion
             </TabsTrigger>
             <TabsTrigger 
+              value="chat" 
+              className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all flex items-center gap-1.5"
+            >
+              <MessagesSquare className="w-4 h-4" />
+              Chat
+            </TabsTrigger>
+            <TabsTrigger 
               value="saved" 
               className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all flex items-center gap-1.5"
             >
               <Star className="w-4 h-4" />
-              Saved ({savedPostIds.size})
+              ({savedPostIds.size})
             </TabsTrigger>
             <TabsTrigger 
               value="resources" 
@@ -192,6 +200,10 @@ export default function Course() {
                 )}
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="chat" className="mt-0">
+            <ChatTab courseId={courseId} />
           </TabsContent>
 
           <TabsContent value="saved" className="mt-0">
