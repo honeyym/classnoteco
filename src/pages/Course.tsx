@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { getCourse, getCoursePosts, getCourseResources, Post, Resource } from '@/data/mockData';
+import { getCourse, getCoursePosts, getCourseResources, Post, Resource, savedPostsPerCourse } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,12 +19,10 @@ export default function Course() {
   const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
   const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
   
-  // Pre-populate saved posts for demo (especially for ECON 251)
+  // Pre-populate saved posts for demo from mockData
   const [savedPostIds, setSavedPostIds] = useState<Set<string>>(() => {
-    if (courseId === 'econ251') {
-      return new Set(['post22', 'post23', 'econ-post8', 'econ-post11']);
-    }
-    return new Set();
+    const savedForCourse = savedPostsPerCourse[courseId || ''] || [];
+    return new Set(savedForCourse);
   });
   const [searchQuery, setSearchQuery] = useState('');
 
