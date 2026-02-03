@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, Users, Sparkles, ArrowRight, BookOpen, Zap, Shield, Heart } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo-transparent.png';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Index() {

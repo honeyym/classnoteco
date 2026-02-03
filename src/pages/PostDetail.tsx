@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo-transparent.png';
 
 export default function PostDetail() {
   const { courseId, postId } = useParams<{ courseId: string; postId: string }>();
