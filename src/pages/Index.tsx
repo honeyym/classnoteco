@@ -162,7 +162,7 @@ export default function Index() {
       <footer className="relative container mx-auto px-4 py-10 border-t border-border/50">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="ClassNote" className="h-12 w-auto" />
+            <img src={logo} alt="ClassNote" className="h-12 w-auto dark:invert dark:hue-rotate-180" style={{ mixBlendMode: 'multiply' }} />
           </div>
           <p className="text-sm text-muted-foreground">
             © 2026 ClassNote. Made for students, by students.
