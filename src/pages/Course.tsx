@@ -107,7 +107,7 @@ export default function Course() {
               <ArrowLeft className="w-5 h-5 text-muted-foreground" />
             </Link>
             <Link to="/dashboard" className="flex items-center gap-2">
-              <img src={logo} alt="ClassNote" className="h-10 w-auto" />
+              <img src={logo} alt="ClassNote" className="h-20 w-auto" style={{ mixBlendMode: 'multiply' }} />
             </Link>
           </div>
           
