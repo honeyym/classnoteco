@@ -71,8 +71,7 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
   };
 
   return (
-    <Card className="bg-card shadow-card border-0 rounded-xl overflow-hidden">
-      <CardContent className="p-5 sm:p-6">
+    <div className="w-full">
         <form onSubmit={handleSubmit} className="space-y-4">
           <Textarea
             placeholder="What's on your mind?"
@@ -116,7 +115,6 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
             </Button>
           </div>
         </form>
-      </CardContent>
-    </Card>
+    </div>
   );
 }
