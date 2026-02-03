@@ -18,7 +18,14 @@ export default function Course() {
   const [activeTab, setActiveTab] = useState('discussion');
   const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
   const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
-  const [savedPostIds, setSavedPostIds] = useState<Set<string>>(new Set());
+  
+  // Pre-populate saved posts for demo (especially for ECON 251)
+  const [savedPostIds, setSavedPostIds] = useState<Set<string>>(() => {
+    if (courseId === 'econ251') {
+      return new Set(['post22', 'post23', 'econ-post8', 'econ-post11']);
+    }
+    return new Set();
+  });
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleToggleSave = (postId: string) => {
