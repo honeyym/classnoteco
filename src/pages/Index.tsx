@@ -36,7 +36,7 @@ export default function Index() {
             <img 
               src={logo} 
               alt="ClassNote" 
-              className="h-48 sm:h-64 lg:h-80 w-auto animate-float"
+              className="h-48 sm:h-64 lg:h-80 w-auto animate-float dark:invert dark:hue-rotate-180"
             />
           </div>
           
