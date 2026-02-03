@@ -165,7 +165,7 @@ export default function Index() {
             <img src={logo} alt="ClassNote" className="h-12 w-auto" />
           </div>
           <p className="text-sm text-muted-foreground">
-            © 2024 ClassNote. Made for students, by students.
+            © 2026 ClassNote. Made for students, by students.
           </p>
         </div>
       </footer>
