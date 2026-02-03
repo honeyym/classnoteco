@@ -238,18 +238,18 @@ export default function ChatTab({ courseId }: ChatTabProps) {
               </div>
 
               {/* Messages for this date */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {dateMessages.map((message) => (
                   <div
                     key={message.id}
-                    className="group flex gap-3 hover:bg-muted/30 rounded-lg p-2 -mx-2 transition-colors"
+                    className="group flex gap-3 hover:bg-primary/5 rounded-xl p-3 -mx-2 transition-all duration-200"
                   >
                     {/* Avatar */}
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 via-accent/15 to-primary/10 flex items-center justify-center flex-shrink-0 border border-primary/20">
                       {message.is_anonymous ? (
                         <User className="w-4 h-4 text-muted-foreground" />
                       ) : (
-                        <span className="text-sm font-semibold text-primary">
+                        <span className="text-sm font-bold text-primary">
                           {message.author_name.charAt(0).toUpperCase()}
                         </span>
                       )}
@@ -265,7 +265,7 @@ export default function ChatTab({ courseId }: ChatTabProps) {
                           {formatTime(message.created_at)}
                         </span>
                       </div>
-                      <p className="text-sm text-foreground/90 break-words">
+                      <p className="text-sm text-foreground/90 break-words mt-0.5 leading-relaxed">
                         {message.content}
                       </p>
                     </div>
@@ -279,33 +279,33 @@ export default function ChatTab({ courseId }: ChatTabProps) {
       </div>
 
       {/* Message Input */}
-      <div className="border-t pt-4 mt-4">
-        <form onSubmit={handleSendMessage} className="space-y-3">
-          <div className="flex gap-2">
+      <div className="border-t border-border/40 pt-5 mt-4">
+        <form onSubmit={handleSendMessage} className="space-y-4">
+          <div className="flex gap-3">
             <Input
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1"
+              className="flex-1 h-11 rounded-xl bg-muted/30 border-border/50 focus-visible:ring-primary/30"
               disabled={isSending}
             />
             <Button 
               type="submit" 
               disabled={!newMessage.trim() || isSending}
-              className="gradient-primary"
+              className="gradient-primary h-11 px-5 rounded-xl shadow-sm hover:shadow-glow transition-all duration-200"
             >
               <Send className="w-4 h-4" />
             </Button>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 px-1">
             <Switch
               id="anonymous-chat"
               checked={isAnonymous}
               onCheckedChange={setIsAnonymous}
             />
-            <Label htmlFor="anonymous-chat" className="text-sm text-muted-foreground cursor-pointer">
-              Post anonymously
+            <Label htmlFor="anonymous-chat" className="text-sm text-muted-foreground cursor-pointer font-medium">
+              Post anonymously 🎭
             </Label>
           </div>
         </form>
