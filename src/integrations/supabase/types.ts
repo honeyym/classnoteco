@@ -14,7 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      chat_messages: {
+        Row: {
+          author_name: string
+          content: string
+          course_id: string
+          created_at: string
+          id: string
+          is_anonymous: boolean
+          user_id: string
+        }
+        Insert: {
+          author_name: string
+          content: string
+          course_id: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          user_id: string
+        }
+        Update: {
+          author_name?: string
+          content?: string
+          course_id?: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
