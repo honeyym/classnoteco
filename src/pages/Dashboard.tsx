@@ -12,7 +12,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-50 border-b bg-card">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2">
             <img src={logo} alt="ClassNote" className="h-24 w-auto" style={{ mixBlendMode: 'multiply' }} />
