@@ -38,6 +38,7 @@ export default function Course() {
       createdAt: new Date(),
       likes: 0,
       dislikes: 0,
+      hearts: 0,
       replyCount: 0,
     };
     setPosts(prev => [newPost, ...prev]);

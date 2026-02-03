@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Post, formatTimeAgo } from '@/data/mockData';
-import { MessageCircle, ThumbsUp, ThumbsDown, Star } from 'lucide-react';
+import { MessageCircle, ThumbsUp, ThumbsDown, Heart, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface PostCardProps {
@@ -11,8 +11,10 @@ interface PostCardProps {
 
 export default function PostCard({ post, courseId }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
+  const [hearts, setHearts] = useState(post.hearts);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
+  const [isHearted, setIsHearted] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   const handleLike = (e: React.MouseEvent) => {
@@ -41,6 +43,18 @@ export default function PostCard({ post, courseId }: PostCardProps) {
         setLikes(prev => prev - 1);
         setIsLiked(false);
       }
+    }
+  };
+
+  const handleHeart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isHearted) {
+      setHearts(prev => prev - 1);
+      setIsHearted(false);
+    } else {
+      setHearts(prev => prev + 1);
+      setIsHearted(true);
     }
   };
 
@@ -109,6 +123,17 @@ export default function PostCard({ post, courseId }: PostCardProps) {
               aria-label="Dislike"
             >
               <ThumbsDown className={`w-4 h-4 ${isDisliked ? 'fill-current' : ''}`} />
+            </button>
+            <button 
+              onClick={handleHeart}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all duration-200 active:scale-95 text-sm font-medium ${
+                isHearted 
+                  ? 'text-red-500 bg-red-500/10' 
+                  : 'text-muted-foreground hover:text-red-500 hover:bg-red-500/10'
+              }`}
+            >
+              <Heart className={`w-4 h-4 ${isHearted ? 'fill-current' : ''}`} />
+              <span>{hearts}</span>
             </button>
             <span className="flex items-center gap-1.5 ml-auto text-sm text-muted-foreground group-hover:text-primary transition-colors font-medium">
               <MessageCircle className="w-4 h-4" />
