@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Loader2 } from 'lucide-react';
+import { Loader2, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import logo from '@/assets/logo.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -35,25 +36,37 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen gradient-subtle flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md animate-fade-in">
+    <div className="min-h-screen gradient-subtle flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-40 pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-gradient-to-br from-primary/15 via-accent/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-[400px] h-[400px] bg-gradient-to-tl from-accent/15 via-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative w-full max-w-md animate-fade-in">
         {/* Logo */}
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-glow">
-            <BookOpen className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <h1 className="text-2xl font-display font-bold text-foreground">ClassNote</h1>
+        <div className="flex items-center justify-center mb-8">
+          <Link to="/">
+            <img 
+              src={logo} 
+              alt="ClassNote" 
+              className="h-20 w-auto"
+              style={{ mixBlendMode: 'multiply' }}
+            />
+          </Link>
         </div>
 
-        <Card className="shadow-elevated border-0">
-          <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-2xl font-display">Welcome back</CardTitle>
-            <CardDescription>Enter your credentials to access your courses</CardDescription>
+        <Card className="shadow-elevated border-0 bg-card/95 backdrop-blur-sm rounded-3xl overflow-hidden">
+          <div className="h-1.5 bg-gradient-to-r from-primary via-accent to-primary" />
+          
+          <CardHeader className="space-y-2 text-center pt-8 pb-2">
+            <CardTitle className="text-3xl font-display font-bold tracking-tight">Welcome back</CardTitle>
+            <CardDescription className="text-base">Enter your credentials to access your courses</CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          
+          <CardContent className="px-8 pt-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -61,11 +74,11 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="h-11"
+                  className="h-12 rounded-xl bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -73,12 +86,12 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-11"
+                  className="h-12 rounded-xl bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all"
                 />
               </div>
               <Button 
                 type="submit" 
-                className="w-full h-11 gradient-primary hover:opacity-90 transition-opacity"
+                className="w-full h-12 gradient-primary hover:opacity-90 transition-all duration-300 rounded-xl font-semibold text-base btn-glow group mt-2"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -87,22 +100,26 @@ export default function Login() {
                     Signing in...
                   </>
                 ) : (
-                  'Sign in'
+                  <>
+                    Sign in
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </>
                 )}
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="flex flex-col gap-4">
+          
+          <CardFooter className="flex flex-col gap-4 px-8 pb-8">
             <p className="text-sm text-muted-foreground text-center">
               Don't have an account?{' '}
-              <Link to="/signup" className="text-primary hover:underline font-medium">
+              <Link to="/signup" className="text-primary hover:text-primary/80 font-semibold transition-colors">
                 Sign up
               </Link>
             </p>
           </CardFooter>
         </Card>
 
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <p className="text-center text-sm text-muted-foreground mt-8">
           Where students connect and learn together
         </p>
       </div>
