@@ -4,8 +4,8 @@ import { courses } from '@/data/mockData';
 import { LogOut, MessageCircle, Sparkles, TrendingUp, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import logo from '@/assets/logo-transparent.png';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -22,11 +22,7 @@ export default function Dashboard() {
       <header className="sticky top-0 z-50 border-b border-border/50 bg-card shadow-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2">
-            <img
-              src={logo}
-              alt="ClassNote"
-              className="h-14 w-auto bg-transparent mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
-            />
+            <ClassNoteLogo size="md" />
           </Link>
           
           <div className="flex items-center gap-3">

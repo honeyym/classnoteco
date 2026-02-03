@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, Users, Sparkles, ArrowRight, BookOpen, Zap, Shield, Heart } from 'lucide-react';
-import logo from '@/assets/logo-transparent.png';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function Index() {
   return (
@@ -33,11 +33,7 @@ export default function Index() {
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
           {/* Large centered logo */}
           <div className="flex justify-center mb-8">
-            <img 
-              src={logo} 
-              alt="ClassNote" 
-              className="h-48 sm:h-64 lg:h-80 w-auto animate-float bg-transparent mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
-            />
+            <ClassNoteLogo size="hero" layout="stacked" className="animate-float" />
           </div>
           
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-8 shadow-sm border border-primary/20">
@@ -162,11 +158,7 @@ export default function Index() {
       <footer className="relative container mx-auto px-4 py-10 border-t border-border/50">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img
-              src={logo}
-              alt="ClassNote"
-              className="h-12 w-auto bg-transparent mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
-            />
+            <ClassNoteLogo size="sm" />
           </div>
           <p className="text-sm text-muted-foreground">
             © 2026 ClassNote. Made for students, by students.
