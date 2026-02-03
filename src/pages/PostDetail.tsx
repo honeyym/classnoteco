@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getPost, getPostReplies, getCourse, formatTimeAgo, Post, Reply } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, LogOut, ThumbsUp, ThumbsDown, Star, Send } from 'lucide-react';
+import { ArrowLeft, LogOut, ThumbsUp, ThumbsDown, Heart, Star, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,10 +21,11 @@ export default function PostDetail() {
   const [replies, setReplies] = useState<Reply[]>(() => getPostReplies(postId || ''));
   const [postReactions, setPostReactions] = useState(() => {
     const post = getPost(postId || '');
-    return { likes: post?.likes || 0 };
+    return { likes: post?.likes || 0, hearts: post?.hearts || 0 };
   });
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
+  const [isHearted, setIsHearted] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   if (!courseId || !postId) {
@@ -97,6 +98,16 @@ export default function PostDetail() {
         setPostReactions(prev => ({ ...prev, likes: prev.likes - 1 }));
         setIsLiked(false);
       }
+    }
+  };
+
+  const handleHeart = () => {
+    if (isHearted) {
+      setPostReactions(prev => ({ ...prev, hearts: prev.hearts - 1 }));
+      setIsHearted(false);
+    } else {
+      setPostReactions(prev => ({ ...prev, hearts: prev.hearts + 1 }));
+      setIsHearted(true);
     }
   };
 
@@ -186,6 +197,17 @@ export default function PostDetail() {
                   aria-label="Dislike"
                 >
                   <ThumbsDown className={`w-5 h-5 ${isDisliked ? 'fill-current' : ''}`} />
+                </button>
+                <button 
+                  onClick={handleHeart}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200 active:scale-95 font-medium ${
+                    isHearted 
+                      ? 'text-red-500 bg-red-500/10' 
+                      : 'text-muted-foreground hover:text-red-500 hover:bg-red-500/10'
+                  }`}
+                >
+                  <Heart className={`w-5 h-5 ${isHearted ? 'fill-current' : ''}`} />
+                  <span>{postReactions.hearts}</span>
                 </button>
                 <button 
                   onClick={handleSave}
