@@ -4,7 +4,7 @@ import { courses } from '@/data/mockData';
 import { LogOut, MessageCircle, Sparkles, TrendingUp, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo-transparent.png';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Dashboard() {
