@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse, getCoursePosts, getCourseResources, Post, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, LogOut, MessageCircle } from 'lucide-react';
+import { ArrowLeft, LogOut, MessageCircle, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PostCard from '@/components/PostCard';
@@ -16,6 +16,19 @@ export default function Course() {
   const [activeTab, setActiveTab] = useState('discussion');
   const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
   const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
+  const [savedPostIds, setSavedPostIds] = useState<Set<string>>(new Set());
+
+  const handleToggleSave = (postId: string) => {
+    setSavedPostIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(postId)) {
+        newSet.delete(postId);
+      } else {
+        newSet.add(postId);
+      }
+      return newSet;
+    });
+  };
 
   if (!courseId) {
     return <Navigate to="/dashboard" replace />;
@@ -129,7 +142,7 @@ export default function Course() {
       {/* Main Content */}
       <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-sm grid-cols-2 mb-6 sm:mb-8 h-12 p-1 bg-muted/60 rounded-xl">
+          <TabsList className="grid w-full max-w-md grid-cols-3 mb-6 sm:mb-8 h-12 p-1 bg-muted/60 rounded-xl">
             <TabsTrigger 
               value="discussion" 
               className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all"
@@ -137,10 +150,17 @@ export default function Course() {
               Discussion
             </TabsTrigger>
             <TabsTrigger 
+              value="saved" 
+              className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all flex items-center gap-1.5"
+            >
+              <Star className="w-4 h-4" />
+              Saved ({savedPostIds.size})
+            </TabsTrigger>
+            <TabsTrigger 
               value="resources" 
               className="font-semibold rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm transition-all"
             >
-              Resources ({resources.length})
+              Resources
             </TabsTrigger>
           </TabsList>
           
@@ -161,10 +181,42 @@ export default function Course() {
                   </div>
                 ) : (
                   sortedPosts.map((post) => (
-                    <PostCard key={post.id} post={post} courseId={courseId} />
+                    <PostCard 
+                      key={post.id} 
+                      post={post} 
+                      courseId={courseId} 
+                      isSaved={savedPostIds.has(post.id)}
+                      onToggleSave={handleToggleSave}
+                    />
                   ))
                 )}
               </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="saved" className="mt-0">
+            <div className="max-w-2xl space-y-4 sm:space-y-5">
+              {savedPostIds.size === 0 ? (
+                <div className="text-center py-16 text-muted-foreground">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
+                    <Star className="w-8 h-8 opacity-50" />
+                  </div>
+                  <p className="font-medium">No saved posts</p>
+                  <p className="text-sm mt-1 opacity-75">Star posts to save them here for later!</p>
+                </div>
+              ) : (
+                sortedPosts
+                  .filter(post => savedPostIds.has(post.id))
+                  .map((post) => (
+                    <PostCard 
+                      key={post.id} 
+                      post={post} 
+                      courseId={courseId}
+                      isSaved={true}
+                      onToggleSave={handleToggleSave}
+                    />
+                  ))
+              )}
             </div>
           </TabsContent>
           

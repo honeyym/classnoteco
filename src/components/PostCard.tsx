@@ -7,15 +7,16 @@ import { Card, CardContent } from '@/components/ui/card';
 interface PostCardProps {
   post: Post;
   courseId: string;
+  isSaved?: boolean;
+  onToggleSave?: (postId: string) => void;
 }
 
-export default function PostCard({ post, courseId }: PostCardProps) {
+export default function PostCard({ post, courseId, isSaved = false, onToggleSave }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
   const [hearts, setHearts] = useState(post.hearts);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isHearted, setIsHearted] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
 
   const handleLike = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -61,7 +62,7 @@ export default function PostCard({ post, courseId }: PostCardProps) {
   const handleSave = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsSaved(prev => !prev);
+    onToggleSave?.(post.id);
   };
 
   return (
