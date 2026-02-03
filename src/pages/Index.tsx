@@ -36,7 +36,7 @@ export default function Index() {
             <img 
               src={logo} 
               alt="ClassNote" 
-              className="h-48 sm:h-64 lg:h-80 w-auto animate-float dark:brightness-0 dark:invert"
+              className="h-48 sm:h-64 lg:h-80 w-auto animate-float"
             />
           </div>
           
@@ -162,7 +162,7 @@ export default function Index() {
       <footer className="relative container mx-auto px-4 py-10 border-t border-border/50">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="ClassNote" className="h-12 w-auto dark:brightness-0 dark:invert" />
+            <img src={logo} alt="ClassNote" className="h-12 w-auto" />
           </div>
           <p className="text-sm text-muted-foreground">
             © 2024 ClassNote. Made for students, by students.
