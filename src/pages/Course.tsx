@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse, getCoursePosts, getCourseResources, Post, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare } from 'lucide-react';
+import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PostCard from '@/components/PostCard';
 import CreatePost from '@/components/CreatePost';
@@ -18,6 +19,7 @@ export default function Course() {
   const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
   const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
   const [savedPostIds, setSavedPostIds] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleToggleSave = (postId: string) => {
     setSavedPostIds(prev => {
@@ -94,6 +96,16 @@ export default function Course() {
 
   // Sort posts newest first
   const sortedPosts = [...posts].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+  // Filter posts by search query
+  const filteredPosts = sortedPosts.filter((post) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      post.content.toLowerCase().includes(query) ||
+      (!post.isAnonymous && post.authorName.toLowerCase().includes(query))
+    );
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -174,29 +186,66 @@ export default function Course() {
           
           <TabsContent value="discussion" className="mt-0">
             <div className="max-w-2xl space-y-5 sm:space-y-6">
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search posts..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
               {/* Create Post */}
               <CreatePost courseId={courseId} onPost={handleNewPost} />
               
               {/* Posts Feed */}
               <div className="space-y-4 sm:space-y-5">
-                {sortedPosts.length === 0 ? (
+                {filteredPosts.length === 0 ? (
                   <div className="text-center py-16 text-muted-foreground">
                     <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
-                      <MessageCircle className="w-8 h-8 opacity-50" />
+                      {searchQuery ? (
+                        <Search className="w-8 h-8 opacity-50" />
+                      ) : (
+                        <MessageCircle className="w-8 h-8 opacity-50" />
+                      )}
                     </div>
-                    <p className="font-medium">No posts yet</p>
-                    <p className="text-sm mt-1 opacity-75">Be the first to start a discussion!</p>
+                    <p className="font-medium">
+                      {searchQuery ? 'No matching posts' : 'No posts yet'}
+                    </p>
+                    <p className="text-sm mt-1 opacity-75">
+                      {searchQuery 
+                        ? `No posts found for "${searchQuery}"`
+                        : 'Be the first to start a discussion!'}
+                    </p>
                   </div>
                 ) : (
-                  sortedPosts.map((post) => (
-                    <PostCard 
-                      key={post.id} 
-                      post={post} 
-                      courseId={courseId} 
-                      isSaved={savedPostIds.has(post.id)}
-                      onToggleSave={handleToggleSave}
-                    />
-                  ))
+                  <>
+                    {searchQuery && (
+                      <p className="text-sm text-muted-foreground">
+                        {filteredPosts.length} result{filteredPosts.length !== 1 ? 's' : ''} for "{searchQuery}"
+                      </p>
+                    )}
+                    {filteredPosts.map((post) => (
+                      <PostCard 
+                        key={post.id} 
+                        post={post} 
+                        courseId={courseId} 
+                        isSaved={savedPostIds.has(post.id)}
+                        onToggleSave={handleToggleSave}
+                      />
+                    ))}
+                  </>
                 )}
               </div>
             </div>
