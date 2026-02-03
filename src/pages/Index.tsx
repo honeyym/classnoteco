@@ -36,7 +36,7 @@ export default function Index() {
             <img 
               src={logo} 
               alt="ClassNote" 
-              className="h-48 sm:h-64 lg:h-80 w-auto animate-float dark:invert dark:hue-rotate-180"
+              className="h-48 sm:h-64 lg:h-80 w-auto animate-float bg-transparent mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
             />
           </div>
           
@@ -162,7 +162,11 @@ export default function Index() {
       <footer className="relative container mx-auto px-4 py-10 border-t border-border/50">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="ClassNote" className="h-12 w-auto dark:invert dark:hue-rotate-180" style={{ mixBlendMode: 'multiply' }} />
+            <img
+              src={logo}
+              alt="ClassNote"
+              className="h-12 w-auto bg-transparent mix-blend-multiply dark:mix-blend-screen dark:invert dark:hue-rotate-180"
+            />
           </div>
           <p className="text-sm text-muted-foreground">
             © 2026 ClassNote. Made for students, by students.
