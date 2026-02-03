@@ -68,7 +68,7 @@ export const courses: Course[] = [
   {
     id: 'psych101',
     code: 'PSYCH 101',
-    name: 'Psychology',
+    name: 'Intro to Psychology',
     semester: 'Spring 2026',
     newMessages: 15,
     color: 'from-pink-500 to-rose-500',
