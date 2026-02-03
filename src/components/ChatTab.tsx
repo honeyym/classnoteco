@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Send, MessageCircle, User, Search, X } from 'lucide-react';
+import { Send, MessageCircle, User } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface ChatMessage {
@@ -20,16 +20,16 @@ interface ChatMessage {
 
 interface ChatTabProps {
   courseId: string;
+  searchQuery?: string;
 }
 
-export default function ChatTab({ courseId }: ChatTabProps) {
+export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: ChatTabProps) {
   const { user } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -148,7 +148,8 @@ export default function ChatTab({ courseId }: ChatTabProps) {
     return format(date, 'MMM d, yyyy');
   };
 
-  // Filter messages by search query
+  // Filter messages by search query (use external search query from parent)
+  const searchQuery = externalSearchQuery || '';
   const filteredMessages = messages.filter((message) => {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
@@ -178,29 +179,9 @@ export default function ChatTab({ courseId }: ChatTabProps) {
 
   return (
     <div className="flex flex-col h-[calc(100vh-380px)]">
-      {/* Search Bar */}
-      <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          type="text"
-          placeholder="Search messages..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 pr-10 h-10 rounded-xl bg-muted/30 border-border/50"
-        />
-        {searchQuery && (
-          <button
-            onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
-      </div>
-
       {searchQuery && (
-        <p className="text-sm text-muted-foreground mb-3">
-          {filteredMessages.length} result{filteredMessages.length !== 1 ? 's' : ''} for "{searchQuery}"
+        <p className="text-sm text-muted-foreground mb-3 px-1">
+          {filteredMessages.length} chat result{filteredMessages.length !== 1 ? 's' : ''} found
         </p>
       )}
 
@@ -212,11 +193,7 @@ export default function ChatTab({ courseId }: ChatTabProps) {
         {filteredMessages.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
             <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
-              {searchQuery ? (
-                <Search className="w-6 h-6 opacity-50" />
-              ) : (
-                <MessageCircle className="w-6 h-6 opacity-50" />
-              )}
+              <MessageCircle className="w-6 h-6 opacity-50" />
             </div>
             <p className="font-medium">
               {searchQuery ? 'No matching messages' : 'No messages yet'}

@@ -209,4 +209,34 @@
                 var(--gradient-primary) border-box;
     border: 2px solid transparent;
   }
+
+  /* Tab content smooth animations */
+  .tab-content-enter {
+    animation: tabFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes tabFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Pulse animation for soft loading states */
+  .animate-pulse-soft {
+    animation: pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulseSoft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
 }
