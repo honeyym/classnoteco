@@ -37,37 +37,37 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen gradient-subtle flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen gradient-subtle flex flex-col items-center justify-center p-3 relative overflow-hidden">
       {/* Decorative Background */}
       <div className="absolute inset-0 bg-dot-pattern opacity-40 pointer-events-none" />
-      <div className="absolute top-1/4 -right-32 w-[500px] h-[500px] bg-gradient-to-bl from-accent/15 via-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-32 w-[400px] h-[400px] bg-gradient-to-tr from-primary/15 via-accent/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -right-32 w-[400px] h-[400px] bg-gradient-to-bl from-accent/15 via-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-32 w-[300px] h-[300px] bg-gradient-to-tr from-primary/15 via-accent/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative w-full max-w-md animate-fade-in">
+      <div className="relative w-full max-w-sm animate-fade-in">
         {/* Logo */}
-        <div className="flex items-center justify-center mb-8">
+        <div className="flex items-center justify-center mb-5">
           <Link to="/">
-            <ClassNoteLogo size="lg" />
+            <ClassNoteLogo size="md" />
           </Link>
         </div>
 
-        <Card className="shadow-elevated border-0 bg-card/95 backdrop-blur-sm rounded-3xl overflow-hidden">
-          <div className="h-1.5 bg-gradient-to-r from-accent via-primary to-accent" />
+        <Card className="shadow-elevated border-0 bg-card/95 backdrop-blur-sm rounded-2xl overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-accent via-primary to-accent" />
           
-          <CardHeader className="space-y-2 text-center pt-8 pb-2">
-            <div className="flex justify-center mb-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-semibold">
+          <CardHeader className="space-y-1 text-center pt-5 pb-1 px-6">
+            <div className="flex justify-center mb-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold">
                 <Sparkles className="w-3 h-3" />
                 Join free
               </div>
             </div>
-            <CardTitle className="text-3xl font-display font-bold tracking-tight">Create an account</CardTitle>
-            <CardDescription className="text-base">Join your classmates on ClassNote</CardDescription>
+            <CardTitle className="text-2xl font-display font-bold tracking-tight">Create an account</CardTitle>
+            <CardDescription className="text-sm">Join your classmates on ClassNote</CardDescription>
           </CardHeader>
           
-          <CardContent className="px-8 pt-6">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-2">
+          <CardContent className="px-6 pt-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div className="space-y-1.5">
                 <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
                 <Input
                   id="name"
@@ -76,10 +76,10 @@ export default function Signup() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="h-12 rounded-xl bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all"
+                  className="h-10 rounded-lg bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all text-sm"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                 <Input
                   id="email"
@@ -88,10 +88,10 @@ export default function Signup() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="h-12 rounded-xl bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all"
+                  className="h-10 rounded-lg bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all text-sm"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <Input
                   id="password"
@@ -101,12 +101,12 @@ export default function Signup() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="h-12 rounded-xl bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all"
+                  className="h-10 rounded-lg bg-muted/50 border-border/60 focus:border-primary/50 focus:bg-background transition-all text-sm"
                 />
               </div>
               <Button 
                 type="submit" 
-                className="w-full h-12 gradient-primary hover:opacity-90 transition-all duration-300 rounded-xl font-semibold text-base btn-glow group mt-2"
+                className="w-full h-10 gradient-primary hover:opacity-90 transition-all duration-300 rounded-lg font-semibold text-sm btn-glow group mt-1"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -124,7 +124,7 @@ export default function Signup() {
             </form>
           </CardContent>
           
-          <CardFooter className="flex flex-col gap-4 px-8 pb-8">
+          <CardFooter className="flex flex-col gap-3 px-6 pb-5">
             <p className="text-sm text-muted-foreground text-center">
               Already have an account?{' '}
               <Link to="/login" className="text-primary hover:text-primary/80 font-semibold transition-colors">
@@ -134,7 +134,7 @@ export default function Signup() {
           </CardFooter>
         </Card>
 
-        <p className="text-center text-sm text-muted-foreground mt-8">
+        <p className="text-center text-xs text-muted-foreground mt-5">
           By signing up, you agree to learn collaboratively ✨
         </p>
       </div>
