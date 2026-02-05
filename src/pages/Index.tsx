@@ -13,7 +13,7 @@ export default function Index() {
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-accent/8 via-primary/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
-      <header className="relative container mx-auto px-4 py-6">
+      <header className="relative container mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
           <div className="w-20" />
           <div className="flex items-center gap-3">
@@ -29,26 +29,26 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <main className="relative container mx-auto px-4 pt-8 pb-24">
+      <main className="relative container mx-auto px-4 pt-4 pb-16">
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
           {/* Large centered logo */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-6">
             <ClassNoteLogo size="hero" layout="stacked" className="animate-float" />
           </div>
           
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-8 shadow-sm border border-primary/20">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 shadow-sm border border-primary/20">
             <Sparkles className="w-4 h-4" />
             Where learning meets conversation
           </div>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-extrabold text-foreground mb-6 leading-[1.1] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-foreground mb-4 leading-[1.1] tracking-tight">
             Discuss, learn, and succeed{' '}
             <span className="text-gradient-animated">
               together
             </span>
           </h1>
           
-          <p className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
             ClassNote is the discussion platform built for college students. Ask questions, share resources, and connect with classmates – all in one place.
           </p>
           
@@ -56,7 +56,7 @@ export default function Index() {
             <Button 
               asChild 
               size="lg" 
-              className="gradient-primary hover:opacity-90 transition-all duration-300 text-base h-14 px-10 rounded-2xl shadow-md hover:shadow-glow font-semibold btn-glow group"
+              className="gradient-primary hover:opacity-90 transition-all duration-300 text-sm h-12 px-8 rounded-2xl shadow-md hover:shadow-glow font-semibold btn-glow group"
             >
               <Link to="/signup">
                 Get started free
@@ -67,7 +67,7 @@ export default function Index() {
               asChild 
               variant="outline" 
               size="lg"
-              className="text-base h-14 px-10 border-2 border-border/60 hover:border-primary/30 hover:bg-primary/5 rounded-2xl font-semibold transition-all duration-300"
+              className="text-sm h-12 px-8 border-2 border-border/60 hover:border-primary/30 hover:bg-primary/5 rounded-2xl font-semibold transition-all duration-300"
             >
               <Link to="/login">
                 I have an account
@@ -76,13 +76,13 @@ export default function Index() {
           </div>
 
           {/* Social Proof */}
-          <div className="flex items-center justify-center gap-8 mt-12 text-muted-foreground">
+          <div className="flex items-center justify-center gap-6 mt-8 text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 {['from-primary to-accent', 'from-accent to-primary', 'from-primary to-primary'].map((gradient, i) => (
                   <div 
                     key={i}
-                    className={`w-8 h-8 rounded-full bg-gradient-to-br ${gradient} border-2 border-background flex items-center justify-center text-xs font-bold text-white`}
+                    className={`w-7 h-7 rounded-full bg-gradient-to-br ${gradient} border-2 border-background flex items-center justify-center text-xs font-bold text-white`}
                   >
                     {['A', 'B', 'C'][i]}
                   </div>
@@ -98,7 +98,7 @@ export default function Index() {
         </div>
 
         {/* Features */}
-        <div className="grid sm:grid-cols-3 gap-6 mt-28 max-w-5xl mx-auto">
+        <div className="grid sm:grid-cols-3 gap-5 mt-16 max-w-5xl mx-auto">
           {[
             {
               icon: MessageCircle,
@@ -124,14 +124,14 @@ export default function Index() {
           ].map((feature, index) => (
             <div 
               key={index}
-              className="text-center p-8 rounded-3xl bg-card/90 backdrop-blur-sm shadow-card border border-border/30 animate-fade-in card-hover card-interactive group" 
+              className="text-center p-6 rounded-2xl bg-card/90 backdrop-blur-sm shadow-card border border-border/30 animate-fade-in card-hover card-interactive group" 
               style={{ animationDelay: feature.delay }}
             >
-              <div className={`w-16 h-16 rounded-2xl ${feature.gradient} flex items-center justify-center mx-auto mb-6 shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}>
-                <feature.icon className="w-8 h-8 text-white" />
+              <div className={`w-12 h-12 rounded-xl ${feature.gradient} flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}>
+                <feature.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-display font-bold text-xl text-foreground mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <h3 className="font-display font-bold text-lg text-foreground mb-2">{feature.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
             </div>
@@ -139,12 +139,12 @@ export default function Index() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-24 text-center">
-          <div className="inline-flex flex-col items-center gap-4 p-8 rounded-3xl bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border border-primary/10">
-            <BookOpen className="w-10 h-10 text-primary" />
-            <h2 className="font-display font-bold text-2xl text-foreground">Ready to ace your classes?</h2>
-            <p className="text-muted-foreground max-w-md">Join thousands of students already using ClassNote to succeed together.</p>
-            <Button asChild className="gradient-primary hover:opacity-90 rounded-xl font-semibold h-12 px-8 mt-2 btn-glow">
+        <div className="mt-16 text-center">
+          <div className="inline-flex flex-col items-center gap-3 p-6 rounded-2xl bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border border-primary/10">
+            <BookOpen className="w-8 h-8 text-primary" />
+            <h2 className="font-display font-bold text-xl text-foreground">Ready to ace your classes?</h2>
+            <p className="text-sm text-muted-foreground max-w-md">Join thousands of students already using ClassNote to succeed together.</p>
+            <Button asChild className="gradient-primary hover:opacity-90 rounded-xl font-semibold h-10 px-6 mt-1 btn-glow">
               <Link to="/signup">
                 Start learning together
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -155,7 +155,7 @@ export default function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="relative container mx-auto px-4 py-10 border-t border-border/50">
+      <footer className="relative container mx-auto px-4 py-6 border-t border-border/50">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <ClassNoteLogo size="sm" />
