@@ -10,7 +10,7 @@ import PostCard from '@/components/PostCard';
 import CreatePost from '@/components/CreatePost';
 import ResourceList from '@/components/ResourceList';
 import ChatTab from '@/components/ChatTab';
-import ClassNoteLogo from '@/components/ClassNoteLogo';
+import logoTransparent from '@/assets/logo-transparent.png';
 
 export default function Course() {
   const { courseId } = useParams<{ courseId: string }>();
@@ -125,7 +125,7 @@ export default function Course() {
               <ArrowLeft className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </Link>
             <Link to="/dashboard" className="flex items-center gap-2">
-              <ClassNoteLogo size="md" />
+              <img src={logoTransparent} alt="ClassNote" className="h-10 w-auto" />
             </Link>
           </div>
           

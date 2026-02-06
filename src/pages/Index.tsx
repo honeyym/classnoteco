@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, Users, Sparkles, ArrowRight, BookOpen, Zap, Shield, Heart } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import ClassNoteLogo from '@/components/ClassNoteLogo';
+import logoTransparent from '@/assets/logo-transparent.png';
 
 export default function Index() {
   return (
@@ -33,7 +33,7 @@ export default function Index() {
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
           {/* Large centered logo */}
           <div className="flex justify-center mb-6">
-            <ClassNoteLogo size="hero" layout="stacked" className="animate-float" />
+            <img src={logoTransparent} alt="ClassNote" className="h-32 sm:h-40 lg:h-48 w-auto animate-float" />
           </div>
           
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 shadow-sm border border-primary/20">
@@ -158,7 +158,7 @@ export default function Index() {
       <footer className="relative container mx-auto px-4 py-6 border-t border-border/50">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <ClassNoteLogo size="sm" />
+            <img src={logoTransparent} alt="ClassNote" className="h-8 w-auto" />
           </div>
           <p className="text-sm text-muted-foreground">
             © 2026 ClassNote. Made for students, by students.
