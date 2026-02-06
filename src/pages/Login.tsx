@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import ClassNoteLogo from '@/components/ClassNoteLogo';
+import logoTransparent from '@/assets/logo-transparent.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -46,7 +46,7 @@ export default function Login() {
         {/* Logo */}
         <div className="flex items-center justify-center mb-8">
           <Link to="/">
-            <ClassNoteLogo size="lg" />
+            <img src={logoTransparent} alt="ClassNote" className="h-12 w-auto" />
           </Link>
         </div>
 
