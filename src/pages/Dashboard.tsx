@@ -5,7 +5,7 @@ import { LogOut, MessageCircle, Sparkles, TrendingUp, BookOpen } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import logoTransparent from '@/assets/logo-transparent.png';
+import logoTransparent from '@/assets/logo-transparent-clean.png';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
