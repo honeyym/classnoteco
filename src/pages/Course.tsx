@@ -10,7 +10,7 @@ import PostCard from '@/components/PostCard';
 import CreatePost from '@/components/CreatePost';
 import ResourceList from '@/components/ResourceList';
 import ChatTab from '@/components/ChatTab';
-import logoTransparent from '@/assets/logo-transparent-clean.png';
+import logoTransparent from '@/assets/logo-transparent.png';
 
 export default function Course() {
   const { courseId } = useParams<{ courseId: string }>();
