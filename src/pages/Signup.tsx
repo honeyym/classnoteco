@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ArrowRight, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import logoTransparent from '@/assets/logo-transparent-clean.png';
+import logoTransparent from '@/assets/logo-transparent.png';
 
 export default function Signup() {
   const [name, setName] = useState('');
