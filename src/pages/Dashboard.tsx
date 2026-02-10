@@ -5,7 +5,7 @@ import { LogOut, MessageCircle, Sparkles, TrendingUp, BookOpen } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import logoTransparent from '@/assets/logo-transparent.png';
+import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -22,7 +22,7 @@ export default function Dashboard() {
       <header className="sticky top-0 z-50 border-b border-border/50 bg-card shadow-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2">
-            <img src={logoTransparent} alt="ClassNote" className="h-10 w-auto" />
+            <ClassNoteLogo size="sm" />
           </Link>
           
           <div className="flex items-center gap-3">

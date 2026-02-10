@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import logoTransparent from '@/assets/logo-transparent.png';
+import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function PostDetail() {
   const { courseId, postId } = useParams<{ courseId: string; postId: string }>();
@@ -128,7 +128,7 @@ export default function PostDetail() {
               <ArrowLeft className="w-5 h-5 text-muted-foreground" />
             </Link>
             <Link to="/dashboard" className="flex items-center gap-2">
-              <img src={logoTransparent} alt="ClassNote" className="h-8 w-auto" />
+              <ClassNoteLogo size="sm" />
             </Link>
           </div>
           
