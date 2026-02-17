@@ -23,6 +23,9 @@ export default function Signup() {
     setIsLoading(true);
     
     try {
+      if (!email.toLowerCase().endsWith('.edu')) {
+        throw new Error('Please use a valid .edu email address');
+      }
       await signup(email, password, name);
       toast({
         title: "Check your email",
