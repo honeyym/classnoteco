@@ -79,6 +79,86 @@ export type Database = {
         }
         Relationships: []
       }
+      post_replies: {
+        Row: {
+          author_name: string
+          content: string
+          created_at: string
+          id: string
+          is_anonymous: boolean
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          author_name: string
+          content: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          author_name?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_replies_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          author_name: string
+          content: string
+          course_id: string
+          created_at: string
+          dislikes: number
+          hearts: number
+          id: string
+          is_anonymous: boolean
+          likes: number
+          link: string | null
+          user_id: string
+        }
+        Insert: {
+          author_name: string
+          content: string
+          course_id: string
+          created_at?: string
+          dislikes?: number
+          hearts?: number
+          id?: string
+          is_anonymous?: boolean
+          likes?: number
+          link?: string | null
+          user_id: string
+        }
+        Update: {
+          author_name?: string
+          content?: string
+          course_id?: string
+          created_at?: string
+          dislikes?: number
+          hearts?: number
+          id?: string
+          is_anonymous?: boolean
+          likes?: number
+          link?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
