@@ -154,46 +154,47 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
 
   const handleLike = async (message: ChatMessage) => {
     const isLiked = likedMessages.has(message.id);
-    const newLikes = isLiked ? message.likes - 1 : message.likes + 1;
+    const increment = !isLiked;
 
     // Optimistic update
     setLikedMessages((prev) => {
       const newSet = new Set(prev);
-      if (isLiked) {
-        newSet.delete(message.id);
-      } else {
-        newSet.add(message.id);
-      }
+      if (isLiked) newSet.delete(message.id);
+      else newSet.add(message.id);
       return newSet;
     });
-
     setMessages((prev) =>
       prev.map((msg) =>
-        msg.id === message.id ? { ...msg, likes: newLikes } : msg
+        msg.id === message.id
+          ? { ...msg, likes: increment ? msg.likes + 1 : Math.max(0, msg.likes - 1) }
+          : msg
       )
     );
 
-    // Update in database
-    const { error } = await supabase
-      .from('chat_messages')
-      .update({ likes: newLikes })
-      .eq('id', message.id);
+    const { data, error } = await supabase.rpc('toggle_message_like', {
+      p_message_id: message.id,
+      p_increment: increment,
+    });
 
     if (error) {
-      console.error('Error updating likes:', error);
+      if (import.meta.env.DEV) console.error('Error updating likes:', error);
       // Revert on error
       setLikedMessages((prev) => {
         const newSet = new Set(prev);
-        if (isLiked) {
-          newSet.add(message.id);
-        } else {
-          newSet.delete(message.id);
-        }
+        if (isLiked) newSet.add(message.id);
+        else newSet.delete(message.id);
         return newSet;
       });
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === message.id ? { ...msg, likes: message.likes } : msg
+        )
+      );
+    } else if (data !== null) {
+      // Sync with server value
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === message.id ? { ...msg, likes: data } : msg
         )
       );
     }

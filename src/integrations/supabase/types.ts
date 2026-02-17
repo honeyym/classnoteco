@@ -88,6 +88,10 @@ export type Database = {
         Args: { _course_id: string; _user_id: string }
         Returns: boolean
       }
+      toggle_message_like: {
+        Args: { p_increment: boolean; p_message_id: string }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
