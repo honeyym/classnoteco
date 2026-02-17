@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { getCourse, getCoursePosts, getCourseResources, Post, Resource, savedPostsPerCourse } from '@/data/mockData';
+import { getCourse, getCourseResources, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEnrollments } from '@/hooks/useEnrollments';
+import { usePosts } from '@/hooks/usePosts';
+import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,38 +19,44 @@ export default function Course() {
   const { courseId } = useParams<{ courseId: string }>();
   const { user, logout } = useAuth();
   const { isEnrolled, isLoading: enrollLoading } = useEnrollments();
+  const { posts, isLoading: postsLoading, createPost } = usePosts(courseId || '');
   const [activeTab, setActiveTab] = useState('discussion');
-  const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
   const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
-  
-  // Pre-populate saved posts for demo from mockData
-  const [savedPostIds, setSavedPostIds] = useState<Set<string>>(() => {
-    const savedForCourse = savedPostsPerCourse[courseId || ''] || [];
-    return new Set(savedForCourse);
-  });
+  const [savedPostIds, setSavedPostIds] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
+  const [replyCounts, setReplyCounts] = useState<Record<string, number>>({});
+
+  // Fetch reply counts for posts
+  useEffect(() => {
+    if (posts.length === 0) return;
+    const postIds = posts.map(p => p.id);
+    supabase
+      .from('post_replies')
+      .select('post_id')
+      .in('post_id', postIds)
+      .then(({ data }) => {
+        if (!data) return;
+        const counts: Record<string, number> = {};
+        data.forEach((r: { post_id: string }) => {
+          counts[r.post_id] = (counts[r.post_id] || 0) + 1;
+        });
+        setReplyCounts(counts);
+      });
+  }, [posts]);
 
   const handleToggleSave = (postId: string) => {
     setSavedPostIds(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(postId)) {
-        newSet.delete(postId);
-      } else {
-        newSet.add(postId);
-      }
+      if (newSet.has(postId)) newSet.delete(postId);
+      else newSet.add(postId);
       return newSet;
     });
   };
 
-  if (!courseId) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  if (!courseId) return <Navigate to="/dashboard" replace />;
 
   const course = getCourse(courseId);
-  
-  if (!course) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  if (!course) return <Navigate to="/dashboard" replace />;
 
   if (enrollLoading) {
     return (
@@ -58,28 +66,12 @@ export default function Course() {
     );
   }
 
-  if (!isEnrolled(courseId)) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  if (!isEnrolled(courseId)) return <Navigate to="/dashboard" replace />;
 
-  const handleNewPost = (content: string, isAnonymous: boolean, link?: string) => {
-    const newPost: Post = {
-      id: `post-${Date.now()}`,
-      courseId,
-      authorId: user?.id || '1',
-      authorName: user?.name || 'User',
-      isAnonymous,
-      content,
-      createdAt: new Date(),
-      likes: 0,
-      dislikes: 0,
-      hearts: 0,
-      replyCount: 0,
-    };
-    setPosts(prev => [newPost, ...prev]);
-
-    // If a link was attached, add it to resources
-    if (link) {
+  const handleNewPost = async (content: string, isAnonymous: boolean, link?: string) => {
+    const result = await createPost(content, isAnonymous, link);
+    
+    if (!result.error && link) {
       const newResource: Resource = {
         id: `res-${Date.now()}`,
         courseId,
@@ -90,19 +82,19 @@ export default function Course() {
       };
       setResources(prev => [newResource, ...prev]);
     }
+    
+    return result;
   };
 
   const extractTitleFromUrl = (url: string): string => {
     try {
       const urlObj = new URL(url);
-      // Try to create a readable title from the URL
       const pathParts = urlObj.pathname.split('/').filter(Boolean);
       if (pathParts.length > 0) {
         const lastPart = pathParts[pathParts.length - 1];
-        // Convert slug to title case
         return lastPart
           .replace(/[-_]/g, ' ')
-          .replace(/\.[^.]+$/, '') // Remove file extension
+          .replace(/\.[^.]+$/, '')
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ') || urlObj.hostname;
@@ -113,16 +105,13 @@ export default function Course() {
     }
   };
 
-  // Sort posts newest first
-  const sortedPosts = [...posts].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-
   // Filter posts by search query
-  const filteredPosts = sortedPosts.filter((post) => {
+  const filteredPosts = posts.filter((post) => {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
     return (
       post.content.toLowerCase().includes(query) ||
-      (!post.isAnonymous && post.authorName.toLowerCase().includes(query))
+      (!post.is_anonymous && post.author_name.toLowerCase().includes(query))
     );
   });
 
@@ -132,10 +121,7 @@ export default function Course() {
       <header className="sticky top-0 z-50 border-b border-border/50 bg-card/90 backdrop-blur-md shadow-xs">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link 
-              to="/dashboard" 
-              className="p-2 -ml-2 rounded-xl hover:bg-primary/10 transition-all duration-200 group"
-            >
+            <Link to="/dashboard" className="p-2 -ml-2 rounded-xl hover:bg-primary/10 transition-all duration-200 group">
               <ArrowLeft className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </Link>
             <Link to="/dashboard" className="flex items-center gap-2">
@@ -148,16 +134,9 @@ export default function Course() {
               <div className="w-6 h-6 rounded-full gradient-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
                 {user?.name?.charAt(0).toUpperCase()}
               </div>
-              <span className="text-sm font-medium text-foreground">
-                {user?.name}
-              </span>
+              <span className="text-sm font-medium text-foreground">{user?.name}</span>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={logout}
-              className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl"
-            >
+            <Button variant="ghost" size="sm" onClick={logout} className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl">
               <LogOut className="w-4 h-4" />
             </Button>
           </div>
@@ -192,10 +171,7 @@ export default function Course() {
               className="pl-12 pr-12 h-12 rounded-xl bg-muted/30 border-border/50 text-base"
             />
             {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted"
-              >
+              <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted">
                 <X className="w-4 h-4" />
               </button>
             )}
@@ -211,53 +187,31 @@ export default function Course() {
       {/* Main Content */}
       <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          {/* Tab Navigation - Separated */}
           <div className="flex flex-wrap gap-2 mb-8">
             <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
-              <TabsTrigger 
-                value="discussion" 
-                className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
-              >
-                <MessageCircle className="w-4 h-4 mr-2" />
-                Discussion
+              <TabsTrigger value="discussion" className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
+                <MessageCircle className="w-4 h-4 mr-2" />Discussion
               </TabsTrigger>
             </TabsList>
-            
             <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
-              <TabsTrigger 
-                value="chat" 
-                className="font-semibold rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
-              >
-                <MessagesSquare className="w-4 h-4 mr-2" />
-                Chat
+              <TabsTrigger value="chat" className="font-semibold rounded-xl data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
+                <MessagesSquare className="w-4 h-4 mr-2" />Chat
               </TabsTrigger>
             </TabsList>
-            
             <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
-              <TabsTrigger 
-                value="saved" 
-                className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
-              >
-                <Star className="w-4 h-4 mr-2" />
-                Saved ({savedPostIds.size})
+              <TabsTrigger value="saved" className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
+                <Star className="w-4 h-4 mr-2" />Saved ({savedPostIds.size})
               </TabsTrigger>
             </TabsList>
-            
             <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
-              <TabsTrigger 
-                value="resources" 
-                className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5"
-              >
-                <BookOpen className="w-4 h-4 mr-2" />
-                Resources
+              <TabsTrigger value="resources" className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
+                <BookOpen className="w-4 h-4 mr-2" />Resources
               </TabsTrigger>
             </TabsList>
           </div>
           
           <TabsContent value="discussion" className="mt-0 tab-content-enter">
             <div className="grid gap-6 max-w-3xl">
-
-              {/* Create Post Zone */}
               <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 card-hover">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-sm">
@@ -271,7 +225,6 @@ export default function Course() {
                 <CreatePost courseId={courseId} onPost={handleNewPost} />
               </div>
               
-              {/* Posts Feed Zone */}
               <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-sm">
@@ -287,22 +240,20 @@ export default function Course() {
                 </div>
                 
                 <div className="space-y-4">
-                  {filteredPosts.length === 0 ? (
+                  {postsLoading ? (
+                    <div className="text-center py-14 text-muted-foreground">
+                      <div className="animate-pulse font-medium">Loading posts...</div>
+                    </div>
+                  ) : filteredPosts.length === 0 ? (
                     <div className="text-center py-14 text-muted-foreground">
                       <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
-                        {searchQuery ? (
-                          <Search className="w-7 h-7 opacity-50" />
-                        ) : (
-                          <MessageCircle className="w-7 h-7 opacity-50" />
-                        )}
+                        {searchQuery ? <Search className="w-7 h-7 opacity-50" /> : <MessageCircle className="w-7 h-7 opacity-50" />}
                       </div>
                       <p className="font-semibold text-foreground">
                         {searchQuery ? 'No matching posts' : 'No posts yet'}
                       </p>
                       <p className="text-sm mt-1">
-                        {searchQuery 
-                          ? `Try a different search term`
-                          : 'Be the first to start a discussion!'}
+                        {searchQuery ? 'Try a different search term' : 'Be the first to start a discussion!'}
                       </p>
                     </div>
                   ) : (
@@ -310,7 +261,8 @@ export default function Course() {
                       <div key={post.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
                         <PostCard 
                           post={post} 
-                          courseId={courseId} 
+                          courseId={courseId}
+                          replyCount={replyCounts[post.id] || 0}
                           isSaved={savedPostIds.has(post.id)}
                           onToggleSave={handleToggleSave}
                         />
@@ -362,13 +314,14 @@ export default function Course() {
                     <p className="text-sm mt-1">Star posts to save them here!</p>
                   </div>
                 ) : (
-                  sortedPosts
+                  posts
                     .filter(post => savedPostIds.has(post.id))
                     .map((post, index) => (
                       <div key={post.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
                         <PostCard 
                           post={post} 
                           courseId={courseId}
+                          replyCount={replyCounts[post.id] || 0}
                           isSaved={true}
                           onToggleSave={handleToggleSave}
                         />
