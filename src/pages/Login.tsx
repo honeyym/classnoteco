@@ -105,7 +105,10 @@ export default function Login() {
             </form>
           </CardContent>
           
-          <CardFooter className="flex flex-col gap-4 px-8 pb-8">
+          <CardFooter className="flex flex-col gap-3 px-8 pb-8">
+            <Link to="/forgot-password" className="text-sm text-muted-foreground hover:text-primary font-medium transition-colors">
+              Forgot your password?
+            </Link>
             <p className="text-sm text-muted-foreground text-center">
               Don't have an account?{' '}
               <Link to="/signup" className="text-primary hover:text-primary/80 font-semibold transition-colors">
