@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse, getCoursePosts, getCourseResources, Post, Resource, savedPostsPerCourse } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEnrollments } from '@/hooks/useEnrollments';
 import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,7 @@ import ClassNoteLogo from '@/components/ClassNoteLogo';
 export default function Course() {
   const { courseId } = useParams<{ courseId: string }>();
   const { user, logout } = useAuth();
+  const { isEnrolled, isLoading: enrollLoading } = useEnrollments();
   const [activeTab, setActiveTab] = useState('discussion');
   const [posts, setPosts] = useState<Post[]>(() => getCoursePosts(courseId || ''));
   const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
@@ -45,6 +47,18 @@ export default function Course() {
   const course = getCourse(courseId);
   
   if (!course) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  if (enrollLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse-soft text-primary font-medium">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isEnrolled(courseId)) {
     return <Navigate to="/dashboard" replace />;
   }
 
