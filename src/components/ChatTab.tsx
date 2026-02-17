@@ -129,11 +129,9 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
 
     setIsSending(true);
 
-    const mockUserId = crypto.randomUUID();
-
     const { error } = await supabase.from('chat_messages').insert({
       course_id: courseId,
-      user_id: mockUserId,
+      user_id: user.id,
       author_name: user.name,
       content: newMessage.trim(),
       is_anonymous: isAnonymous,
