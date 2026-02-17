@@ -25,9 +25,10 @@ export default function Login() {
       await login(email, password);
       navigate('/dashboard');
     } catch (error) {
+      const msg = error instanceof Error ? error.message : "Failed to login";
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to login",
+        description: msg.includes('Invalid login') ? 'Invalid email or password' : msg,
         variant: "destructive",
       });
     } finally {

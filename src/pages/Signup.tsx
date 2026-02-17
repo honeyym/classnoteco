@@ -24,11 +24,15 @@ export default function Signup() {
     
     try {
       await signup(email, password, name);
-      navigate('/dashboard');
+      toast({
+        title: "Check your email",
+        description: "We've sent you a verification link. Please check your inbox to confirm your account.",
+      });
     } catch (error) {
+      const msg = error instanceof Error ? error.message : "Failed to sign up";
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to sign up",
+        description: msg,
         variant: "destructive",
       });
     } finally {
