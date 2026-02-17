@@ -8,6 +8,8 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Course from "./pages/Course";
 import PostDetail from "./pages/PostDetail";
@@ -65,6 +67,8 @@ const App = () => (
               <Route path="/" element={<PublicRoute><Index /></PublicRoute>} />
               <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
               <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+              <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/course/:courseId" element={<ProtectedRoute><Course /></ProtectedRoute>} />
               <Route path="/course/:courseId/post/:postId" element={<ProtectedRoute><PostDetail /></ProtectedRoute>} />
