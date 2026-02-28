@@ -36,7 +36,7 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
     }
 
     if (link.trim() && !isValidUrl(link.trim())) {
-      toast({ title: "Invalid link", description: "Please enter a valid URL (e.g., https://example.com)", variant: "destructive" });
+      toast({ title: "Invalid link", description: "Please enter a valid URL", variant: "destructive" });
       return;
     }
 
