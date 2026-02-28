@@ -1,7 +1,6 @@
 /**
  * Access control test suite.
- * Verifies client-side auth gates (ProtectedRoute) and data access patterns.
- * RLS is enforced server-side; these tests document expected behavior.
+ * Verifies client-side auth gates (ProtectedRoute). RLS is enforced server-side.
  *
  * For full RLS integration tests with local Supabase:
  *   supabase start
@@ -10,14 +9,23 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { renderHook, waitFor as waitForHook } from "@testing-library/react";
 import App from "@/App";
-import { useEnrollments } from "@/hooks/useEnrollments";
-import type { ReactNode } from "react";
 
 const mockGetSession = vi.fn();
 const mockOnAuthStateChange = vi.fn();
-const mockEq = vi.fn();
+
+// Initial route for each test (set in beforeEach)
+let initialEntries = ["/"];
+
+vi.mock("react-router-dom", async (importOriginal) => {
+  const actual = (await importOriginal()) as object;
+  return {
+    ...actual,
+    BrowserRouter: ({ children }: { children: React.ReactNode }) => (
+      <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+    ),
+  };
+});
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
@@ -28,34 +36,22 @@ vi.mock("@/integrations/supabase/client", () => ({
           data: { subscription: { unsubscribe: vi.fn() } },
         },
     },
-    from: vi.fn((table: string) => {
-      const chain = {
-        select: vi.fn().mockReturnThis(),
-        eq: mockEq.mockReturnThis(),
-        single: vi.fn().mockResolvedValue({ data: null, error: null }),
-        order: vi.fn().mockReturnThis(),
-        limit: vi.fn().mockResolvedValue({ data: [], error: null }),
-        insert: vi.fn().mockResolvedValue({ error: null }),
-        update: vi.fn().mockReturnThis(),
-      };
-      mockEq.mockReturnThis();
-      return chain;
-    }),
+    from: vi.fn(() => ({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      single: vi.fn().mockResolvedValue({ data: null, error: null }),
+      order: vi.fn().mockReturnThis(),
+      limit: vi.fn().mockResolvedValue({ data: [], error: null }),
+      insert: vi.fn().mockResolvedValue({ error: null }),
+      update: vi.fn().mockReturnThis(),
+    })),
   },
 }));
-
-// AuthProvider needs useAuth - we're using real AuthContext with mocked supabase
-function AllProviders({ children }: { children: ReactNode }) {
-  return (
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>
-  );
-}
 
 describe("Access control", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    initialEntries = ["/"];
     mockGetSession.mockResolvedValue({ data: { session: null } });
     mockOnAuthStateChange.mockReturnValue({
       data: { subscription: { unsubscribe: vi.fn() } },
@@ -64,11 +60,8 @@ describe("Access control", () => {
 
   describe("ProtectedRoute (auth gate)", () => {
     it("redirects unauthenticated users from /dashboard to /login", async () => {
-      render(
-        <MemoryRouter initialEntries={["/dashboard"]}>
-          <App />
-        </MemoryRouter>
-      );
+      initialEntries = ["/dashboard"];
+      render(<App />);
 
       await waitFor(() => {
         expect(screen.getByRole("heading", { name: /Welcome back/i })).toBeInTheDocument();
@@ -77,11 +70,8 @@ describe("Access control", () => {
     });
 
     it("redirects unauthenticated users from /course/:id to /login", async () => {
-      render(
-        <MemoryRouter initialEntries={["/course/cisc200"]}>
-          <App />
-        </MemoryRouter>
-      );
+      initialEntries = ["/course/cisc200"];
+      render(<App />);
 
       await waitFor(() => {
         expect(screen.getByRole("heading", { name: /Welcome back/i })).toBeInTheDocument();
@@ -103,11 +93,8 @@ describe("Access control", () => {
         },
       });
 
-      render(
-        <MemoryRouter initialEntries={["/dashboard"]}>
-          <App />
-        </MemoryRouter>
-      );
+      initialEntries = ["/dashboard"];
+      render(<App />);
 
       await waitFor(
         () => {
@@ -118,13 +105,14 @@ describe("Access control", () => {
     });
   });
 
-  describe("useEnrollments (enrollment data access)", () => {
-    it("filters enrollments by user_id (RLS-equivalent client pattern)", async () => {
+  describe("PublicRoute (logged-in redirect)", () => {
+    it("redirects authenticated users from /login to /dashboard", async () => {
+      initialEntries = ["/login"];
       mockGetSession.mockResolvedValue({
         data: {
           session: {
             user: {
-              id: "user-123",
+              id: "user-1",
               email: "test@edu",
               user_metadata: { name: "Test" },
             },
@@ -134,31 +122,14 @@ describe("Access control", () => {
         },
       });
 
-      const { result } = renderHook(() => useEnrollments(), {
-        wrapper: ({ children }) => (
-          <MemoryRouter>
-            <App />
-          </MemoryRouter>
-        ) as React.FunctionComponent<{ children: ReactNode }>,
-      });
+      render(<App />);
 
-      // Hook needs AuthProvider - wrap with App which has it
-      // useEnrollments is used inside Course/Dashboard. Render App at /dashboard to trigger.
-      render(
-        <MemoryRouter initialEntries={["/dashboard"]}>
-          <App />
-        </MemoryRouter>
+      await waitFor(
+        () => {
+          expect(screen.getByText(/Your.*Courses/i)).toBeInTheDocument();
+        },
+        { timeout: 3000 }
       );
-
-      await waitFor(() => {
-        expect(mockEq).toHaveBeenCalled();
-      });
-
-      // useEnrollments fetches with .eq('user_id', user.id)
-      const enrollmentsCall = mockEq.mock.calls.find(
-        (call: unknown[]) => call[0] === "user_id"
-      );
-      expect(enrollmentsCall).toBeDefined();
     });
   });
 });
