@@ -1,0 +1,11 @@
+# Trivy config: skip local secrets and build artifacts
+# .env has real secrets; dist has inlined Vite env (anon key is public by design)
+# https://trivy.dev/latest/docs/guide/references/configuration/
+scan:
+  skip-dirs:
+    - node_modules
+    - dist
+    - .git
+  skip-files:
+    - .env
+    - ".env.*"

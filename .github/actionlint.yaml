@@ -1,7 +1,8 @@
 # actionlint config - https://github.com/rhysd/actionlint
+# Custom repo secrets (VITE_SUPABASE_*) trigger false positive when linter
+# cannot validate keys—workflow is correct; add these in repo Settings > Secrets
 paths:
-  "**/*.yml":
+  .github/workflows/**/*.{yml,yaml}:
     ignore:
-      # Custom repo secrets (VITE_SUPABASE_*) trigger false positive
-      # when linter can't validate keys - workflow is correct
       - "Context access might be invalid"
+      - "Context access might be invalid.*"

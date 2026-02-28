@@ -1,0 +1,6 @@
+# actionlint config - suppresses "Context access might be invalid" for custom repo secrets
+# Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in Settings > Secrets
+paths:
+  .github/workflows/**/*.{yml,yaml}:
+    ignore:
+      - "Context access might be invalid.*"

@@ -1,5 +1,6 @@
 // Verify Cloudflare Turnstile token and proxy auth to Supabase
 // Protects login, signup, and password reset from bots
+import "../deno.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
