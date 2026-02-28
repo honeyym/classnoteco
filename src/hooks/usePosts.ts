@@ -176,5 +176,21 @@ export function usePostDetail(postId: string) {
     return { error };
   };
 
-  return { post, replies, isLoading, addReply };
+  const editReply = async (replyId: string, content: string) => {
+    if (!user) return { error: new Error('Not authenticated') };
+
+    const { error } = await supabase
+      .from('post_replies')
+      .update({ content: content.slice(0, 5000) })
+      .eq('id', replyId)
+      .eq('user_id', user.id);
+
+    if (!error) {
+      setReplies((prev) => prev.map((r) => r.id === replyId ? { ...r, content: content.slice(0, 5000) } : r));
+    }
+    if (error && import.meta.env.DEV) console.error('Error editing reply:', error);
+    return { error };
+  };
+
+  return { post, replies, isLoading, addReply, editReply };
 }
