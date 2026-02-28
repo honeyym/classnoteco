@@ -73,7 +73,7 @@ export default function Course() {
     
     if (!result.error && link) {
       const newResource: Resource = {
-        id: `res-${Date.now()}`,
+        id: `res-${crypto.randomUUID()}`,
         courseId,
         title: extractTitleFromUrl(link),
         url: link,

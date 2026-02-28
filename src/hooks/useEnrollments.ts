@@ -9,8 +9,10 @@ export function useEnrollments() {
 
   useEffect(() => {
     if (!user) {
-      setEnrolledCourseIds([]);
-      setIsLoading(false);
+      queueMicrotask(() => {
+        setEnrolledCourseIds([]);
+        setIsLoading(false);
+      });
       return;
     }
 
