@@ -4,6 +4,9 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
+  esbuild: {
+    drop: ["console", "debugger"] as ["console", "debugger"],
+  },
   build: {
     minify: "esbuild" as const,
     sourcemap: false,
