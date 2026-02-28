@@ -11,7 +11,9 @@
     "lint": "npx eslint .",
     "preview": "npx vite preview",
     "test": "npx vitest run",
-    "test:watch": "npx vitest"
+    "test:watch": "npx vitest",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
