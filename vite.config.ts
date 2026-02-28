@@ -7,6 +7,21 @@ export default defineConfig(() => ({
   build: {
     minify: "esbuild" as const,
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          "vendor-supabase": ["@supabase/supabase-js"],
+          "vendor-ui": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-tabs",
+            "recharts",
+          ],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
   server: {
     host: "::",

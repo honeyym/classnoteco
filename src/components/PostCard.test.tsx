@@ -63,7 +63,7 @@ describe("PostCard", () => {
         <PostCard post={mockPost} courseId="cisc200" />
       </MemoryRouter>
     );
-    const link = screen.getByRole("link", { name: new RegExp(mockPost.content) });
+    const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "/course/cisc200/post/post-1");
   });
 

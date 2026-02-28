@@ -31,4 +31,10 @@ export default tseslint.config(
       "security/detect-possible-timing-attacks": "off",
     },
   },
+  {
+    files: ["src/components/ui/**/*.tsx", "src/contexts/**/*.tsx"],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 );
