@@ -20,6 +20,8 @@ if [ -z "$IMAGE" ]; then
   echo "Error: No image found. Build first:"
   echo "  docker compose build   # or: DOCKER_BUILDKIT=1 docker build -t ghcr.io/owner/classnoteco:latest ."
   echo ""
+  echo "If Trivy reports Go 1.22 vulns, rebuild with: docker compose build --no-cache"
+  echo ""
   echo "Or set IMAGE explicitly:"
   echo "  IMAGE=ghcr.io/owner/classnoteco:latest ./scripts/scan-image.sh"
   exit 1

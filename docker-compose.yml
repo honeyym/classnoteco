@@ -4,6 +4,7 @@
 services:
   app:
     build: .
+    image: classnoteco-app:latest
     ports:
       - "8080:8080"
     security_opt:

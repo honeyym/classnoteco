@@ -13,7 +13,7 @@ RUN --mount=type=secret,id=VITE_SUPABASE_URL \
     npm run build && \
     find /app/dist -name "*.map" -delete
 
-# Build minimal static file server
+# Build minimal static file server (Go 1.24.13+ for CVE fixes; use --no-cache if scan shows v1.22)
 FROM golang:1.24.13-alpine AS server
 WORKDIR /build
 COPY go.mod ./

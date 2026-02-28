@@ -16,6 +16,8 @@
     "audit:fix": "npm audit fix",
     "lint:security": "npm run lint && npm run audit",
     "secret-scan": "./scripts/secret-scan.sh",
+    "build:image": "docker compose build",
+    "build:image:clean": "docker compose build --no-cache",
     "scan-image": "./scripts/scan-image.sh",
     "prepare": "npx husky"
   },
