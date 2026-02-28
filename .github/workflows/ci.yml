@@ -84,6 +84,13 @@ jobs:
         with:
           subject-path: "dist"
 
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -143,3 +150,4 @@ jobs:
         with:
           name: sbom-cyclonedx
           path: sbom.json
+          retention-days: 7
