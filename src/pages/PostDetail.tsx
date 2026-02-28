@@ -3,7 +3,7 @@ import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePostDetail } from '@/hooks/usePosts';
-import { ArrowLeft, LogOut, ThumbsUp, ThumbsDown, Heart, Star, Send } from 'lucide-react';
+import { ArrowLeft, LogOut, ThumbsUp, Heart, Send, Pencil, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,10 +17,12 @@ export default function PostDetail() {
   const { user, logout } = useAuth();
   const { toast } = useToast();
   
-  const { post, replies, isLoading, addReply } = usePostDetail(postId || '');
+  const { post, replies, isLoading, addReply, editReply } = usePostDetail(postId || '');
   const [replyContent, setReplyContent] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingReplyId, setEditingReplyId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState('');
 
   if (!courseId || !postId) return <Navigate to="/dashboard" replace />;
 
@@ -53,6 +55,20 @@ export default function PostDetail() {
       toast({ title: "Reply posted!", description: "Your reply has been added" });
       setReplyContent('');
       setIsAnonymous(false);
+    }
+    setIsSubmitting(false);
+  };
+
+  const handleEditReply = async (replyId: string) => {
+    if (!editContent.trim()) return;
+    setIsSubmitting(true);
+    const { error } = await editReply(replyId, editContent.trim());
+    if (error) {
+      toast({ title: "Error", description: "Failed to update reply.", variant: "destructive" });
+    } else {
+      toast({ title: "Reply updated!" });
+      setEditingReplyId(null);
+      setEditContent('');
     }
     setIsSubmitting(false);
   };
@@ -150,8 +166,36 @@ export default function PostDetail() {
                                 {reply.is_anonymous ? 'Anonymous' : reply.author_name}
                               </span>
                               <span className="text-xs text-muted-foreground">{replyTime}</span>
+                              {user?.id === reply.user_id && editingReplyId !== reply.id && (
+                                <button
+                                  onClick={() => { setEditingReplyId(reply.id); setEditContent(reply.content); }}
+                                  className="ml-auto p-1 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                                  aria-label="Edit reply"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                </button>
+                              )}
                             </div>
-                            <p className="text-foreground text-[15px] leading-relaxed">{reply.content}</p>
+                            {editingReplyId === reply.id ? (
+                              <div className="space-y-2">
+                                <Textarea
+                                  value={editContent}
+                                  onChange={(e) => setEditContent(e.target.value)}
+                                  maxLength={5000}
+                                  className="min-h-[60px] resize-none border border-border/50 bg-muted/30 rounded-lg text-sm"
+                                />
+                                <div className="flex gap-2">
+                                  <Button size="sm" disabled={isSubmitting || !editContent.trim()} onClick={() => handleEditReply(reply.id)} className="h-7 px-3 text-xs">
+                                    <Check className="w-3 h-3 mr-1" />Save
+                                  </Button>
+                                  <Button size="sm" variant="ghost" onClick={() => { setEditingReplyId(null); setEditContent(''); }} className="h-7 px-3 text-xs">
+                                    <X className="w-3 h-3 mr-1" />Cancel
+                                  </Button>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-foreground text-[15px] leading-relaxed">{reply.content}</p>
+                            )}
                           </div>
                         </div>
                       </CardContent>
