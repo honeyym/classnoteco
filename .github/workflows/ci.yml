@@ -72,10 +72,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      attestations: write
     env:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
@@ -93,11 +89,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Attest build provenance
-        uses: actions/attest@v4
-        with:
-          subject-path: "dist"
 
       - name: Upload build
         uses: actions/upload-artifact@v4
@@ -135,10 +126,6 @@ jobs:
 
   sbom:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      attestations: write
     steps:
       - uses: actions/checkout@v4
 
@@ -153,12 +140,6 @@ jobs:
 
       - name: Generate SBOM
         run: npm sbom --sbom-format=cyclonedx --omit=dev > sbom.json
-
-      - name: Attest SBOM
-        uses: actions/attest@v4
-        with:
-          subject-path: sbom.json
-          sbom-path: sbom.json
 
       - name: Upload SBOM
         uses: actions/upload-artifact@v4

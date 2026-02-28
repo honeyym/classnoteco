@@ -1,4 +1,4 @@
-# Build and push Docker image to GHCR with provenance attestations (content trust)
+# Build and push Docker image to GHCR
 # Trigger: release/tag (v*) or manual dispatch
 # Requires: VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY in repo Secrets for a working image
 name: Docker
@@ -12,8 +12,6 @@ on:
 permissions:
   contents: read
   packages: write
-  id-token: write
-  attestations: write
 
 jobs:
   build:
@@ -39,5 +37,3 @@ jobs:
           build-args: |
             VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
             VITE_SUPABASE_PUBLISHABLE_KEY=${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          provenance: true
-          sbom: true
