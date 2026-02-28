@@ -1,0 +1,22 @@
+# Semgrep rules for security checks
+# Run: npx semgrep scan --config .semgrep.yml
+# Or use Semgrep Registry: npx semgrep scan --config auto
+
+rules:
+  - id: hardcoded-secret
+    pattern: (password|secret|api_key|apikey|token)\s*=\s*["\'][^"\']{8,}["\']
+    message: Possible hardcoded secret - use environment variables
+    severity: ERROR
+    languages: [javascript, typescript]
+
+  - id: eval-usage
+    pattern: eval(...)
+    message: eval() is insecure - avoid dynamic code execution
+    severity: ERROR
+    languages: [javascript, typescript]
+
+  - id: innerhtml-assignment
+    pattern: $OBJ.innerHTML = ...
+    message: innerHTML can lead to XSS - use textContent or sanitize
+    severity: WARNING
+    languages: [javascript, typescript]

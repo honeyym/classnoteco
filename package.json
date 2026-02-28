@@ -13,7 +13,8 @@
     "test": "npx vitest run",
     "test:watch": "npx vitest",
     "audit": "npm audit",
-    "audit:fix": "npm audit fix"
+    "audit:fix": "npm audit fix",
+    "lint:security": "npx eslint . && npx semgrep scan --config auto --error"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -82,6 +83,7 @@
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-security": "^4.0.0",
     "globals": "^15.15.0",
     "jsdom": "^20.0.3",
     "postcss": "^8.5.6",
