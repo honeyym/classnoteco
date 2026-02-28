@@ -2,7 +2,7 @@
 # For Supabase, pass VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY as build args
 FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
+COPY package.json npm-shrinkwrap.json ./
 RUN npm ci
 COPY . .
 ARG VITE_SUPABASE_URL
