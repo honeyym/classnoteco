@@ -46,17 +46,17 @@ npm run dev
 
 ### Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start dev server with hot reload |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint |
-| `npm run test` | Run tests with Vitest |
+| Command           | Description                        |
+| ----------------- | ---------------------------------- |
+| `npm run dev`     | Start dev server with hot reload   |
+| `npm run build`   | Build for production               |
+| `npm run preview` | Preview production build locally   |
+| `npm run lint`    | Run ESLint                         |
+| `npm run test`    | Run tests with Vitest              |
 
 ## Project Structure
 
-```
+```text
 src/
 ├── components/     # Reusable UI components
 ├── contexts/       # React contexts (e.g. AuthContext)
