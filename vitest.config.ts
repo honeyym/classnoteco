@@ -4,6 +4,15 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    // Provide placeholder Supabase env for tests (avoids "supabaseUrl is required" in CI/local without .env)
+    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
+      process.env.VITE_SUPABASE_URL ?? "https://test.supabase.co"
+    ),
+    "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(
+      process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "test-anon-key-for-unit-tests"
+    ),
+  },
   test: {
     environment: "jsdom",
     globals: true,

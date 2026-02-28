@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Secret scan (gitleaks) for pre-commit and CI parity.
+# Secret scan (gitleaks + ggshield) for pre-commit and CI parity.
 # Blocks commit if secrets are found. Uses Docker or native gitleaks.
 
 set -e
@@ -25,4 +25,16 @@ run_gitleaks() {
   exit 1
 }
 
+run_ggshield() {
+  if command -v ggshield >/dev/null 2>&1; then
+    # Run when configured; skip without failing if auth missing (exit 3)
+    ggshield secret scan pre-commit 2>/dev/null
+    code=$?
+    [ "$code" = "0" ] && return 0
+    [ "$code" = "3" ] && return 0   # auth not configured, skip
+    exit "$code"                     # exit 1 = secrets found
+  fi
+}
+
 run_gitleaks
+run_ggshield
