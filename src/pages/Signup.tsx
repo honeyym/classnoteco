@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { signupSchema } from '@/schemas/signup';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,14 +26,28 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const result = signupSchema.safeParse({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password,
+    });
+
+    if (!result.success) {
+      const msg = result.error.errors[0]?.message ?? "Invalid input";
+      toast({
+        title: "Error",
+        description: msg,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      if (!email.toLowerCase().endsWith('.edu')) {
-        throw new Error('Please use a valid .edu email address');
-      }
       if (TURNSTILE_SITE_KEY && turnstileToken) {
-        await signUpWithTurnstile(email, password, name, turnstileToken);
+        await signUpWithTurnstile(result.data.email, result.data.password, result.data.name, turnstileToken);
       } else if (TURNSTILE_SITE_KEY && !turnstileToken) {
         toast({
           title: "Please wait",
@@ -41,7 +56,7 @@ export default function Signup() {
         });
         return;
       } else {
-        await signup(email, password, name);
+        await signup(result.data.email, result.data.password, result.data.name);
       }
       toast({
         title: "Check your email",

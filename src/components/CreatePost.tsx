@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Send, Link as LinkIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { isValidSafeUrl } from '@/lib/urlValidation';
+import { createPostSchemaSafe } from '@/schemas/post';
 
 interface CreatePostProps {
   courseId: string;
@@ -21,19 +21,29 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!content.trim()) {
-      toast({ title: "Empty post", description: "Please write something before posting", variant: "destructive" });
-      return;
-    }
 
-    if (link.trim() && !isValidSafeUrl(link.trim())) {
-      toast({ title: "Invalid link", description: "Please enter a safe URL (http, https, mailto, or tel)", variant: "destructive" });
+    const result = createPostSchemaSafe.safeParse({
+      content: content.trim(),
+      link: link.trim() || "",
+      isAnonymous,
+    });
+
+    if (!result.success) {
+      const msg = result.error.errors[0]?.message ?? "Invalid input";
+      toast({
+        title: msg.includes("URL") ? "Invalid link" : "Invalid post",
+        description: msg,
+        variant: "destructive",
+      });
       return;
     }
 
     setIsSubmitting(true);
-    const { error } = await onPost(content.trim(), isAnonymous, link.trim() || undefined);
+    const { error } = await onPost(
+      result.data.content,
+      result.data.isAnonymous,
+      result.data.link || undefined
+    );
 
     if (error) {
       toast({ title: "Error", description: "Failed to create post. Please try again.", variant: "destructive" });
