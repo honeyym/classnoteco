@@ -397,6 +397,7 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
           <button
             onClick={() => setReplyingTo(null)}
             className="ml-auto text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Cancel reply"
           >
             <X className="w-4 h-4" />
           </button>
