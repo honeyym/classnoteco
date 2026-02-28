@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEnrollments } from '@/hooks/useEnrollments';
 import { courses } from '@/data/mockData';
-import { LogOut, MessageCircle, Sparkles, BookOpen, Plus, Check } from 'lucide-react';
+import { LogOut, MessageCircle, Sparkles, BookOpen, Plus, Check, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -41,6 +41,16 @@ export default function Dashboard() {
                 <span className="text-xs text-muted-foreground">Student</span>
               </div>
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="text-muted-foreground hover:text-foreground rounded-xl h-10 w-10 p-0"
+            >
+              <Link to="/settings">
+                <Settings className="w-4 h-4" />
+              </Link>
+            </Button>
             <Button 
               variant="ghost" 
               size="sm" 

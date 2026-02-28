@@ -13,7 +13,9 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Course from "./pages/Course";
 import PostDetail from "./pages/PostDetail";
+import AccountSettings from "./pages/AccountSettings";
 import NotFound from "./pages/NotFound";
+import { MfaGate } from "./components/MfaGate";
 
 const queryClient = new QueryClient();
 
@@ -63,18 +65,21 @@ const App = () => (
         <Sonner />
         <BrowserRouter future={{ v7_relativeSplatPath: true }}>
           <AuthProvider>
-            <Routes>
-              <Route path="/" element={<PublicRoute><Index /></PublicRoute>} />
-              <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-              <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
-              <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/course/:courseId" element={<ProtectedRoute><Course /></ProtectedRoute>} />
-              <Route path="/course/:courseId/post/:postId" element={<ProtectedRoute><PostDetail /></ProtectedRoute>} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <MfaGate>
+              <Routes>
+                <Route path="/" element={<PublicRoute><Index /></PublicRoute>} />
+                <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+                <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+                <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/settings" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
+                <Route path="/course/:courseId" element={<ProtectedRoute><Course /></ProtectedRoute>} />
+                <Route path="/course/:courseId/post/:postId" element={<ProtectedRoute><PostDetail /></ProtectedRoute>} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </MfaGate>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>

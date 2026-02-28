@@ -35,6 +35,13 @@ vi.mock("@/integrations/supabase/client", () => ({
         mockOnAuthStateChange() ?? {
           data: { subscription: { unsubscribe: vi.fn() } },
         },
+      mfa: {
+        getAuthenticatorAssuranceLevel: () =>
+          Promise.resolve({
+            data: { currentLevel: "aal2", nextLevel: "aal2" },
+            error: null,
+          }),
+      },
     },
     from: vi.fn(() => {
       const promise = Promise.resolve({ data: [], error: null });
