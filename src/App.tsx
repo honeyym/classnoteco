@@ -61,7 +61,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter future={{ v7_relativeSplatPath: true }}>
           <AuthProvider>
             <Routes>
               <Route path="/" element={<PublicRoute><Index /></PublicRoute>} />

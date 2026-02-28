@@ -5,7 +5,7 @@ import Index from "./Index";
 
 function renderIndex() {
   return render(
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_relativeSplatPath: true }}>
       <Index />
     </BrowserRouter>
   );
