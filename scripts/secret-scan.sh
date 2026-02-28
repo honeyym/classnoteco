@@ -27,12 +27,12 @@ run_gitleaks() {
 
 run_ggshield() {
   if command -v ggshield >/dev/null 2>&1; then
-    # Run when configured; skip without failing if auth missing (exit 3)
-    ggshield secret scan pre-commit 2>/dev/null
-    code=$?
-    [ "$code" = "0" ] && return 0
-    [ "$code" = "3" ] && return 0   # auth not configured, skip
-    exit "$code"                     # exit 1 = secrets found
+    # Skip without failing if auth missing (exit 3); fail if secrets found (exit 1)
+    ggshield secret scan pre-commit 2>/dev/null || {
+      code=$?
+      [ "$code" = "3" ] && return 0
+      exit "$code"
+    }
   fi
 }
 
