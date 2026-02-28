@@ -55,7 +55,7 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
         .limit(100);
 
       if (error) {
-        console.error('Error fetching messages:', error);
+        if (import.meta.env.DEV) console.error('Error fetching messages:', error);
       } else {
         setMessages((data as ChatMessage[]) || []);
       }
@@ -143,7 +143,7 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
     });
 
     if (error) {
-      console.error('Error sending message:', error);
+      if (import.meta.env.DEV) console.error('Error sending message:', error);
     } else {
       setNewMessage('');
       setReplyingTo(null);
