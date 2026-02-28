@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import logoImg from "@/assets/classnote-logo.png";
+import logoImg from "@/assets/logo.png";
 
 type LogoSize = "sm" | "md" | "lg" | "hero";
 type LogoLayout = "horizontal" | "stacked";
