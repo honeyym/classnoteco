@@ -1,1 +1,4 @@
+# Secret scan (blocks commit if secrets found)
+./scripts/secret-scan.sh
+
 npx lint-staged
