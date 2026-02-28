@@ -13,6 +13,7 @@ permissions:
   contents: read
   packages: write
   security-events: write  # For Trivy SARIF upload to Security tab
+  id-token: write         # For cosign keyless signing
 
 jobs:
   build:
@@ -28,16 +29,22 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.ref_name }}
           secrets: |
             "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}"
             "VITE_SUPABASE_PUBLISHABLE_KEY=${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}"
+
+      - name: Sign image with cosign (keyless)
+        uses: sigstore/cosign-installer@v3
+      - run: cosign sign --yes ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: "true"
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -54,6 +61,8 @@ jobs:
           image: 'ghcr.io/${{ github.repository }}:${{ github.ref_name }}'
           exit-code: '1'
           exit-level: 'fatal'
+          # CIS-DI-0005: We use cosign for signing; DCT/Notary not used
+          ignore: 'CIS-DI-0005'
 
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v4
