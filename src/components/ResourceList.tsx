@@ -1,6 +1,7 @@
 import { Resource, formatTimeAgo } from '@/data/mockData';
 import { Card, CardContent } from '@/components/ui/card';
 import { ExternalLink, Link as LinkIcon } from 'lucide-react';
+import { getSafeHref } from '@/lib/urlValidation';
 
 interface ResourceListProps {
   resources: Resource[];
@@ -24,21 +25,14 @@ export default function ResourceList({ resources }: ResourceListProps) {
 
   return (
     <div className="space-y-3">
-      {sortedResources.map((resource, index) => (
-        <a
-          key={resource.id}
-          href={resource.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block animate-fade-in"
-          style={{ animationDelay: `${index * 50}ms` }}
-        >
-          <Card className="bg-card shadow-card hover:shadow-elevated transition-all duration-300 border-0 group rounded-xl overflow-hidden">
+      {sortedResources.map((resource, index) => {
+        const safeHref = getSafeHref(resource.url);
+        const card = (
+          <Card className="bg-card shadow-card hover:shadow-elevated transition-all duration-300 border-0 group rounded-xl overflow-hidden animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
             <CardContent className="p-4 sm:p-5 flex items-center gap-4">
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center shrink-0">
                 <LinkIcon className="w-5 h-5 text-accent" />
               </div>
-              
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-foreground group-hover:text-primary transition-colors truncate">
                   {resource.title}
@@ -47,14 +41,20 @@ export default function ResourceList({ resources }: ResourceListProps) {
                   Shared by {resource.sharedBy} • {formatTimeAgo(resource.sharedAt)}
                 </p>
               </div>
-              
               <div className="w-9 h-9 rounded-lg bg-muted/50 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
                 <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </CardContent>
           </Card>
-        </a>
-      ))}
+        );
+        return safeHref ? (
+          <a key={resource.id} href={safeHref} target="_blank" rel="noopener noreferrer" className="block">
+            {card}
+          </a>
+        ) : (
+          <div key={resource.id} className="block">{card}</div>
+        );
+      })}
     </div>
   );
 }

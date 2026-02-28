@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import ClassNoteLogo from '@/components/ClassNoteLogo';
 import { formatDistanceToNow } from 'date-fns';
+import { getSafeHref } from '@/lib/urlValidation';
 
 export default function PostDetail() {
   const { courseId, postId } = useParams<{ courseId: string; postId: string }>();
@@ -119,11 +120,14 @@ export default function PostDetail() {
 
               <p className="text-foreground text-[17px] leading-relaxed mb-6">{post.content}</p>
 
-              {post.link && (
-                <a href={post.link} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline mb-4 block">
-                  🔗 {post.link}
-                </a>
-              )}
+              {(() => {
+                const safeHref = getSafeHref(post.link);
+                return safeHref ? (
+                  <a href={safeHref} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline mb-4 block">
+                    🔗 {post.link}
+                  </a>
+                ) : null;
+              })()}
 
               <div className="flex items-center gap-2 pt-4 border-t border-border/50">
                 <span className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-muted-foreground">

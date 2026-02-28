@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Send, Link as LinkIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { isValidSafeUrl } from '@/lib/urlValidation';
 
 interface CreatePostProps {
   courseId: string;
@@ -18,15 +19,6 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const isValidUrl = (url: string) => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -35,8 +27,8 @@ export default function CreatePost({ courseId, onPost }: CreatePostProps) {
       return;
     }
 
-    if (link.trim() && !isValidUrl(link.trim())) {
-      toast({ title: "Invalid link", description: "Please enter a valid URL", variant: "destructive" });
+    if (link.trim() && !isValidSafeUrl(link.trim())) {
+      toast({ title: "Invalid link", description: "Please enter a safe URL (http, https, mailto, or tel)", variant: "destructive" });
       return;
     }
 
