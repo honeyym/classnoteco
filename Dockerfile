@@ -14,7 +14,7 @@ RUN --mount=type=secret,id=VITE_SUPABASE_URL \
     find /app/dist -name "*.map" -delete
 
 # Build minimal static file server
-FROM golang:1.22-alpine@sha256:1699c10032ca2582ec89a24a1312d986a3f094aed3d5c1147b19880afe40e052 AS server
+FROM golang:1.24.13-alpine AS server
 WORKDIR /build
 COPY go.mod ./
 RUN go mod download
