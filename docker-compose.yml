@@ -1,0 +1,15 @@
+# CIS-aligned run config: non-root, no-new-privileges, read-only rootfs
+# Build: DOCKER_BUILDKIT=1 docker compose build (requires VITE_SUPABASE_* in env)
+# Run: docker compose up
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
