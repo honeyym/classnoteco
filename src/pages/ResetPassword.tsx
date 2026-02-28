@@ -65,6 +65,9 @@ export default function ResetPassword() {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       setIsSuccess(true);
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
       setTimeout(() => navigate('/login'), 3000);
     } catch (error) {
       toast({
