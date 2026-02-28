@@ -36,15 +36,23 @@ vi.mock("@/integrations/supabase/client", () => ({
           data: { subscription: { unsubscribe: vi.fn() } },
         },
     },
-    from: vi.fn(() => ({
-      select: vi.fn().mockReturnThis(),
-      eq: vi.fn().mockReturnThis(),
-      single: vi.fn().mockResolvedValue({ data: null, error: null }),
-      order: vi.fn().mockReturnThis(),
-      limit: vi.fn().mockResolvedValue({ data: [], error: null }),
-      insert: vi.fn().mockResolvedValue({ error: null }),
-      update: vi.fn().mockReturnThis(),
-    })),
+    from: vi.fn(() => {
+      const promise = Promise.resolve({ data: [], error: null });
+      const chain: Record<string, unknown> = {
+        select: vi.fn().mockImplementation(() => chain),
+        eq: vi.fn().mockImplementation(() => chain),
+        single: vi.fn().mockResolvedValue({ data: null, error: null }),
+        order: vi.fn().mockImplementation(() => chain),
+        limit: vi.fn().mockImplementation(() => promise),
+        insert: vi.fn().mockResolvedValue({ error: null }),
+        update: vi.fn().mockImplementation(() => chain),
+        in: vi.fn().mockImplementation(() => promise),
+        then: (onFulfilled: (v: { data: unknown[]; error: null }) => void) =>
+          promise.then(onFulfilled),
+        catch: promise.catch.bind(promise),
+      };
+      return chain;
+    }),
   },
 }));
 
@@ -98,7 +106,7 @@ describe("Access control", () => {
 
       await waitFor(
         () => {
-          expect(screen.getByText(/Your.*Courses/i)).toBeInTheDocument();
+          expect(screen.getByRole("heading", { name: /your courses/i })).toBeInTheDocument();
         },
         { timeout: 3000 }
       );
@@ -126,7 +134,7 @@ describe("Access control", () => {
 
       await waitFor(
         () => {
-          expect(screen.getByText(/Your.*Courses/i)).toBeInTheDocument();
+          expect(screen.getByRole("heading", { name: /your courses/i })).toBeInTheDocument();
         },
         { timeout: 3000 }
       );

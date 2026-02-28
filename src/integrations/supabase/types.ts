@@ -58,6 +58,27 @@ export type Database = {
           },
         ]
       }
+      courses: {
+        Row: {
+          id: string
+          code: string
+          name: string
+          created_at: string
+        }
+        Insert: {
+          id: string
+          code: string
+          name: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          code?: string
+          name?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       enrollments: {
         Row: {
           course_id: string
@@ -77,7 +98,15 @@ export type Database = {
           id?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       post_replies: {
         Row: {
