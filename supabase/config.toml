@@ -1,1 +1,6 @@
 project_id = "kfeavyxktgduzdfugkvi"
+
+[auth]
+# JWT expiry in seconds (10 min). Limits stolen token usefulness after logout.
+# Hosted projects: also set in Dashboard → Project Settings → Auth → JWT expiry
+jwt_expiry = 600
