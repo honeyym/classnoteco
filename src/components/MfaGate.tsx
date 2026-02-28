@@ -15,11 +15,23 @@ export function MfaGate({ children }: MfaGateProps) {
   const { user } = useAuth();
   const [needsMfa, setNeedsMfa] = useState<boolean | null>(null);
 
+  // No user: bypass gate (no effect needed)
+  if (!user) {
+    return <>{children}</>;
+  }
+
+  return <MfaGateInner needsMfa={needsMfa} setNeedsMfa={setNeedsMfa} onSuccess={() => setNeedsMfa(false)}>{children}</MfaGateInner>;
+}
+
+function MfaGateInner({ children, needsMfa, setNeedsMfa, onSuccess }: {
+  children: React.ReactNode;
+  needsMfa: boolean | null;
+  setNeedsMfa: (v: boolean | null) => void;
+  onSuccess: () => void;
+}) {
+  const { user } = useAuth();
+
   useEffect(() => {
-    if (!user) {
-      setNeedsMfa(false);
-      return;
-    }
     let cancelled = false;
     async function checkAal() {
       try {
@@ -40,11 +52,7 @@ export function MfaGate({ children }: MfaGateProps) {
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
-
-  const handleMfaSuccess = () => {
-    setNeedsMfa(false);
-  };
+  }, [user, setNeedsMfa]);
 
   // Still determining AAL
   if (needsMfa === null) {
@@ -56,7 +64,7 @@ export function MfaGate({ children }: MfaGateProps) {
   }
 
   if (needsMfa) {
-    return <MfaChallenge onSuccess={handleMfaSuccess} />;
+    return <MfaChallenge onSuccess={onSuccess} />;
   }
 
   return <>{children}</>;
