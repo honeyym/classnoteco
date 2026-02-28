@@ -7,18 +7,29 @@ import path from "path";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
+  const projectId =
+    env.VITE_SUPABASE_PROJECT_ID ||
+    env.SUPABASE_PROJECT_ID ||
+    process.env.VITE_SUPABASE_PROJECT_ID ||
+    process.env.SUPABASE_PROJECT_ID ||
+    "";
+
+  const derivedSupabaseUrl = projectId ? `https://${projectId}.supabase.co` : "";
+
   const viteSupabaseUrl =
     env.VITE_SUPABASE_URL ||
     env.SUPABASE_URL ||
     process.env.VITE_SUPABASE_URL ||
     process.env.SUPABASE_URL ||
-    "";
+    derivedSupabaseUrl;
 
   const viteSupabasePublishableKey =
     env.VITE_SUPABASE_PUBLISHABLE_KEY ||
     env.SUPABASE_PUBLISHABLE_KEY ||
+    env.SUPABASE_ANON_KEY ||
     process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
     process.env.SUPABASE_PUBLISHABLE_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
     "";
 
   return {
