@@ -1,73 +1,72 @@
-# Welcome to your Lovable project
+# ClassNote
 
-## Project info
+**Where learning meets conversation.** A discussion platform built for college students. Ask questions, share resources, and connect with classmates – all in one place.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Course discussions** – Ask questions and get answers from classmates and TAs
+- **Anonymous posting** – Post anonymously when you need to
+- **Real-time chat** – Quick messages with classmates for instant collaboration
+- **Course enrollment** – Browse and enroll in courses, access discussions and resources
+- **Authentication** – Sign up, log in, password reset
+- **Dark/light theme** – System-aware theme toggle
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend**: Vite, React, TypeScript
+- **UI**: shadcn/ui, Tailwind CSS, Radix UI
+- **Backend**: Supabase (auth, database)
+- **Data**: TanStack Query (React Query), React Router
+- **Forms**: React Hook Form, Zod
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js & npm ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Setup
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
+cd classnoteco
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+# Install dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Set up environment variables
+# Create a .env file with your Supabase credentials:
+#   VITE_SUPABASE_URL=your_supabase_url
+#   VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server with hot reload |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Run ESLint |
+| `npm run test` | Run tests with Vitest |
 
-**Use GitHub Codespaces**
+## Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+src/
+├── components/     # Reusable UI components
+├── contexts/       # React contexts (e.g. AuthContext)
+├── data/           # Mock data
+├── hooks/          # Custom hooks (usePosts, useEnrollments)
+├── integrations/   # Supabase client and types
+├── pages/          # Route pages (Dashboard, Course, Login, etc.)
+└── App.tsx
+```
 
-## What technologies are used for this project?
+## License
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+© 2026 ClassNote. Made for students, by students.
