@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { courseIdSchema } from '@/schemas/enrollment';
 
 export function useEnrollments() {
   const { user } = useAuth();
@@ -35,27 +36,35 @@ export function useEnrollments() {
   }, [user]);
 
   const enroll = async (courseId: string) => {
-    if (!user) return;
+    if (!user) return { error: null };
+    const parsed = courseIdSchema.safeParse(courseId);
+    if (!parsed.success) {
+      return { error: { message: parsed.error.errors[0]?.message ?? "Invalid course" } as { message: string } };
+    }
     const { error } = await supabase
       .from('enrollments')
-      .insert({ user_id: user.id, course_id: courseId });
+      .insert({ user_id: user.id, course_id: parsed.data });
 
     if (!error) {
-      setEnrolledCourseIds((prev) => [...prev, courseId]);
+      setEnrolledCourseIds((prev) => [...prev, parsed.data]);
     }
     return { error };
   };
 
   const unenroll = async (courseId: string) => {
-    if (!user) return;
+    if (!user) return { error: null };
+    const parsed = courseIdSchema.safeParse(courseId);
+    if (!parsed.success) {
+      return { error: { message: parsed.error.errors[0]?.message ?? "Invalid course" } as { message: string } };
+    }
     const { error } = await supabase
       .from('enrollments')
       .delete()
       .eq('user_id', user.id)
-      .eq('course_id', courseId);
+      .eq('course_id', parsed.data);
 
     if (!error) {
-      setEnrolledCourseIds((prev) => prev.filter((id) => id !== courseId));
+      setEnrolledCourseIds((prev) => prev.filter((id) => id !== parsed.data));
     }
     return { error };
   };

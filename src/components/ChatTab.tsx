@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { sendChatMessageSchema } from '@/schemas/chat';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
@@ -122,14 +123,12 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
     scrollToBottom();
   }, [messages]);
 
-  const MAX_MESSAGE_LENGTH = 5000;
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const trimmed = newMessage.trim();
-    if (!trimmed || !user) return;
-    if (trimmed.length > MAX_MESSAGE_LENGTH) return;
+    if (!user) return;
+
+    const parsed = sendChatMessageSchema.safeParse({ content: newMessage });
+    if (!parsed.success) return;
 
     setIsSending(true);
 
@@ -137,7 +136,7 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
       course_id: courseId,
       user_id: user.id,
       author_name: user.name.slice(0, 100),
-      content: trimmed.slice(0, MAX_MESSAGE_LENGTH),
+      content: parsed.data.content,
       is_anonymous: isAnonymous,
       parent_id: replyingTo?.id || null,
     });
@@ -413,7 +412,7 @@ export default function ChatTab({ courseId, searchQuery: externalSearchQuery }: 
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder={replyingTo ? 'Write a reply...' : 'Type a message...'}
-              maxLength={MAX_MESSAGE_LENGTH}
+              maxLength={5000}
               className="flex-1 h-12 rounded-xl bg-muted/30 border-border/50 focus-visible:ring-primary/30 text-base"
               disabled={isSending}
             />
