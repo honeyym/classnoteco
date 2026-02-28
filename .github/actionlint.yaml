@@ -1,0 +1,7 @@
+# actionlint config - https://github.com/rhysd/actionlint
+paths:
+  "**/*.yml":
+    ignore:
+      # Custom repo secrets (VITE_SUPABASE_*) trigger false positive
+      # when linter can't validate keys - workflow is correct
+      - "Context access might be invalid"

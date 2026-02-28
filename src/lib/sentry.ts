@@ -14,11 +14,7 @@ if (dsn) {
   Sentry.init({
     dsn,
     environment,
-    integrations: [
-      Sentry.reactRouterV6BrowserTracingIntegration({
-        useEffect: (effect) => effect(),
-      }),
-    ],
+    integrations: [Sentry.browserTracingIntegration()],
     tracesSampleRate: environment === "production" ? 0.1 : 1.0,
   });
 }
