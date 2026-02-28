@@ -8,11 +8,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Loader2, ArrowLeft, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ClassNoteLogo from '@/components/ClassNoteLogo';
+import { TurnstileInvisible } from '@/components/TurnstileInvisible';
+import { resetPasswordWithTurnstile } from '@/lib/authWithTurnstile';
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,10 +25,21 @@ export default function ForgotPassword() {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-      if (error) throw error;
+      if (TURNSTILE_SITE_KEY && turnstileToken) {
+        await resetPasswordWithTurnstile(email, turnstileToken);
+      } else if (TURNSTILE_SITE_KEY && !turnstileToken) {
+        toast({
+          title: 'Please wait',
+          description: 'Security check is still loading. Try again in a moment.',
+          variant: 'destructive',
+        });
+        return;
+      } else {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+      }
       setSent(true);
     } catch (error) {
       toast({
@@ -81,6 +97,14 @@ export default function ForgotPassword() {
               </CardHeader>
 
               <CardContent className="px-8 pt-6">
+                {TURNSTILE_SITE_KEY && (
+                  <TurnstileInvisible
+                    siteKey={TURNSTILE_SITE_KEY}
+                    onVerify={setTurnstileToken}
+                    onExpire={() => setTurnstileToken(null)}
+                    onError={() => setTurnstileToken(null)}
+                  />
+                )}
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-medium">Email</Label>

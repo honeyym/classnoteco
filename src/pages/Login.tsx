@@ -8,11 +8,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Loader2, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ClassNoteLogo from '@/components/ClassNoteLogo';
+import { TurnstileInvisible } from '@/components/TurnstileInvisible';
+import { signInWithTurnstile } from '@/lib/authWithTurnstile';
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -20,9 +25,20 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
-      await login(email, password);
+      if (TURNSTILE_SITE_KEY && turnstileToken) {
+        await signInWithTurnstile(email, password, turnstileToken);
+      } else if (TURNSTILE_SITE_KEY && !turnstileToken) {
+        toast({
+          title: "Please wait",
+          description: "Security check is still loading. Try again in a moment.",
+          variant: "destructive",
+        });
+        return;
+      } else {
+        await login(email, password);
+      }
       navigate('/dashboard');
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Failed to login";
@@ -60,6 +76,14 @@ export default function Login() {
           </CardHeader>
           
           <CardContent className="px-8 pt-6">
+            {TURNSTILE_SITE_KEY && (
+              <TurnstileInvisible
+                siteKey={TURNSTILE_SITE_KEY}
+                onVerify={setTurnstileToken}
+                onExpire={() => setTurnstileToken(null)}
+                onError={() => setTurnstileToken(null)}
+              />
+            )}
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">Email</Label>

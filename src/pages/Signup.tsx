@@ -8,12 +8,17 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Loader2, ArrowRight, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ClassNoteLogo from '@/components/ClassNoteLogo';
+import { TurnstileInvisible } from '@/components/TurnstileInvisible';
+import { signUpWithTurnstile } from '@/lib/authWithTurnstile';
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 
 export default function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const { signup } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -21,12 +26,23 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       if (!email.toLowerCase().endsWith('.edu')) {
         throw new Error('Please use a valid .edu email address');
       }
-      await signup(email, password, name);
+      if (TURNSTILE_SITE_KEY && turnstileToken) {
+        await signUpWithTurnstile(email, password, name, turnstileToken);
+      } else if (TURNSTILE_SITE_KEY && !turnstileToken) {
+        toast({
+          title: "Please wait",
+          description: "Security check is still loading. Try again in a moment.",
+          variant: "destructive",
+        });
+        return;
+      } else {
+        await signup(email, password, name);
+      }
       toast({
         title: "Check your email",
         description: "We've sent you a verification link. Please check your inbox to confirm your account.",
@@ -73,6 +89,14 @@ export default function Signup() {
           </CardHeader>
           
           <CardContent className="px-6 pt-4">
+            {TURNSTILE_SITE_KEY && (
+              <TurnstileInvisible
+                siteKey={TURNSTILE_SITE_KEY}
+                onVerify={setTurnstileToken}
+                onExpire={() => setTurnstileToken(null)}
+                onError={() => setTurnstileToken(null)}
+              />
+            )}
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="space-y-1.5">
                 <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
