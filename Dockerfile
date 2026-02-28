@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-# Build stage - uses BuildKit secrets; values never stored in image layers
-FROM node:20-alpine AS builder
+# Base images pinned by digest for reproducible builds
+FROM node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8 AS builder
 WORKDIR /app
 COPY package.json npm-shrinkwrap.json ./
 RUN npm ci
@@ -10,13 +10,20 @@ RUN --mount=type=secret,id=VITE_SUPABASE_URL \
     --mount=type=secret,id=VITE_SUPABASE_PUBLISHABLE_KEY \
     export VITE_SUPABASE_URL=$(cat /run/secrets/VITE_SUPABASE_URL) && \
     export VITE_SUPABASE_PUBLISHABLE_KEY=$(cat /run/secrets/VITE_SUPABASE_PUBLISHABLE_KEY) && \
-    npm run build
+    npm run build && \
+    find /app/dist -name "*.map" -delete
 
-# Production stage - no source maps, no dev deps
-FROM nginx:alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist /usr/share/nginx/html
-# Remove any .map files if present
-RUN find /usr/share/nginx/html -name "*.map" -delete
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Build minimal static file server
+FROM golang:1.22-alpine@sha256:1699c10032ca2582ec89a24a1312d986a3f094aed3d5c1147b19880afe40e052 AS server
+WORKDIR /build
+COPY go.mod ./
+RUN go mod download
+COPY cmd/ ./cmd/
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o /server ./cmd/static-server
+
+# Production: distroless + minimal static server
+FROM gcr.io/distroless/static:nonroot@sha256:f512d819b8f109f2375e8b51d8cfd8aafe81034bc3e319740128b7d7f70d5036
+COPY --from=server /server /server
+COPY --from=builder /app/dist /srv
+EXPOSE 8080
+ENTRYPOINT ["/server"]
