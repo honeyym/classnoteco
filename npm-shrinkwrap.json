@@ -37,24 +37,24 @@
         "@radix-ui/react-toggle": "^1.1.9",
         "@radix-ui/react-toggle-group": "^1.1.10",
         "@radix-ui/react-tooltip": "^1.2.7",
-        "@sentry/react": "^10.40.0",
+        "@sentry/react": "^10.42.0",
         "@supabase/supabase-js": "^2.93.3",
         "@tanstack/react-query": "^5.83.0",
         "baseline-browser-mapping": "^2.10.0",
-        "caniuse-lite": "^1.0.30001774",
+        "caniuse-lite": "^1.0.30001777",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
         "date-fns": "^3.6.0",
         "embla-carousel-react": "^8.6.0",
         "input-otp": "^1.4.2",
-        "lucide-react": "^0.462.0",
+        "lucide-react": "^0.577.0",
         "next-themes": "^0.4.6",
         "react": "^19.2.4",
         "react-day-picker": "^8.10.1",
         "react-dom": "^19.2.4",
         "react-hook-form": "^7.61.1",
-        "react-resizable-panels": "^4.6.5",
+        "react-resizable-panels": "^4.7.1",
         "react-router-dom": "^6.30.1",
         "recharts": "^2.15.4",
         "sonner": "^1.7.4",
@@ -77,13 +77,13 @@
         "autoprefixer": "^10.4.21",
         "eslint": "^9.32.0",
         "eslint-plugin-react-hooks": "^7.0.1",
-        "eslint-plugin-react-refresh": "^0.4.20",
+        "eslint-plugin-react-refresh": "^0.5.2",
         "eslint-plugin-security": "^4.0.0",
         "globals": "^15.15.0",
         "husky": "^9.1.7",
         "jsdom": "^20.0.3",
-        "lint-staged": "^16.3.0",
-        "postcss": "^8.5.6",
+        "lint-staged": "^16.3.2",
+        "postcss": "^8.5.8",
         "tailwindcss": "^3.4.17",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.38.0",
@@ -3166,50 +3166,50 @@
       ]
     },
     "node_modules/@sentry-internal/browser-utils": {
-      "version": "10.40.0",
-      "resolved": "https://registry.npmjs.org/@sentry-internal/browser-utils/-/browser-utils-10.40.0.tgz",
-      "integrity": "sha512-3CDeVNBXYOIvBVdT0SOdMZx5LzYDLuhGK/z7A14sYZz4Cd2+f4mSeFDaEOoH/g2SaY2CKR5KGkAADy8IyjZ21w==",
+      "version": "10.42.0",
+      "resolved": "https://registry.npmjs.org/@sentry-internal/browser-utils/-/browser-utils-10.42.0.tgz",
+      "integrity": "sha512-HCEICKvepxN4/6NYfnMMMlppcSwIEwtS66X6d1/mwaHdi2ivw0uGl52p7Nfhda/lIJArbrkWprxl0WcjZajhQA==",
       "license": "MIT",
       "dependencies": {
-        "@sentry/core": "10.40.0"
+        "@sentry/core": "10.42.0"
       },
       "engines": {
         "node": ">=18"
       }
     },
     "node_modules/@sentry-internal/feedback": {
-      "version": "10.40.0",
-      "resolved": "https://registry.npmjs.org/@sentry-internal/feedback/-/feedback-10.40.0.tgz",
-      "integrity": "sha512-V/ixkcdCNMo04KgsCEeNEu966xUUTD6czKT2LOAO5siZACqFjT/Rp9VR1n7QQrVo3sL7P3QNiTHtX0jaeWbwzg==",
+      "version": "10.42.0",
+      "resolved": "https://registry.npmjs.org/@sentry-internal/feedback/-/feedback-10.42.0.tgz",
+      "integrity": "sha512-lpPcHsog10MVYFTWE0Pf8vQRqQWwZHJpkVl2FEb9/HDdHFyTBUhCVoWo1KyKaG7GJl9AVKMAg7bp9SSNArhFNQ==",
       "license": "MIT",
       "dependencies": {
-        "@sentry/core": "10.40.0"
+        "@sentry/core": "10.42.0"
       },
       "engines": {
         "node": ">=18"
       }
     },
     "node_modules/@sentry-internal/replay": {
-      "version": "10.40.0",
-      "resolved": "https://registry.npmjs.org/@sentry-internal/replay/-/replay-10.40.0.tgz",
-      "integrity": "sha512-vsH2Ut0KIIQIHNdS3zzEGLJ2C9btbpvJIWAVk7l7oft66JzlUNC89qNaQ5SAypjLQx4Ln2V/ZTqfEoNzXOAsoQ==",
+      "version": "10.42.0",
+      "resolved": "https://registry.npmjs.org/@sentry-internal/replay/-/replay-10.42.0.tgz",
+      "integrity": "sha512-Zh3EoaH39x2lqVY1YyVB2vJEyCIrT+YLUQxYl1yvP0MJgLxaR6akVjkgxbSUJahan4cX5DxpZiEHfzdlWnYPyQ==",
       "license": "MIT",
       "dependencies": {
-        "@sentry-internal/browser-utils": "10.40.0",
-        "@sentry/core": "10.40.0"
+        "@sentry-internal/browser-utils": "10.42.0",
+        "@sentry/core": "10.42.0"
       },
       "engines": {
         "node": ">=18"
       }
     },
     "node_modules/@sentry-internal/replay-canvas": {
-      "version": "10.40.0",
-      "resolved": "https://registry.npmjs.org/@sentry-internal/replay-canvas/-/replay-canvas-10.40.0.tgz",
-      "integrity": "sha512-wzQwilFHO2baeCt0dTMf0eW+rgK8O+mkisf9sQzPXzG3Krr/iVtFg1T5T1Th3YsCsEdn6yQ3hcBPLEXjMSvccg==",
+      "version": "10.42.0",
+      "resolved": "https://registry.npmjs.org/@sentry-internal/replay-canvas/-/replay-canvas-10.42.0.tgz",
+      "integrity": "sha512-am3m1Fj8ihoPfoYo41Qq4KeCAAICn4bySso8Oepu9dMNe9Lcnsf+reMRS2qxTPg3pZDc4JEMOcLyNCcgnAfrHw==",
       "license": "MIT",
       "dependencies": {
-        "@sentry-internal/replay": "10.40.0",
-        "@sentry/core": "10.40.0"
+        "@sentry-internal/replay": "10.42.0",
+        "@sentry/core": "10.42.0"
       },
       "engines": {
         "node": ">=18"
@@ -3226,16 +3226,16 @@
       }
     },
     "node_modules/@sentry/browser": {
-      "version": "10.40.0",
-      "resolved": "https://registry.npmjs.org/@sentry/browser/-/browser-10.40.0.tgz",
-      "integrity": "sha512-nCt3FKUMFad0C6xl5wCK0Jz+qT4Vev4fv6HJRn0YoNRRDQCfsUVxAz7pNyyiPNGM/WCDp9wJpGJsRvbBRd2anw==",
+      "version": "10.42.0",
+      "resolved": "https://registry.npmjs.org/@sentry/browser/-/browser-10.42.0.tgz",
+      "integrity": "sha512-iXxYjXNEBwY1MH4lDSDZZUNjzPJDK7/YLwVIJq/3iBYpIQVIhaJsoJnf3clx9+NfJ8QFKyKfcvgae61zm+hgTA==",
       "license": "MIT",
       "dependencies": {
-        "@sentry-internal/browser-utils": "10.40.0",
-        "@sentry-internal/feedback": "10.40.0",
-        "@sentry-internal/replay": "10.40.0",
-        "@sentry-internal/replay-canvas": "10.40.0",
-        "@sentry/core": "10.40.0"
+        "@sentry-internal/browser-utils": "10.42.0",
+        "@sentry-internal/feedback": "10.42.0",
+        "@sentry-internal/replay": "10.42.0",
+        "@sentry-internal/replay-canvas": "10.42.0",
+        "@sentry/core": "10.42.0"
       },
       "engines": {
         "node": ">=18"
@@ -3435,22 +3435,22 @@
       }
     },
     "node_modules/@sentry/core": {
-      "version": "10.40.0",
-      "resolved": "https://registry.npmjs.org/@sentry/core/-/core-10.40.0.tgz",
-      "integrity": "sha512-/wrcHPp9Avmgl6WBimPjS4gj810a1wU5oX9fF1bzJfeIIbF3jTsAbv0oMbgDp0cSDnkwv2+NvcPnn3+c5J6pBA==",
+      "version": "10.42.0",
+      "resolved": "https://registry.npmjs.org/@sentry/core/-/core-10.42.0.tgz",
+      "integrity": "sha512-L4rMrXMqUKBanpjpMT+TuAVk6xAijz6AWM6RiEYpohAr7SGcCEc1/T0+Ep1eLV8+pwWacfU27OvELIyNeOnGzA==",
       "license": "MIT",
       "engines": {
         "node": ">=18"
       }
     },
     "node_modules/@sentry/react": {
-      "version": "10.40.0",
-      "resolved": "https://registry.npmjs.org/@sentry/react/-/react-10.40.0.tgz",
-      "integrity": "sha512-3T5W/e3QJMimXRIOx8xMEZbxeIuFiKlXvHLcMTLGygGBYnxQGeb8Oz/8heov+3zF1JoCIxeVQNFW0woySApfyA==",
+      "version": "10.42.0",
+      "resolved": "https://registry.npmjs.org/@sentry/react/-/react-10.42.0.tgz",
+      "integrity": "sha512-uigyz6E3yPjjqIZpkGzRChww6gzMmqdCpK30M5aBYoaen29DDmSECHYA16sfgXeSwzQhnXyX7GxgOB+eKIr9dw==",
       "license": "MIT",
       "dependencies": {
-        "@sentry/browser": "10.40.0",
-        "@sentry/core": "10.40.0"
+        "@sentry/browser": "10.42.0",
+        "@sentry/core": "10.42.0"
       },
       "engines": {
         "node": ">=18"
@@ -4876,9 +4876,9 @@
       }
     },
     "node_modules/caniuse-lite": {
-      "version": "1.0.30001774",
-      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001774.tgz",
-      "integrity": "sha512-DDdwPGz99nmIEv216hKSgLD+D4ikHQHjBC/seF98N9CPqRX4M5mSxT9eTV6oyisnJcuzxtZy4n17yKKQYmYQOA==",
+      "version": "1.0.30001777",
+      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001777.tgz",
+      "integrity": "sha512-tmN+fJxroPndC74efCdp12j+0rk0RHwV5Jwa1zWaFVyw2ZxAuPeG8ZgWC3Wz7uSjT3qMRQ5XHZ4COgQmsCMJAQ==",
       "funding": [
         {
           "type": "opencollective",
@@ -5764,13 +5764,13 @@
       }
     },
     "node_modules/eslint-plugin-react-refresh": {
-      "version": "0.4.26",
-      "resolved": "https://registry.npmjs.org/eslint-plugin-react-refresh/-/eslint-plugin-react-refresh-0.4.26.tgz",
-      "integrity": "sha512-1RETEylht2O6FM/MvgnyvT+8K21wLqDNg4qD51Zj3guhjt433XbnnkVttHMyaVyAFD03QSV4LPS5iE3VQmO7XQ==",
+      "version": "0.5.2",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-react-refresh/-/eslint-plugin-react-refresh-0.5.2.tgz",
+      "integrity": "sha512-hmgTH57GfzoTFjVN0yBwTggnsVUF2tcqi7RJZHqi9lIezSs4eFyAMktA68YD4r5kNw1mxyY4dmkyoFDb3FIqrA==",
       "dev": true,
       "license": "MIT",
       "peerDependencies": {
-        "eslint": ">=8.40"
+        "eslint": "^9 || ^10"
       }
     },
     "node_modules/eslint-plugin-security": {
@@ -6773,16 +6773,15 @@
       "license": "MIT"
     },
     "node_modules/lint-staged": {
-      "version": "16.3.0",
-      "resolved": "https://registry.npmjs.org/lint-staged/-/lint-staged-16.3.0.tgz",
-      "integrity": "sha512-YVHHy/p6U4/No9Af+35JLh3umJ9dPQnGTvNCbfO/T5fC60us0jFnc+vw33cqveI+kqxIFJQakcMVTO2KM+653A==",
+      "version": "16.3.2",
+      "resolved": "https://registry.npmjs.org/lint-staged/-/lint-staged-16.3.2.tgz",
+      "integrity": "sha512-xKqhC2AeXLwiAHXguxBjuChoTTWFC6Pees0SHPwOpwlvI3BH7ZADFPddAdN3pgo3aiKgPUx/bxE78JfUnxQnlg==",
       "dev": true,
       "license": "MIT",
       "dependencies": {
         "commander": "^14.0.3",
         "listr2": "^9.0.5",
         "micromatch": "^4.0.8",
-        "nano-spawn": "^2.0.0",
         "string-argv": "^0.3.2",
         "tinyexec": "^1.0.2",
         "yaml": "^2.8.2"
@@ -6894,12 +6893,12 @@
       }
     },
     "node_modules/lucide-react": {
-      "version": "0.462.0",
-      "resolved": "https://registry.npmjs.org/lucide-react/-/lucide-react-0.462.0.tgz",
-      "integrity": "sha512-NTL7EbAao9IFtuSivSZgrAh4fZd09Lr+6MTkqIxuHaH2nnYiYIzXPo06cOxHg9wKLdj6LL8TByG4qpePqwgx/g==",
+      "version": "0.577.0",
+      "resolved": "https://registry.npmjs.org/lucide-react/-/lucide-react-0.577.0.tgz",
+      "integrity": "sha512-4LjoFv2eEPwYDPg/CUdBJQSDfPyzXCRrVW1X7jrx/trgxnxkHFjnVZINbzvzxjN70dxychOfg+FTYwBiS3pQ5A==",
       "license": "ISC",
       "peerDependencies": {
-        "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc"
+        "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0"
       }
     },
     "node_modules/lz-string": {
@@ -7042,19 +7041,6 @@
         "any-promise": "^1.0.0",
         "object-assign": "^4.0.1",
         "thenify-all": "^1.0.0"
-      }
-    },
-    "node_modules/nano-spawn": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/nano-spawn/-/nano-spawn-2.0.0.tgz",
-      "integrity": "sha512-tacvGzUY5o2D8CBh2rrwxyNojUsZNU2zjNTzKQrkgGJQTbGAfArVWXSKMBokBeeg6C7OLRGUEyoFlYbfeWQIqw==",
-      "dev": true,
-      "license": "MIT",
-      "engines": {
-        "node": ">=20.17"
-      },
-      "funding": {
-        "url": "https://github.com/sindresorhus/nano-spawn?sponsor=1"
       }
     },
     "node_modules/nanoid": {
@@ -7386,9 +7372,9 @@
       }
     },
     "node_modules/postcss": {
-      "version": "8.5.6",
-      "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.6.tgz",
-      "integrity": "sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==",
+      "version": "8.5.8",
+      "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.8.tgz",
+      "integrity": "sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==",
       "dev": true,
       "funding": [
         {
@@ -7807,9 +7793,9 @@
       }
     },
     "node_modules/react-resizable-panels": {
-      "version": "4.6.5",
-      "resolved": "https://registry.npmjs.org/react-resizable-panels/-/react-resizable-panels-4.6.5.tgz",
-      "integrity": "sha512-pmQP6qv9KmsesNMvWVNvVfVJAwYSOWWbAOAtrPR8Cre20+j1NWIlyft0btjtDQE+OepXmI6g3VPrCXQY0oD7+Q==",
+      "version": "4.7.1",
+      "resolved": "https://registry.npmjs.org/react-resizable-panels/-/react-resizable-panels-4.7.1.tgz",
+      "integrity": "sha512-RYBRgvdZhnUds5jJWYr1up0hYFofgN1dqSwhxfBl9Savoxms0gyGF0AfaXskhxTYkXrlwc+TlQPe5UkoV+1neg==",
       "license": "MIT",
       "peerDependencies": {
         "react": "^18.0.0 || ^19.0.0",
