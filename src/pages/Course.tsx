@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useEnrollments } from '@/hooks/useEnrollments';
 import { usePosts } from '@/hooks/usePosts';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen } from 'lucide-react';
+import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,6 +13,7 @@ import PostCard from '@/components/PostCard';
 import CreatePost from '@/components/CreatePost';
 import ResourceList from '@/components/ResourceList';
 import ChatTab from '@/components/ChatTab';
+import StudyGroups from '@/components/StudyGroups';
 import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function Course() {
@@ -208,6 +209,11 @@ export default function Course() {
                 <BookOpen className="w-4 h-4 mr-2" />Resources
               </TabsTrigger>
             </TabsList>
+            <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
+              <TabsTrigger value="groups" className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
+                <Users className="w-4 h-4 mr-2" />Study Groups
+              </TabsTrigger>
+            </TabsList>
           </div>
           
           <TabsContent value="discussion" className="mt-0 tab-content-enter">
@@ -344,6 +350,21 @@ export default function Course() {
                 </div>
               </div>
               <ResourceList resources={resources} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="groups" className="mt-0 tab-content-enter">
+            <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-sm">
+                  <Users className="w-5 h-5 text-accent-foreground" />
+                </div>
+                <div>
+                  <h3 className="font-display font-semibold text-foreground">Study Groups</h3>
+                  <p className="text-xs text-muted-foreground">Form groups and study together</p>
+                </div>
+              </div>
+              <StudyGroups courseId={courseId} />
             </div>
           </TabsContent>
         </Tabs>
