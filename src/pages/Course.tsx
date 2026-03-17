@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useEnrollments } from '@/hooks/useEnrollments';
 import { usePosts } from '@/hooks/usePosts';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen, Users } from 'lucide-react';
+import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
