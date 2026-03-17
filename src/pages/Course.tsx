@@ -13,7 +13,7 @@ import PostCard from '@/components/PostCard';
 import CreatePost from '@/components/CreatePost';
 import ResourceList from '@/components/ResourceList';
 import ChatTab from '@/components/ChatTab';
-import StudyGroups from '@/components/StudyGroups';
+import CourseNotes from '@/components/CourseNotes';
 import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function Course() {
