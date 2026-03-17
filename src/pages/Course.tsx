@@ -210,8 +210,8 @@ export default function Course() {
               </TabsTrigger>
             </TabsList>
             <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
-              <TabsTrigger value="groups" className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
-                <Users className="w-4 h-4 mr-2" />Study Groups
+              <TabsTrigger value="notes" className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
+                <FileText className="w-4 h-4 mr-2" />Notes
               </TabsTrigger>
             </TabsList>
           </div>
