@@ -58,6 +58,42 @@ export type Database = {
           },
         ]
       }
+      course_notes: {
+        Row: {
+          author_name: string
+          course_id: string
+          created_at: string
+          file_name: string
+          file_path: string
+          file_size: number
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          author_name: string
+          course_id: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          file_size: number
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          author_name?: string
+          course_id?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       enrollments: {
         Row: {
           course_id: string
