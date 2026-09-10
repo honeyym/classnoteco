@@ -8,9 +8,6 @@ export default function Index() {
   return (
     <div className="min-h-screen gradient-subtle overflow-hidden">
       {/* Decorative Background Elements */}
-      <div className="absolute inset-0 bg-dot-pattern opacity-50 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-primary/10 via-accent/5 to-transparent rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-accent/8 via-primary/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
       <header className="relative container mx-auto px-4 py-4">

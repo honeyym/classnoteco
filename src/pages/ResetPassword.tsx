@@ -90,8 +90,6 @@ export default function ResetPassword() {
 
   return (
     <div className="min-h-screen gradient-subtle flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-dot-pattern opacity-40 pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-[400px] h-[400px] bg-gradient-to-tl from-accent/15 via-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative w-full max-w-md animate-fade-in">
         <div className="flex items-center justify-center mb-8">
