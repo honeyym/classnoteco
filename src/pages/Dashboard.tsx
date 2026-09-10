@@ -18,8 +18,6 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen gradient-subtle">
       {/* Decorative Background */}
-      <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-primary/8 via-accent/4 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-card shadow-sm">

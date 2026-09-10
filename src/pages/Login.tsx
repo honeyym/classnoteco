@@ -55,9 +55,6 @@ export default function Login() {
   return (
     <div className="min-h-screen gradient-subtle flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative Background */}
-      <div className="absolute inset-0 bg-dot-pattern opacity-40 pointer-events-none" />
-      <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-gradient-to-br from-primary/15 via-accent/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-[400px] h-[400px] bg-gradient-to-tl from-accent/15 via-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative w-full max-w-md animate-fade-in">
         {/* Logo */}

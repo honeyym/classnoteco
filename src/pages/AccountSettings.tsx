@@ -123,8 +123,6 @@ export default function AccountSettings() {
 
   return (
     <div className="min-h-screen gradient-subtle">
-      <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-primary/8 via-accent/4 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       <header className="sticky top-0 z-50 border-b border-border/50 bg-card shadow-sm">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">

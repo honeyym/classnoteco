@@ -54,8 +54,6 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen gradient-subtle flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-dot-pattern opacity-40 pointer-events-none" />
-      <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-gradient-to-br from-primary/15 via-accent/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative w-full max-w-md animate-fade-in">
         <div className="flex items-center justify-center mb-8">
