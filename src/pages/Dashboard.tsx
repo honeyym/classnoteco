@@ -10,10 +10,10 @@ import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
-  const { enrolledCourseIds, isLoading: enrollLoading, enroll, unenroll, isEnrolled } = useEnrollments();
+  const { isLoading: enrollLoading } = useEnrollments();
 
-  const enrolledCourses = courses.filter((c) => isEnrolled(c.id));
-  const availableCourses = courses.filter((c) => !isEnrolled(c.id));
+  // Students are automatically enrolled in all courses
+  const enrolledCourses = courses;
 
   return (
     <div className="min-h-screen gradient-subtle">
