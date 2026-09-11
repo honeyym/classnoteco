@@ -85,7 +85,7 @@ describe("Access control", () => {
     });
 
     it("redirects unauthenticated users from /course/:id to /login", async () => {
-      initialEntries = ["/course/cisc200"];
+      initialEntries = ["/course/acct311"];
       render(<App />);
 
       await waitFor(() => {
