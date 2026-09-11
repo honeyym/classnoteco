@@ -78,8 +78,7 @@ export default function Dashboard() {
         {/* Quick Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
           {[
-            { label: 'Enrolled', value: enrolledCourseIds.length, icon: BookOpen, color: 'from-primary to-accent' },
-            { label: 'Available', value: availableCourses.length, icon: Plus, color: 'from-accent to-primary' },
+            { label: 'Enrolled', value: enrolledCourses.length, icon: BookOpen, color: 'from-primary to-accent' },
           ].map((stat, i) => (
             <div key={i} className="p-4 rounded-2xl bg-card/90 backdrop-blur-sm border border-border/30 shadow-card">
               <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-3 shadow-sm`}>
@@ -138,47 +137,7 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* Available Courses */}
-            {availableCourses.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-display font-bold text-foreground mb-2">
-                  {enrolledCourses.length > 0 ? 'Browse More Courses' : 'Available Courses'}
-                </h2>
-                <p className="text-muted-foreground text-sm mb-6">Enroll to access discussions, chat, and resources</p>
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {availableCourses.map((course, index) => (
-                    <div 
-                      key={course.id}
-                      className="animate-fade-in"
-                      style={{ animationDelay: `${index * 80}ms` }}
-                    >
-                      <Card className="h-full bg-card/95 backdrop-blur-sm shadow-card border border-border/30 overflow-hidden rounded-2xl">
-                        <div className={`h-2 bg-gradient-to-r ${course.color} opacity-50`} />
-                        <CardContent className="p-6">
-                          <h3 className="font-display font-bold text-xl text-foreground">{course.code}</h3>
-                          <p className="text-muted-foreground text-sm truncate mt-1.5">{course.name}</p>
-                          <div className="flex items-center gap-2 mt-4">
-                            <span className="inline-flex items-center px-3 py-1.5 rounded-xl bg-muted/70 text-xs font-medium text-muted-foreground border border-border/50">
-                              {course.semester}
-                            </span>
-                          </div>
-                          <Button
-                            onClick={() => enroll(course.id)}
-                            className="w-full mt-4 gradient-primary rounded-xl font-semibold"
-                            size="sm"
-                          >
-                            <Plus className="w-4 h-4 mr-1.5" />
-                            Enroll
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {enrolledCourses.length === 0 && availableCourses.length === 0 && (
+            {enrolledCourses.length === 0 && (
               <div className="text-center py-16 text-muted-foreground">
                 <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-40" />
                 <p className="font-semibold text-foreground">No courses available</p>
