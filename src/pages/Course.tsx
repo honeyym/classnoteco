@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getCourse, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
@@ -83,7 +83,7 @@ export default function Course() {
     }
   };
 
-  const resources = useMemo<Resource[]>(() => posts
+  const resources: Resource[] = posts
     .filter((post) => post.link)
     .map((post) => ({
       id: `post-resource-${post.id}`,
@@ -92,7 +92,7 @@ export default function Course() {
       url: post.link || '',
       sharedBy: post.is_anonymous ? 'Anonymous' : post.author_name,
       sharedAt: new Date(post.created_at),
-    })), [posts]);
+    }));
 
   // Filter posts by search query
   const filteredPosts = posts.filter((post) => {
