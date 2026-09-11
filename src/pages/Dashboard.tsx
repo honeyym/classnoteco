@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEnrollments } from '@/hooks/useEnrollments';
 import { courses } from '@/data/mockData';
-import { LogOut, MessageCircle, Sparkles, BookOpen, Plus, Check, Settings } from 'lucide-react';
+import { LogOut, MessageCircle, Sparkles, BookOpen, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
