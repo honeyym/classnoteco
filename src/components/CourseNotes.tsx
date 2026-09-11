@@ -33,7 +33,7 @@ export default function CourseNotes({ courseId }: CourseNotesProps) {
     if (error) {
       toast({ title: 'Error', description: error, variant: 'destructive' });
     } else {
-      toast({ title: 'Notes uploaded!' });
+      toast({ title: 'Resource uploaded!' });
       setTitle('');
       setFile(null);
       setShowUpload(false);
@@ -49,7 +49,7 @@ export default function CourseNotes({ courseId }: CourseNotesProps) {
   if (isLoading) {
     return (
       <div className="text-center py-14 text-muted-foreground">
-        <div className="animate-pulse font-medium">Loading notes...</div>
+        <div className="animate-pulse font-medium">Loading files...</div>
       </div>
     );
   }
@@ -58,13 +58,13 @@ export default function CourseNotes({ courseId }: CourseNotesProps) {
     <div className="space-y-6">
       {!showUpload ? (
         <Button onClick={() => setShowUpload(true)} className="rounded-xl gap-2">
-          <Plus className="w-4 h-4" /> Upload Notes
+          <Plus className="w-4 h-4" /> Upload File
         </Button>
       ) : (
         <div className="bg-muted/30 rounded-2xl border border-border/50 p-5 space-y-4">
-          <h4 className="font-display font-semibold text-foreground">Upload Notes</h4>
+          <h4 className="font-display font-semibold text-foreground">Upload a Resource</h4>
           <Input
-            placeholder="Note title (e.g. Lecture 5 Summary)"
+            placeholder="Resource title (e.g. Lecture 5 Summary)"
             value={title}
             onChange={e => setTitle(e.target.value)}
             className="rounded-xl"
@@ -104,8 +104,8 @@ export default function CourseNotes({ courseId }: CourseNotesProps) {
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/50 flex items-center justify-center">
             <FileText className="w-7 h-7 opacity-50" />
           </div>
-          <p className="font-semibold text-foreground">No notes yet</p>
-          <p className="text-sm mt-1">Upload study notes to share with classmates!</p>
+          <p className="font-semibold text-foreground">No files uploaded yet</p>
+          <p className="text-sm mt-1">Share notes, slides, or study guides with classmates.</p>
         </div>
       ) : (
         <div className="space-y-3">

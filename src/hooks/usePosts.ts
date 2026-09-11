@@ -13,6 +13,7 @@ export interface DbPost {
   likes: number;
   dislikes: number;
   hearts: number;
+  is_default_saved: boolean;
   created_at: string;
 }
 
