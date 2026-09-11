@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { getCourse, getCourseResources, Resource } from '@/data/mockData';
+import { getCourse, Resource } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEnrollments } from '@/hooks/useEnrollments';
 import { usePosts } from '@/hooks/usePosts';
+import { useSavedPosts } from '@/hooks/useSavedPosts';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen, FileText } from 'lucide-react';
+import { ArrowLeft, LogOut, MessageCircle, Star, MessagesSquare, Search, X, Send, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -21,9 +22,8 @@ export default function Course() {
   const { user, logout } = useAuth();
   const { isEnrolled, isLoading: enrollLoading } = useEnrollments();
   const { posts, isLoading: postsLoading, createPost } = usePosts(courseId || '');
+  const { savedPostIds, toggleSavedPost } = useSavedPosts(posts);
   const [activeTab, setActiveTab] = useState('discussion');
-  const [resources, setResources] = useState<Resource[]>(() => getCourseResources(courseId || ''));
-  const [savedPostIds, setSavedPostIds] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [replyCounts, setReplyCounts] = useState<Record<string, number>>({});
 
@@ -45,15 +45,6 @@ export default function Course() {
       });
   }, [posts]);
 
-  const handleToggleSave = (postId: string) => {
-    setSavedPostIds(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(postId)) newSet.delete(postId);
-      else newSet.add(postId);
-      return newSet;
-    });
-  };
-
   if (!courseId) return <Navigate to="/dashboard" replace />;
 
   const course = getCourse(courseId);
@@ -70,21 +61,7 @@ export default function Course() {
   if (!isEnrolled(courseId)) return <Navigate to="/dashboard" replace />;
 
   const handleNewPost = async (content: string, isAnonymous: boolean, link?: string) => {
-    const result = await createPost(content, isAnonymous, link);
-    
-    if (!result.error && link) {
-      const newResource: Resource = {
-        id: `res-${crypto.randomUUID()}`,
-        courseId,
-        title: extractTitleFromUrl(link),
-        url: link,
-        sharedBy: isAnonymous ? 'Anonymous' : (user?.name || 'User'),
-        sharedAt: new Date(),
-      };
-      setResources(prev => [newResource, ...prev]);
-    }
-    
-    return result;
+    return createPost(content, isAnonymous, link);
   };
 
   const extractTitleFromUrl = (url: string): string => {
@@ -105,6 +82,17 @@ export default function Course() {
       return url;
     }
   };
+
+  const resources: Resource[] = posts
+    .filter((post) => post.link)
+    .map((post) => ({
+      id: `post-resource-${post.id}`,
+      courseId: post.course_id,
+      title: extractTitleFromUrl(post.link || ''),
+      url: post.link || '',
+      sharedBy: post.is_anonymous ? 'Anonymous' : post.author_name,
+      sharedAt: new Date(post.created_at),
+    }));
 
   // Filter posts by search query
   const filteredPosts = posts.filter((post) => {
@@ -209,11 +197,6 @@ export default function Course() {
                 <BookOpen className="w-4 h-4 mr-2" />Resources
               </TabsTrigger>
             </TabsList>
-            <TabsList className="h-auto p-1.5 bg-card/80 backdrop-blur-sm rounded-2xl shadow-card border border-border/30">
-              <TabsTrigger value="notes" className="font-semibold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm transition-all duration-300 px-5 py-2.5">
-                <FileText className="w-4 h-4 mr-2" />Notes
-              </TabsTrigger>
-            </TabsList>
           </div>
           
           <TabsContent value="discussion" className="mt-0 tab-content-enter">
@@ -270,7 +253,7 @@ export default function Course() {
                           courseId={courseId}
                           replyCount={replyCounts[post.id] || 0}
                           isSaved={savedPostIds.has(post.id)}
-                          onToggleSave={handleToggleSave}
+                          onToggleSave={toggleSavedPost}
                         />
                       </div>
                     ))
@@ -329,7 +312,7 @@ export default function Course() {
                           courseId={courseId}
                           replyCount={replyCounts[post.id] || 0}
                           isSaved={true}
-                          onToggleSave={handleToggleSave}
+                          onToggleSave={toggleSavedPost}
                         />
                       </div>
                     ))
@@ -346,25 +329,16 @@ export default function Course() {
                 </div>
                 <div>
                   <h3 className="font-display font-semibold text-foreground">Shared Resources</h3>
-                  <p className="text-xs text-muted-foreground">Study materials from your classmates</p>
+                  <p className="text-xs text-muted-foreground">Shared links, notes, slides, and study guides</p>
                 </div>
               </div>
-              <ResourceList resources={resources} />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="notes" className="mt-0 tab-content-enter">
-            <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-card border border-border/30 p-5 sm:p-6 max-w-3xl">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center shadow-sm">
-                  <FileText className="w-5 h-5 text-accent-foreground" />
-                </div>
-                <div>
-                  <h3 className="font-display font-semibold text-foreground">Course Notes</h3>
-                  <p className="text-xs text-muted-foreground">Upload and share study notes</p>
+              <div className="space-y-8">
+                <CourseNotes courseId={courseId} />
+                <div className="border-t border-border/50 pt-6">
+                  <h4 className="font-display font-semibold text-foreground mb-4">Shared Links</h4>
+                  <ResourceList resources={resources} />
                 </div>
               </div>
-              <CourseNotes courseId={courseId} />
             </div>
           </TabsContent>
         </Tabs>

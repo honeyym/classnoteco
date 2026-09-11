@@ -68,7 +68,7 @@ export const courses: Course[] = [
   {
     id: 'acct314',
     code: 'ACCT 314',
-    name: 'Intermediate Accounting II',
+    name: 'Tax Accounting',
     semester: 'Fall 2026',
     newMessages: 0,
     color: 'from-indigo-500 to-blue-600',

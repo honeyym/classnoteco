@@ -163,6 +163,7 @@ export type Database = {
           hearts: number
           id: string
           is_anonymous: boolean
+          is_default_saved: boolean
           likes: number
           link: string | null
           user_id: string
@@ -176,6 +177,7 @@ export type Database = {
           hearts?: number
           id?: string
           is_anonymous?: boolean
+          is_default_saved?: boolean
           likes?: number
           link?: string | null
           user_id: string
@@ -189,11 +191,47 @@ export type Database = {
           hearts?: number
           id?: string
           is_anonymous?: boolean
+          is_default_saved?: boolean
           likes?: number
           link?: string | null
           user_id?: string
         }
         Relationships: []
+      }
+      saved_posts: {
+        Row: {
+          created_at: string
+          id: string
+          is_saved: boolean
+          post_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_saved?: boolean
+          post_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_saved?: boolean
+          post_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_posts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       study_group_members: {
         Row: {
