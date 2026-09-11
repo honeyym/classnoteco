@@ -12,11 +12,11 @@ import {
 describe("mockData", () => {
   describe("getCourse", () => {
     it("returns course for valid id", () => {
-      const course = getCourse("cisc200");
+      const course = getCourse("acct311");
       expect(course).toBeDefined();
-      expect(course?.id).toBe("cisc200");
-      expect(course?.code).toBe("CISC 200");
-      expect(course?.name).toContain("Computer");
+      expect(course?.id).toBe("acct311");
+      expect(course?.code).toBe("ACCT 311");
+      expect(course?.name).toContain("Accounting");
     });
 
     it("returns undefined for invalid id", () => {
@@ -26,9 +26,9 @@ describe("mockData", () => {
 
   describe("getCoursePosts", () => {
     it("returns posts for course", () => {
-      const posts = getCoursePosts("cisc200");
+      const posts = getCoursePosts("acct311");
       expect(Array.isArray(posts)).toBe(true);
-      expect(posts.every((p) => p.courseId === "cisc200")).toBe(true);
+      expect(posts.every((p) => p.courseId === "acct311")).toBe(true);
     });
 
     it("returns empty array for unknown course", () => {
@@ -59,9 +59,9 @@ describe("mockData", () => {
 
   describe("getCourseResources", () => {
     it("returns resources for course", () => {
-      const resources = getCourseResources("cisc200");
+      const resources = getCourseResources("acct311");
       expect(Array.isArray(resources)).toBe(true);
-      expect(resources.every((r) => r.courseId === "cisc200")).toBe(true);
+      expect(resources.every((r) => r.courseId === "acct311")).toBe(true);
     });
   });
 
@@ -84,8 +84,8 @@ describe("mockData", () => {
   describe("courses", () => {
     it("has expected course ids", () => {
       const ids = courses.map((c) => c.id);
-      expect(ids).toContain("cisc200");
-      expect(ids).toContain("psych101");
+      expect(ids).toContain("acct311");
+      expect(ids).toContain("acct314");
       expect(courses.length).toBeGreaterThan(0);
     });
 

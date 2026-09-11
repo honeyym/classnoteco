@@ -10,19 +10,19 @@ describe("CreatePost", () => {
   });
 
   it("renders form elements", () => {
-    render(<CreatePost courseId="cisc200" onPost={mockOnPost} />);
+    render(<CreatePost courseId="acct311" onPost={mockOnPost} />);
     expect(screen.getByPlaceholderText(/What's on your mind/)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Attach a link/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Post/i })).toBeInTheDocument();
   });
 
   it("disables submit when content is empty", () => {
-    render(<CreatePost courseId="cisc200" onPost={mockOnPost} />);
+    render(<CreatePost courseId="acct311" onPost={mockOnPost} />);
     expect(screen.getByRole("button", { name: /Post/i })).toBeDisabled();
   });
 
   it("enables submit when content is entered", () => {
-    render(<CreatePost courseId="cisc200" onPost={mockOnPost} />);
+    render(<CreatePost courseId="acct311" onPost={mockOnPost} />);
     fireEvent.change(screen.getByPlaceholderText(/What's on your mind/), {
       target: { value: "Hello class!" },
     });
@@ -31,7 +31,7 @@ describe("CreatePost", () => {
 
   it("calls onPost with content and anonymous flag on submit", async () => {
     mockOnPost.mockResolvedValue({ error: null });
-    render(<CreatePost courseId="cisc200" onPost={mockOnPost} />);
+    render(<CreatePost courseId="acct311" onPost={mockOnPost} />);
 
     fireEvent.change(screen.getByPlaceholderText(/What's on your mind/), {
       target: { value: "Test post" },
@@ -45,7 +45,7 @@ describe("CreatePost", () => {
 
   it("calls onPost with link when provided", async () => {
     mockOnPost.mockResolvedValue({ error: null });
-    render(<CreatePost courseId="cisc200" onPost={mockOnPost} />);
+    render(<CreatePost courseId="acct311" onPost={mockOnPost} />);
 
     fireEvent.change(screen.getByPlaceholderText(/What's on your mind/), {
       target: { value: "Check this out" },
@@ -61,7 +61,7 @@ describe("CreatePost", () => {
   });
 
   it("shows toast when link is invalid", () => {
-    render(<CreatePost courseId="cisc200" onPost={mockOnPost} />);
+    render(<CreatePost courseId="acct311" onPost={mockOnPost} />);
 
     fireEvent.change(screen.getByPlaceholderText(/What's on your mind/), {
       target: { value: "Post with bad link" },

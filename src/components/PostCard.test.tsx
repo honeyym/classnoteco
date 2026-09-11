@@ -6,7 +6,7 @@ import type { DbPost } from "@/hooks/usePosts";
 
 const mockPost: DbPost = {
   id: "post-1",
-  course_id: "cisc200",
+  course_id: "acct311",
   user_id: "user-1",
   author_name: "Jane Doe",
   is_anonymous: false,
@@ -22,7 +22,7 @@ describe("PostCard", () => {
   it("renders post content", () => {
     render(
       <MemoryRouter>
-        <PostCard post={mockPost} courseId="cisc200" />
+        <PostCard post={mockPost} courseId="acct311" />
       </MemoryRouter>
     );
     expect(screen.getByText(mockPost.content)).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe("PostCard", () => {
   it("renders author name when not anonymous", () => {
     render(
       <MemoryRouter>
-        <PostCard post={mockPost} courseId="cisc200" />
+        <PostCard post={mockPost} courseId="acct311" />
       </MemoryRouter>
     );
     expect(screen.getByText("Jane Doe")).toBeInTheDocument();
@@ -41,7 +41,7 @@ describe("PostCard", () => {
     const anonymousPost = { ...mockPost, is_anonymous: true };
     render(
       <MemoryRouter>
-        <PostCard post={anonymousPost} courseId="cisc200" />
+        <PostCard post={anonymousPost} courseId="acct311" />
       </MemoryRouter>
     );
     expect(screen.getByText("Anonymous")).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("PostCard", () => {
   it("renders likes and hearts count", () => {
     render(
       <MemoryRouter>
-        <PostCard post={mockPost} courseId="cisc200" />
+        <PostCard post={mockPost} courseId="acct311" />
       </MemoryRouter>
     );
     expect(screen.getByText("5")).toBeInTheDocument();
@@ -60,18 +60,18 @@ describe("PostCard", () => {
   it("links to post detail page", () => {
     render(
       <MemoryRouter>
-        <PostCard post={mockPost} courseId="cisc200" />
+        <PostCard post={mockPost} courseId="acct311" />
       </MemoryRouter>
     );
     const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "/course/cisc200/post/post-1");
+    expect(link).toHaveAttribute("href", "/course/acct311/post/post-1");
   });
 
   it("calls onToggleSave when save button clicked", () => {
     const onToggleSave = vi.fn();
     render(
       <MemoryRouter>
-        <PostCard post={mockPost} courseId="cisc200" onToggleSave={onToggleSave} />
+        <PostCard post={mockPost} courseId="acct311" onToggleSave={onToggleSave} />
       </MemoryRouter>
     );
     fireEvent.click(screen.getByLabelText("Save post"));
@@ -81,7 +81,7 @@ describe("PostCard", () => {
   it("shows Unsave post when saved", () => {
     render(
       <MemoryRouter>
-        <PostCard post={mockPost} courseId="cisc200" isSaved onToggleSave={() => {}} />
+        <PostCard post={mockPost} courseId="acct311" isSaved onToggleSave={() => {}} />
       </MemoryRouter>
     );
     expect(screen.getByLabelText("Unsave post")).toBeInTheDocument();
