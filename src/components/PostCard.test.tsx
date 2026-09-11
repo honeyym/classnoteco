@@ -15,6 +15,7 @@ const mockPost: DbPost = {
   likes: 5,
   dislikes: 0,
   hearts: 2,
+  is_default_saved: false,
   created_at: new Date().toISOString(),
 };
 
