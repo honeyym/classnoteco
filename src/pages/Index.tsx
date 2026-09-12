@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, Users, Sparkles, ArrowRight, BookOpen, Zap, Shield, Heart } from 'lucide-react';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import ClassNoteLogo from '@/components/ClassNoteLogo';
 
 export default function Index() {
@@ -14,7 +13,6 @@ export default function Index() {
         <nav className="flex items-center justify-between">
           <div className="w-20" />
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-xl font-medium">
               <Link to="/login">Log in</Link>
             </Button>
